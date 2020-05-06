@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * Balance
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-05T11:29:14.407Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
 public class Balance   {
   @JsonProperty("account")
   private String account = null;

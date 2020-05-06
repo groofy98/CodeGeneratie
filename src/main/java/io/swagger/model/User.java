@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-05T11:29:14.407Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
 public class User   {
   @JsonProperty("id")
   private Integer id = null;
@@ -25,8 +25,14 @@ public class User   {
   @JsonProperty("lastname")
   private String lastname = null;
 
+  @JsonProperty("email")
+  private String email = null;
+
   @JsonProperty("username")
   private String username = null;
+
+  @JsonProperty("password")
+  private String password = null;
 
   @JsonProperty("dateOfBirth")
   private LocalDate dateOfBirth = null;
@@ -36,6 +42,9 @@ public class User   {
 
   @JsonProperty("isCustomer")
   private Boolean isCustomer = null;
+
+  @JsonProperty("isActive")
+  private Boolean isActive = null;
 
   public User id(Integer id) {
     this.id = id;
@@ -96,6 +105,26 @@ public class User   {
     this.lastname = lastname;
   }
 
+  public User email(String email) {
+    this.email = email;
+    return this;
+  }
+
+  /**
+   * Get email
+   * @return email
+  **/
+  @ApiModelProperty(example = "JohnDoe@example.com", required = true, value = "")
+      @NotNull
+
+    public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
   public User username(String username) {
     this.username = username;
     return this;
@@ -114,6 +143,26 @@ public class User   {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public User password(String password) {
+    this.password = password;
+    return this;
+  }
+
+  /**
+   * Get password
+   * @return password
+  **/
+  @ApiModelProperty(example = "John123!", required = true, value = "")
+      @NotNull
+
+    public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public User dateOfBirth(LocalDate dateOfBirth) {
@@ -177,6 +226,25 @@ public class User   {
     this.isCustomer = isCustomer;
   }
 
+  public User isActive(Boolean isActive) {
+    this.isActive = isActive;
+    return this;
+  }
+
+  /**
+   * Get isActive
+   * @return isActive
+  **/
+  @ApiModelProperty(example = "true", value = "")
+  
+    public Boolean isIsActive() {
+    return isActive;
+  }
+
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -190,15 +258,18 @@ public class User   {
     return Objects.equals(this.id, user.id) &&
         Objects.equals(this.firstname, user.firstname) &&
         Objects.equals(this.lastname, user.lastname) &&
+        Objects.equals(this.email, user.email) &&
         Objects.equals(this.username, user.username) &&
+        Objects.equals(this.password, user.password) &&
         Objects.equals(this.dateOfBirth, user.dateOfBirth) &&
         Objects.equals(this.isEmployee, user.isEmployee) &&
-        Objects.equals(this.isCustomer, user.isCustomer);
+        Objects.equals(this.isCustomer, user.isCustomer) &&
+        Objects.equals(this.isActive, user.isActive);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, firstname, lastname, username, dateOfBirth, isEmployee, isCustomer);
+    return Objects.hash(id, firstname, lastname, email, username, password, dateOfBirth, isEmployee, isCustomer, isActive);
   }
 
   @Override
@@ -209,10 +280,13 @@ public class User   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    firstname: ").append(toIndentedString(firstname)).append("\n");
     sb.append("    lastname: ").append(toIndentedString(lastname)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
+    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    dateOfBirth: ").append(toIndentedString(dateOfBirth)).append("\n");
     sb.append("    isEmployee: ").append(toIndentedString(isEmployee)).append("\n");
     sb.append("    isCustomer: ").append(toIndentedString(isCustomer)).append("\n");
+    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("}");
     return sb.toString();
   }
