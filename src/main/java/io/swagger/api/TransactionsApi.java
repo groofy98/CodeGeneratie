@@ -23,35 +23,22 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-05T11:29:14.407Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
 @Api(value = "transactions", description = "the transactions API")
 public interface TransactionsApi {
 
-    @ApiOperation(value = "Handle a new transaction", nickname = "createTransaction", notes = "", tags={ "transaction", })
+    @ApiOperation(value = "Handle a new transaction", nickname = "createTransaction", notes = "", tags={ "transactions", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful transaction"),
+        @ApiResponse(code = 201, message = "transaction creation successful"),
         @ApiResponse(code = 405, message = "Invalid input") })
     @RequestMapping(value = "/transactions",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> createTransaction(@ApiParam(value = "Transaction object that needs to be added to the store" ,required=true )  @Valid @RequestBody Transaction body
+    ResponseEntity<Void> createTransaction(@ApiParam(value = "Transaction object that needs to be added" ,required=true )  @Valid @RequestBody Transaction body
 );
 
 
-    @ApiOperation(value = "Get a list of transactions", nickname = "getTransaction", notes = "", response = Transaction.class, responseContainer = "List", tags={ "transaction", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Transaction.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "Invalid status value") })
-    @RequestMapping(value = "/transactions",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<Transaction>> getTransaction(@NotNull @ApiParam(value = "Pass in the ID of the account of which to get the transactions from", required = true) @Valid @RequestParam(value = "accountId", required = true) String accountId
-,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-,@Min(1) @Max(100) @ApiParam(value = "The max number of results to return", allowableValues = "") @Valid @RequestParam(value = "count", required = false) Integer count
-);
-
-
-    @ApiOperation(value = "Find transaction by ID", nickname = "getTransactionById", notes = "Returns a single transaction with corresponding ID", response = Transaction.class, tags={ "transaction", })
+    @ApiOperation(value = "Find transaction by ID", nickname = "getTransactionById", notes = "Returns a single transaction with corresponding ID", response = Transaction.class, tags={ "transactions", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Transaction.class),
         @ApiResponse(code = 400, message = "Invalid transactionId supplied"),

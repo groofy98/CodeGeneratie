@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.OffsetDateTime;
@@ -14,7 +15,7 @@ import javax.validation.constraints.*;
  * Transaction
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-05T11:29:14.407Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
 public class Transaction   {
   @JsonProperty("id")
   private Long id = null;
@@ -33,6 +34,41 @@ public class Transaction   {
 
   @JsonProperty("userId")
   private Long userId = null;
+
+  /**
+   * Specifies the type of transaction
+   */
+  public enum TransactionTypeEnum {
+    TRANSFER("transfer"),
+    
+    DEPOSIT("deposit"),
+    
+    WITHDRAW("withdraw");
+
+    private String value;
+
+    TransactionTypeEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static TransactionTypeEnum fromValue(String text) {
+      for (TransactionTypeEnum b : TransactionTypeEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+  @JsonProperty("transactionType")
+  private TransactionTypeEnum transactionType = null;
 
   public Transaction id(Long id) {
     this.id = id;
@@ -154,6 +190,26 @@ public class Transaction   {
     this.userId = userId;
   }
 
+  public Transaction transactionType(TransactionTypeEnum transactionType) {
+    this.transactionType = transactionType;
+    return this;
+  }
+
+  /**
+   * Specifies the type of transaction
+   * @return transactionType
+  **/
+  @ApiModelProperty(required = true, value = "Specifies the type of transaction")
+      @NotNull
+
+    public TransactionTypeEnum getTransactionType() {
+    return transactionType;
+  }
+
+  public void setTransactionType(TransactionTypeEnum transactionType) {
+    this.transactionType = transactionType;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -169,12 +225,13 @@ public class Transaction   {
         Objects.equals(this.amount, transaction.amount) &&
         Objects.equals(this.from, transaction.from) &&
         Objects.equals(this.to, transaction.to) &&
-        Objects.equals(this.userId, transaction.userId);
+        Objects.equals(this.userId, transaction.userId) &&
+        Objects.equals(this.transactionType, transaction.transactionType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, date, amount, from, to, userId);
+    return Objects.hash(id, date, amount, from, to, userId, transactionType);
   }
 
   @Override
@@ -188,6 +245,7 @@ public class Transaction   {
     sb.append("    from: ").append(toIndentedString(from)).append("\n");
     sb.append("    to: ").append(toIndentedString(to)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    transactionType: ").append(toIndentedString(transactionType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

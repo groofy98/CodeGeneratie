@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * Account
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-05T11:29:14.407Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
 public class Account   {
   @JsonProperty("AccountID")
   private String accountID = null;
@@ -54,6 +54,9 @@ public class Account   {
 
   @JsonProperty("AccountHolder")
   private Long accountHolder = null;
+
+  @JsonProperty("IsActive")
+  private Boolean isActive = null;
 
   public Account accountID(String accountID) {
     this.accountID = accountID;
@@ -114,6 +117,25 @@ public class Account   {
     this.accountHolder = accountHolder;
   }
 
+  public Account isActive(Boolean isActive) {
+    this.isActive = isActive;
+    return this;
+  }
+
+  /**
+   * Get isActive
+   * @return isActive
+  **/
+  @ApiModelProperty(example = "true", value = "")
+  
+    public Boolean isIsActive() {
+    return isActive;
+  }
+
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -126,12 +148,13 @@ public class Account   {
     Account account = (Account) o;
     return Objects.equals(this.accountID, account.accountID) &&
         Objects.equals(this.accountType, account.accountType) &&
-        Objects.equals(this.accountHolder, account.accountHolder);
+        Objects.equals(this.accountHolder, account.accountHolder) &&
+        Objects.equals(this.isActive, account.isActive);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accountID, accountType, accountHolder);
+    return Objects.hash(accountID, accountType, accountHolder, isActive);
   }
 
   @Override
@@ -142,6 +165,7 @@ public class Account   {
     sb.append("    accountID: ").append(toIndentedString(accountID)).append("\n");
     sb.append("    accountType: ").append(toIndentedString(accountType)).append("\n");
     sb.append("    accountHolder: ").append(toIndentedString(accountHolder)).append("\n");
+    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -10,14 +10,14 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-05T11:29:14.407Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
 @Configuration
 public class SwaggerDocumentationConfig {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
             .title("Swagger Bank Api")
-            .description("This is a Bank Api build by students of Hogeschool Inholland ")
+            .description("This is a Bank Api build by students of Hogeschool Inholland")
             .license("")
             .licenseUrl("http://unlicense.org")
             .termsOfServiceUrl("")

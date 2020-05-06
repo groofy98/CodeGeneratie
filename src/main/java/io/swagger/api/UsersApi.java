@@ -24,20 +24,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-05T11:29:14.407Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
-    @ApiOperation(value = "Deletes a user", nickname = "deleteUser", notes = "", authorizations = {
+    @ApiOperation(value = "Deactivate existing user", nickname = "deactivateUser", notes = "Deacivate a user", authorizations = {
         @Authorization(value = "ApiKeyAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "executed"),
-        @ApiResponse(code = 400, message = "Invalid user supplied"),
+        @ApiResponse(code = 400, message = "Invalid user id supplied"),
         @ApiResponse(code = 401, message = "failed to authenticate"),
         @ApiResponse(code = 404, message = "User not found") })
-    @RequestMapping(value = "/users/{id}",
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUser(@ApiParam(value = "user ID",required=true) @PathVariable("id") Integer id
+    @RequestMapping(value = "/users/{id}/deactivate",
+        method = RequestMethod.PUT)
+    ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") String id
 );
 
 
@@ -90,7 +90,9 @@ public interface UsersApi {
     @RequestMapping(value = "/users",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<User>> searchusers();
+    ResponseEntity<List<User>> searchusers(@NotNull @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", required = true, allowableValues = "") @Valid @RequestParam(value = "count", required = true) Integer count
+,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
+);
 
 
     @ApiOperation(value = "Update existing User", nickname = "updateUser", notes = "By filling in this form, you update a user", authorizations = {
