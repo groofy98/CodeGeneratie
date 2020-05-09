@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../CSS/EditAccountsCSS.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/ddad9acd2b.js" crossorigin="anonymous"></script>
+    <title>DankBank</title>
+</head>
+<body>
+<nav>
+    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <div class="account">
+        <button id="LogOff" type="button" name="button">LogOff</button>
+        <a id="accountDetails" href="#">T.Alberts</a>
+    </div>
+</nav>
+<div id="buttonContainer">
+    <button id="create">Create Account</button>
+    <button id="change">Change Account</button>
+    <button id="deactivate">Deactivate Account</button>
+</div>
+
+<section class="accounts" id="newAccount">
+    <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
+    <p class="header">Create New Account</p>
+    <form action="">
+        <div>
+            <label for="accountTypeCreate">AccountType:</label>
+            <select id="accountTypeCreate">
+                <option hidden disabled selected value>Select type</option>
+                <option value="Saving">Saving</option>
+                <option value="Current">Current</option>
+            </select>
+        </div>
+        <div>
+            <label for="accountHolderEmailCreate">Account Holder Email:</label>
+            <input name="accountHolder" id="accountHolderEmailCreate" type="text">
+        </div>
+        <div>
+            <label for="AbsoluteLimitCreate">Absolute Limit:</label>
+            <input name="AbsoluteLimitCreate" id="AbsoluteLimitCreate" type="text">
+        </div>
+        <input id="newAccountSubmit" type="submit" value="Save">
+    </form>
+</section>
+<section class="accounts" id="changeAccount">
+    <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
+    <p class="header">Change Account</p>
+    <form action="">
+        <div>
+            <label for="accountIdChange">Account ID:</label>
+            <input name="accountIdChange" id="accountIdChange" type="text">
+        </div>
+        <div>
+            <label for="AbsoluteLimitChange">Absolute Limit:</label>
+            <input name="AbsoluteLimitChange" id="AbsoluteLimitChange" type="number">
+        </div>
+        <div>
+            <label for="accountIDDeactivate">AccountType</label>
+            <select id="accountIDDeactivate" name="accountIDDeactivate">
+                <option hidden disabled selected value>Select type</option>
+                <option value="Saving">Saving</option>
+                <option value="Current">Current</option>
+            </select>
+        </div>
+        <input id="changeAccountSubmit" type="submit" value="Save">
+    </form>
+</section>
+<section class="accounts" id="deactivateAccount">
+    <p class="header">Deactivate Account</p>
+        <form action="">
+            <div>
+                <label for="userEmail">Account ID:</label>
+                <input name="userEmail" id="userEmail" type="text">
+            </div>
+            <input id="deactivateAccountSubmit" type="submit" value="Deactivate">
+        </form>
+</section>
+</body>
+<script type="text/javascript">
+
+    $("#create").click(function () {
+        $('html, body').animate({
+            scrollTop: $("#newAccount").offset().top
+        }, 500);
+    });
+    $("#change").click(function () {
+        $('html, body').animate({
+            scrollTop: $("#changeAccount").offset().top
+        }, 800);
+    });
+    $("#deactivate").click(function () {
+        $('html, body').animate({
+            scrollTop: $("#deactivateAccount").offset().top
+        }, 1200);
+    });
+
+    function CreateAccount(AccountType, AccountHolder) {
+        $.ajax({
+            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1',
+            type: "PUT",
+            contentType: "application/json",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (index) {
+                    SortAccounts(data[index]);
+                });
+            },
+            error: function (error) {
+                console.log(`Error ${error}`);
+            }
+        });
+    }
+</script>
+</html>
