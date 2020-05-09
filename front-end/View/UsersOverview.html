@@ -1,0 +1,89 @@
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../CSS/GlobalCSS.css">
+    <link rel="stylesheet" href="../CSS/UsersOverviewCSS.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>DankBank</title>
+</head>
+<body>
+<nav>
+    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <div class="account">
+        <button id="LogOff" type="button" name="button">LogOff</button>
+        <a id="accountDetails" href="#">T.Alberts</a>
+    </div>
+</nav>
+<section id="tableBox">
+  <table>
+<tr>
+  <th>ID</th>
+  <th>First Name</th>
+  <th>Last Name</th>
+  <th>Email</th>
+  <th>Username</th>
+  <th>Birth Date</th>
+  <th>Employee</th>
+  <th>Customer</th>
+  <th>Active</th>
+  <th>DEACTIVATE USER</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td>John</td>
+  <td>Doe</td>
+  <td>JohnDoe@example.com</td>
+  <td>Johnny69</td>
+  <td>05/05/2000</td>
+  <td>false</td>
+  <td>true</td>
+  <td>true</td>
+  <td><button> deactivate </button></td>
+</tr>
+</table>
+
+</section>
+</body>
+</html>
+
+<script type="text/javascript">
+  //TODO: make actual data load in from API
+  //commented out code is not yet functional:
+  /*
+  var users;
+
+  fetch('https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users')
+    .then(res => res.json())
+    .then(data => users = data)
+    .then(() => console.log(users))
+
+  //  fetch('https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users')
+    //  .then(response => response.json())
+      //.then(data => console.log(data));
+      //let users = data
+
+    function generateTableHead(table, data) {
+      let thead = table.createTHead();
+      let row = thead.insertRow();
+      for (let key of data) {
+        let th = document.createElement("th");
+        let text = document.createTextNode(key);
+        th.appendChild(text);
+        row.appendChild(th);
+      }
+    }
+
+    function generateTable(table, data) {
+      for (let element of data) {
+      let row = table.insertRow();
+        for (key in element) {
+        let cell = row.insertCell();
+        let text = document.createTextNode(element[key]);
+        cell.appendChild(text);
+        }
+      }
+    }
+    */
+
+</script>

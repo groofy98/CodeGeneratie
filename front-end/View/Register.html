@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../CSS/GlobalCSS.css">
+    <link rel="stylesheet" href="../CSS/RegisterCSS.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>DankBank</title>
+</head>
+<body>
+<nav>
+    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <div class="account">
+        <button id="LogOff" type="button" name="button">LogOff</button>
+        <a id="accountDetails" href="#">T.Alberts</a>
+    </div>
+</nav>
+  <form id = "registerForm" action="View/Register.php" method = "post">
+        <header id = "registerHeader">
+            <h3>Register account</h3>
+        </header>
+        <section class="formGroup">
+            <p><b>first name:</b></p>
+            <input type="text" placeholder="first name" name="firstName"></input>
+        </section>
+        <section class="formGroup">
+            <p><b>last name:</b></p>
+            <input type="text" placeholder="last name" name="lastName"></input>
+        </section>
+        <section class="formGroup">
+            <p><b>username:</b></p>
+            <input type="text" placeholder="email@example.com" name="username"></input>
+        </section>
+        <section class="formGroup">
+            <p><b>email:</b></p>
+            <input type="text" placeholder="email@example.com" name="email"></input>
+        </section>
+        <section class="formGroup">
+            <p><b>date of birth:</b></p>
+            <input type="datetime" placeholder="email@example.com" name="dateOfBirth"></input>
+        </section>
+        <section class="formGroup">
+            <p><b>password:</b></p>
+            <input type="password" placeholder="password" name="password"></input>
+        </section>
+        <section class="formGroup">
+            <p><b>repeat password:</b></p>
+            <input type="password" placeholder="repeat password" name="passwordRepeat"></input>
+        </section>
+        <section class="formGroup">
+            <button type="submit"><b>sign up</b></button>
+        </section >
+  </form>
+</body>
+</html>
