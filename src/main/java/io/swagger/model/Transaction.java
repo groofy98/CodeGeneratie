@@ -35,6 +35,15 @@ public class Transaction   {
   @JsonProperty("userId")
   private Long userId = null;
 
+  public Transaction(OffsetDateTime date, Double amount, String from, String to, Long userId, TransactionTypeEnum transactionType) {
+    this.date = date;
+    this.amount = amount;
+    this.from = from;
+    this.to = to;
+    this.userId = userId;
+    this.transactionType = transactionType;
+  }
+
   /**
    * Specifies the type of transaction
    */

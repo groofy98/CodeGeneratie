@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../CSS/GlobalCSS.css">
+  <link rel="stylesheet" href="../CSS/TransferCSS.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>DankBank</title>
+</head>
+
+<body>
+  <nav>
+    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <div class="account">
+      <button id="LogOff" type="button" name="button">LogOff</button>
+      <a id="accountDetails" href="#">T.Alberts</a>
+    </div>
+  </nav>
+  <button class="transfer" type="button" name="button">Transfer money</button>
+  <!-- dit is voor het hele kopje betaalrekening of  spaarreking -->
+  <section class="container" id="deposit">
+    <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
+    <p class="header">Account</p>
+    <div class="accountContainer" id="savingContainer">
+
+    </div>
+  </section>
+  <section class="container" id="saving">
+    <p class="header">New Transaction</p>
+    <div class="transactionContainer" id="transactionContainer">
+      <form action="">
+        <label for="euro">Amount</label><br>
+        <input type="number" id="euro" name="euro" placeholder="Amount      € 0," min="0" required>
+        <input type="number" id="cent" name="cent" placeholder="00" max="100" min="0">
+
+        <label for="to">Recipient</label>
+        <input type="text" id="to" name="to" placeholder="NL02 DANK 0123 4567 89" required>
+
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </section>
+</body>
+
+</html>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.ajax({
+      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1',
+      type: "GET",
+      contentType: "application/json",
+      dataType: "json",
+      success: function(data) {
+        $.each(data, function(index) {
+          SortAccounts(data[index]);
+        });
+      },
+      error: function(error) {
+        console.log(`Error ${error}`);
+      }
+    });
+  });
+
+  function SortAccounts(account) {
+    var balance = GetBalance(account.AccountHolder);
+    var name = GetUser(account.AccountHolder);
+    if (account.AccountType == "Saving") {
+      $("#savingContainer").append("    <div id=\"2\" class=\"account\">\n" +
+        "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
+        "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
+        "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
+        "    </div>");
+    } else {
+      $("#depositContainer").append("    <div id=\"2\" class=\"account\">\n" +
+        "        <a class=\"name\" href=\"#\">" + account.AccountHolder + "</a>\n" +
+        "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
+        "        <a class=\"amount\" href=\"#\">account.Balance</a>\n" +
+        "    </div>");
+    }
+  }
+
+  function GetBalance(id) {
+    var balance = "";
+    $.ajax({
+      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/balance/' + id,
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      dataType: "json",
+      success: function(data) {
+        balance = data[0].amount;
+      },
+      error: function(error) {
+        balance = "-";
+      }
+    });
+    return balance;
+  }
+
+  function GetUser(id) {
+    var name = "";
+    $.ajax({
+      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      dataType: "json",
+      success: function(data) {
+        name = data;
+      },
+      error: function(error) {
+        name = "-";
+      }
+    });
+    return name;
+  }
+
+
+  //   var api_url = 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1';
+  //     //var key = '5b578yg9yvi8sogirbvegoiufg9v9g579gviuiub8' // not real
+  //     $.ajax({
+  //         url: api_url,
+  //         contentType: "application/json",
+  //         dataType: 'json',
+  //         success: function (result) {
+  //           var result = JSON.parse(result);
+  //             alert(result);
+  //         }
+  //     });
+  // });
+</script>
