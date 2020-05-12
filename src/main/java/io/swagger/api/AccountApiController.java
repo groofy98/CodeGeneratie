@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-12T14:12:41.521Z[GMT]")
 @Controller
 public class AccountApiController implements AccountApi {
 
@@ -51,7 +51,7 @@ public class AccountApiController implements AccountApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Account>>(objectMapper.readValue("[ {\n  \"AccountID\" : \"ingb-219009315\",\n  \"IsActive\" : true,\n  \"AccountType\" : \"Saving\",\n  \"AccountHolder\" : 1234567890\n}, {\n  \"AccountID\" : \"ingb-219009315\",\n  \"IsActive\" : true,\n  \"AccountType\" : \"Saving\",\n  \"AccountHolder\" : 1234567890\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<List<Account>>(objectMapper.readValue("[ {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n}, {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,7 +66,7 @@ public class AccountApiController implements AccountApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Account>>(objectMapper.readValue("[ {\n  \"AccountID\" : \"ingb-219009315\",\n  \"IsActive\" : true,\n  \"AccountType\" : \"Saving\",\n  \"AccountHolder\" : 1234567890\n}, {\n  \"AccountID\" : \"ingb-219009315\",\n  \"IsActive\" : true,\n  \"AccountType\" : \"Saving\",\n  \"AccountHolder\" : 1234567890\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<List<Account>>(objectMapper.readValue("[ {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n}, {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);

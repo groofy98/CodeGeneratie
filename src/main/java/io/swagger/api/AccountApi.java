@@ -25,7 +25,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-12T14:12:41.521Z[GMT]")
 @Api(value = "account", description = "the account API")
 public interface AccountApi {
 
@@ -46,7 +46,7 @@ public interface AccountApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "account details gotten", response = Account.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "bad input parameter") })
-    @RequestMapping(value = "/account/{accountId}",
+    @RequestMapping(value = "/account/{accountId}/details",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<Account>> getAccount(@ApiParam(value = "Pass in the ID of the account",required=true) @PathVariable("accountId") String accountId
@@ -105,7 +105,7 @@ public interface AccountApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 400, message = "Invalid account supplied"),
         @ApiResponse(code = 404, message = "account not found") })
-    @RequestMapping(value = "/account/{accountId}",
+    @RequestMapping(value = "/account/{accountId}/details",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<Void> updateAcount(@ApiParam(value = "Updated account object" ,required=true )  @Valid @RequestBody Account body

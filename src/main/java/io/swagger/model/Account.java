@@ -14,9 +14,9 @@ import javax.validation.constraints.*;
  * Account
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-12T14:12:41.521Z[GMT]")
 public class Account   {
-  @JsonProperty("AccountID")
+  @JsonProperty("accountID")
   private String accountID = null;
 
   /**
@@ -25,7 +25,7 @@ public class Account   {
   public enum AccountTypeEnum {
     SAVING("Saving"),
     
-    DEPOSIT("Deposit");
+    CURRENT("Current");
 
     private String value;
 
@@ -49,13 +49,16 @@ public class Account   {
       return null;
     }
   }
-  @JsonProperty("AccountType")
+  @JsonProperty("accountType")
   private AccountTypeEnum accountType = null;
 
-  @JsonProperty("AccountHolder")
+  @JsonProperty("accountHolder")
   private Long accountHolder = null;
 
-  @JsonProperty("IsActive")
+  @JsonProperty("absoluteLimit")
+  private Long absoluteLimit = null;
+
+  @JsonProperty("isActive")
   private Boolean isActive = null;
 
   public Account accountID(String accountID) {
@@ -86,9 +89,8 @@ public class Account   {
    * Get accountType
    * @return accountType
   **/
-  @ApiModelProperty(example = "Saving", required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(example = "Saving", value = "")
+  
     public AccountTypeEnum getAccountType() {
     return accountType;
   }
@@ -106,15 +108,33 @@ public class Account   {
    * Get accountHolder
    * @return accountHolder
   **/
-  @ApiModelProperty(example = "1234567890", required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(example = "1234567890", value = "")
+  
     public Long getAccountHolder() {
     return accountHolder;
   }
 
   public void setAccountHolder(Long accountHolder) {
     this.accountHolder = accountHolder;
+  }
+
+  public Account absoluteLimit(Long absoluteLimit) {
+    this.absoluteLimit = absoluteLimit;
+    return this;
+  }
+
+  /**
+   * Get absoluteLimit
+   * @return absoluteLimit
+  **/
+  @ApiModelProperty(example = "0", value = "")
+  
+    public Long getAbsoluteLimit() {
+    return absoluteLimit;
+  }
+
+  public void setAbsoluteLimit(Long absoluteLimit) {
+    this.absoluteLimit = absoluteLimit;
   }
 
   public Account isActive(Boolean isActive) {
@@ -149,12 +169,13 @@ public class Account   {
     return Objects.equals(this.accountID, account.accountID) &&
         Objects.equals(this.accountType, account.accountType) &&
         Objects.equals(this.accountHolder, account.accountHolder) &&
+        Objects.equals(this.absoluteLimit, account.absoluteLimit) &&
         Objects.equals(this.isActive, account.isActive);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accountID, accountType, accountHolder, isActive);
+    return Objects.hash(accountID, accountType, accountHolder, absoluteLimit, isActive);
   }
 
   @Override
@@ -165,6 +186,7 @@ public class Account   {
     sb.append("    accountID: ").append(toIndentedString(accountID)).append("\n");
     sb.append("    accountType: ").append(toIndentedString(accountType)).append("\n");
     sb.append("    accountHolder: ").append(toIndentedString(accountHolder)).append("\n");
+    sb.append("    absoluteLimit: ").append(toIndentedString(absoluteLimit)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("}");
     return sb.toString();
