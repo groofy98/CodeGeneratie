@@ -21,8 +21,8 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
 public class Transaction   {
 
-  @Id
   @JsonProperty("id")
+  @Id
   @SequenceGenerator(name = "transaction_seq", initialValue = 1000001)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
   private Long id = null;
@@ -43,6 +43,7 @@ public class Transaction   {
   private Long userId = null;
 
   public Transaction() {
+    this.date = OffsetDateTime.now();
   }
 
   public Transaction(Double amount, String accountFrom, String accountTo, Long userId, TransactionTypeEnum transactionType) {

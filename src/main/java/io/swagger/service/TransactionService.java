@@ -17,6 +17,15 @@ public class TransactionService {
 
     }
 
+    public Transaction getTransactionById(long id){
+        return transactionRepository.findOne(id);
+    }
+
+    public void addTransaction(Transaction transaction){
+        transactionRepository.save(transaction);
+        System.out.println(transaction);
+    }
+
     public List<Transaction> getAllTransactions(){
         return (List<Transaction>) transactionRepository.findAll();
     }
