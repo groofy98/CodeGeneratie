@@ -8,16 +8,23 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Transaction
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-12T14:12:41.521Z[GMT]")
 public class Transaction   {
+
+  @Id
   @JsonProperty("id")
+  @SequenceGenerator(name = "transaction_seq", initialValue = 1000001)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
   private Long id = null;
 
   @JsonProperty("date")
@@ -26,8 +33,8 @@ public class Transaction   {
   @JsonProperty("amount")
   private Double amount = null;
 
-  @JsonProperty("from")
-  private String from = null;
+  @JsonProperty("accountFrom")
+  private String accountFrom = null;
 
   @JsonProperty("to")
   private String to = null;
@@ -35,10 +42,13 @@ public class Transaction   {
   @JsonProperty("userId")
   private Long userId = null;
 
+  public Transaction() {
+  }
+
   public Transaction(OffsetDateTime date, Double amount, String from, String to, Long userId, TransactionTypeEnum transactionType) {
     this.date = date;
     this.amount = amount;
-    this.from = from;
+    this.accountFrom = from;
     this.to = to;
     this.userId = userId;
     this.transactionType = transactionType;
@@ -140,7 +150,7 @@ public class Transaction   {
   }
 
   public Transaction from(String from) {
-    this.from = from;
+    this.accountFrom = from;
     return this;
   }
 
@@ -152,11 +162,11 @@ public class Transaction   {
       @NotNull
 
     public String getFrom() {
-    return from;
+    return accountFrom;
   }
 
   public void setFrom(String from) {
-    this.from = from;
+    this.accountFrom = from;
   }
 
   public Transaction to(String to) {
@@ -232,7 +242,7 @@ public class Transaction   {
     return Objects.equals(this.id, transaction.id) &&
         Objects.equals(this.date, transaction.date) &&
         Objects.equals(this.amount, transaction.amount) &&
-        Objects.equals(this.from, transaction.from) &&
+        Objects.equals(this.accountFrom, transaction.accountFrom) &&
         Objects.equals(this.to, transaction.to) &&
         Objects.equals(this.userId, transaction.userId) &&
         Objects.equals(this.transactionType, transaction.transactionType);
@@ -240,7 +250,7 @@ public class Transaction   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, date, amount, from, to, userId, transactionType);
+    return Objects.hash(id, date, amount, accountFrom, to, userId, transactionType);
   }
 
   @Override
@@ -251,7 +261,7 @@ public class Transaction   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    from: ").append(toIndentedString(from)).append("\n");
+    sb.append("    from: ").append(toIndentedString(accountFrom)).append("\n");
     sb.append("    to: ").append(toIndentedString(to)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    transactionType: ").append(toIndentedString(transactionType)).append("\n");
