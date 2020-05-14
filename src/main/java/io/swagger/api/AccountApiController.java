@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-12T14:12:41.521Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
 @Controller
 public class AccountApiController implements AccountApi {
 
@@ -100,13 +100,8 @@ public class AccountApiController implements AccountApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                Transaction transaction = new Transaction(OffsetDateTime.now(), (double)77777, "sjors", "patrick", (long)5, Transaction.TransactionTypeEnum.TRANSFER);
-                Transaction transaction1 = new Transaction(OffsetDateTime.now(), (double)77777, "Yolo", "Swek", (long)5, Transaction.TransactionTypeEnum.TRANSFER);
-                List<Transaction> transactions = new ArrayList<Transaction>();
-                transactions.add(transaction);
-                transactions.add(transaction1);
-                return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
-            } catch (Exception e) {
+                return new ResponseEntity<List<Transaction>>(objectMapper.readValue("[ {\n  \"date\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"transactionType\" : \"transfer\",\n  \"accountTo\" : \"NL02ABNA0123456789\",\n  \"amount\" : 5000.5,\n  \"id\" : 0,\n  \"accountFrom\" : \"NL69INGB0123456789\",\n  \"userId\" : 6\n}, {\n  \"date\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"transactionType\" : \"transfer\",\n  \"accountTo\" : \"NL02ABNA0123456789\",\n  \"amount\" : 5000.5,\n  \"id\" : 0,\n  \"accountFrom\" : \"NL69INGB0123456789\",\n  \"userId\" : 6\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Transaction>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
