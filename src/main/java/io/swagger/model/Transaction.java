@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
  * Transaction
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-12T14:12:41.521Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
 public class Transaction   {
   @JsonProperty("id")
   private Long id = null;
@@ -26,11 +26,11 @@ public class Transaction   {
   @JsonProperty("amount")
   private Double amount = null;
 
-  @JsonProperty("from")
-  private String from = null;
+  @JsonProperty("accountFrom")
+  private String accountFrom = null;
 
-  @JsonProperty("to")
-  private String to = null;
+  @JsonProperty("accountTo")
+  private String accountTo = null;
 
   @JsonProperty("userId")
   private Long userId = null;
@@ -98,9 +98,8 @@ public class Transaction   {
    * Get date
    * @return date
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(value = "")
+  
     @Valid
     public OffsetDateTime getDate() {
     return date;
@@ -130,44 +129,44 @@ public class Transaction   {
     this.amount = amount;
   }
 
-  public Transaction from(String from) {
-    this.from = from;
+  public Transaction accountFrom(String accountFrom) {
+    this.accountFrom = accountFrom;
     return this;
   }
 
   /**
-   * Get from
-   * @return from
+   * Get accountFrom
+   * @return accountFrom
   **/
   @ApiModelProperty(example = "NL69INGB0123456789", required = true, value = "")
       @NotNull
 
-    public String getFrom() {
-    return from;
+    public String getAccountFrom() {
+    return accountFrom;
   }
 
-  public void setFrom(String from) {
-    this.from = from;
+  public void setAccountFrom(String accountFrom) {
+    this.accountFrom = accountFrom;
   }
 
-  public Transaction to(String to) {
-    this.to = to;
+  public Transaction accountTo(String accountTo) {
+    this.accountTo = accountTo;
     return this;
   }
 
   /**
-   * Get to
-   * @return to
+   * Get accountTo
+   * @return accountTo
   **/
   @ApiModelProperty(example = "NL02ABNA0123456789", required = true, value = "")
       @NotNull
 
-    public String getTo() {
-    return to;
+    public String getAccountTo() {
+    return accountTo;
   }
 
-  public void setTo(String to) {
-    this.to = to;
+  public void setAccountTo(String accountTo) {
+    this.accountTo = accountTo;
   }
 
   public Transaction userId(Long userId) {
@@ -223,15 +222,15 @@ public class Transaction   {
     return Objects.equals(this.id, transaction.id) &&
         Objects.equals(this.date, transaction.date) &&
         Objects.equals(this.amount, transaction.amount) &&
-        Objects.equals(this.from, transaction.from) &&
-        Objects.equals(this.to, transaction.to) &&
+        Objects.equals(this.accountFrom, transaction.accountFrom) &&
+        Objects.equals(this.accountTo, transaction.accountTo) &&
         Objects.equals(this.userId, transaction.userId) &&
         Objects.equals(this.transactionType, transaction.transactionType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, date, amount, from, to, userId, transactionType);
+    return Objects.hash(id, date, amount, accountFrom, accountTo, userId, transactionType);
   }
 
   @Override
@@ -242,8 +241,8 @@ public class Transaction   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    from: ").append(toIndentedString(from)).append("\n");
-    sb.append("    to: ").append(toIndentedString(to)).append("\n");
+    sb.append("    accountFrom: ").append(toIndentedString(accountFrom)).append("\n");
+    sb.append("    accountTo: ").append(toIndentedString(accountTo)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    transactionType: ").append(toIndentedString(transactionType)).append("\n");
     sb.append("}");
