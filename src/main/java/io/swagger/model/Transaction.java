@@ -42,6 +42,9 @@ public class Transaction   {
   @JsonProperty("userId")
   private Long userId = null;
 
+  public Transaction() {
+  }
+
   public Transaction(Double amount, String accountFrom, String accountTo, Long userId, TransactionTypeEnum transactionType) {
     this.date = OffsetDateTime.now();
     this.amount = amount;

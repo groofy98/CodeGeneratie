@@ -25,7 +25,7 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-        List<Transaction> transactions = Arrays.asList(new Transaction(OffsetDateTime.now(), (double)77777, "sjors", "patrick", (long)5, Transaction.TransactionTypeEnum.TRANSFER), new Transaction(OffsetDateTime.now(), (double)77777, "Yolo", "Swek", (long)5, Transaction.TransactionTypeEnum.TRANSFER));
+        List<Transaction> transactions = Arrays.asList(new Transaction((double)77777, "sjors", "patrick", (long)5, Transaction.TransactionTypeEnum.TRANSFER), new Transaction( (double)98777, "Yolo", "Swek", (long)5, Transaction.TransactionTypeEnum.TRANSFER));
         transactions.forEach(transactionRepository::save);
         transactionRepository.findAll().forEach(System.out::println);
     }

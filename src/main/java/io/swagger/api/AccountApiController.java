@@ -5,6 +5,7 @@ import io.swagger.model.Balance;
 import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,14 +33,17 @@ public class AccountApiController implements AccountApi {
 
     private static final Logger log = LoggerFactory.getLogger(AccountApiController.class);
 
+    private final TransactionService transactionService;
+
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public AccountApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public AccountApiController(ObjectMapper objectMapper, HttpServletRequest request, TransactionService transactionService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.transactionService = transactionService;
     }
 
     public ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated",required=true) @PathVariable("accountId") String accountId
@@ -100,8 +104,8 @@ public class AccountApiController implements AccountApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Transaction>>(objectMapper.readValue("[ {\n  \"date\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"transactionType\" : \"transfer\",\n  \"accountTo\" : \"NL02ABNA0123456789\",\n  \"amount\" : 5000.5,\n  \"id\" : 0,\n  \"accountFrom\" : \"NL69INGB0123456789\",\n  \"userId\" : 6\n}, {\n  \"date\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"transactionType\" : \"transfer\",\n  \"accountTo\" : \"NL02ABNA0123456789\",\n  \"amount\" : 5000.5,\n  \"id\" : 0,\n  \"accountFrom\" : \"NL69INGB0123456789\",\n  \"userId\" : 6\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                return new ResponseEntity<List<Transaction>>(this.transactionService.getAllTransactions(), HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Transaction>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
