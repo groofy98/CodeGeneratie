@@ -11,14 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+<<<<<<< Updated upstream
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.threeten.bp.OffsetDateTime;
+=======
+>>>>>>> Stashed changes
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -26,8 +27,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< Updated upstream
 import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
+=======
+
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
+>>>>>>> Stashed changes
 @Controller
 public class AccountApiController implements AccountApi {
 
@@ -52,19 +58,24 @@ public class AccountApiController implements AccountApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<Account>> getAccount(@ApiParam(value = "Pass in the ID of the account",required=true) @PathVariable("accountId") String accountId
+    public ResponseEntity<Account> getAccount(@ApiParam(value = "Pass in the ID of the account",required=true) @PathVariable("accountId") String accountId
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
+<<<<<<< Updated upstream
             try {
                 return new ResponseEntity<List<Account>>(objectMapper.readValue("[ {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n}, {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
+=======
+            Account account = new Account("NL32 INHO 0000001", Account.AccountTypeEnum.SAVING, (long) 1234567890, true);
+            return new ResponseEntity<Account>(account, HttpStatus.NOT_IMPLEMENTED);
+>>>>>>> Stashed changes
         }
 
-        return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Account>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user",required=true) @PathVariable("userId") String userId
