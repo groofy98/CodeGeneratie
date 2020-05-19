@@ -24,6 +24,12 @@ public class AccountService {
         return filteredList.get(0);
     }
 
+    public List<Account> getAccountsByUserId(long userId){
+        List<Account> accountList = (List<Account>) accountRepository.findAll();
+        List<Account> filteredList = accountList.stream().filter(account -> account.getAccountHolder().equals(userId)).collect(Collectors.toList());
+        return filteredList;
+    }
+
 //    public void addTransaction(Transaction transaction){
 //        transactionRepository.save(transaction);
 //        System.out.println(transaction);

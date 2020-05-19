@@ -2,7 +2,6 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../CSS/GlobalCSS.css">
     <link rel="stylesheet" href="../CSS/HomePageCSS.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -38,10 +37,14 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $.ajax({
-            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1',
+            url: 'http://localhost:8080/Api/0.1/account/123456789',
             type: "GET",
+            crossDomain: true,
+            headers:{
+                "Accept": "application/json",
+            },
             contentType: "application/json",
-            dataType: "json",
+            dataType: 'json',
             success: function (data) {
                 $.each(data, function (index) {
                     SortAccounts(data[index]);
@@ -49,14 +52,14 @@
             },
             error: function (error) {
                 console.log(`Error ${error}`);
-            }
+            },
         });
     });
 
     function SortAccounts(account) {
         var balance = GetBalance(account.AccountHolder);
         var name = GetUser(account.AccountHolder);
-        if (account.AccountType == "Saving") {
+        if (account.accountType.localeCompare("Saving") === 0) {
             $("#savingContainer").append("    <div id=\"2\" class=\"account\">\n" +
                 "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
                 "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
@@ -64,9 +67,9 @@
                 "    </div>");
         } else {
             $("#depositContainer").append("    <div id=\"2\" class=\"account\">\n" +
-                "        <a class=\"name\" href=\"#\">" + account.AccountHolder + "</a>\n" +
+                "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
                 "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
-                "        <a class=\"amount\" href=\"#\">account.Balance</a>\n" +
+                "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
                 "    </div>");
         }
     }
@@ -74,13 +77,16 @@
     function GetBalance(id) {
         var balance = "";
         $.ajax({
-            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/balance/' + id,
+            url: 'http://localhost:8080/Api/0.1/account/balance/' + id,
             type: "GET",
             async: false,
             contentType: "application/json",
+            headers:{
+                "Accept": "application/json",
+            },
             dataType: "json",
             success: function (data) {
-                balance = data[0].amount;
+                balance = data.amount;
             },
             error: function (error) {
                 balance = "-";

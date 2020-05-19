@@ -1,3 +1,53 @@
+nav{
+  position: absolute;
+  top: 0vw;
+  left: 0vw;
+  width: 80%;
+  height: 6vw;
+  margin: auto;
+  padding-top: 1vw;
+  box-shadow: 0px 10px 10px #888888;
+  padding-left: 10%;
+  padding-right: 10%;
+  margin: 0px;
+}
+
+nav a img{
+  position: absolute;
+  top: 0vw;
+  height: 80%;
+  margin-top: 0.8vw;
+}
+
+nav .account{
+  margin-top: 1.2vw;
+  float: right;
+}
+
+nav .account #accountDetails{
+  font-size: 1.5vw;
+  text-decoration: none;
+  color: #303030;
+  border-bottom: 0.1vw solid #303030;
+  margin-right: 3vw;
+  cursor: pointer;
+}
+
+nav .account #LogOff{
+  margin-top: -0.4vw;
+  float: right;
+  border-radius: 100vw;
+  border: none;
+  background-color: #1F4068;
+  font-size: 1.5vw;
+  color: white;
+  padding-left: 1.5vw;
+  padding-right: 1.5vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
+  cursor: pointer;
+}
+
 .transfer{
   border-radius: 10vw;
   border: none;

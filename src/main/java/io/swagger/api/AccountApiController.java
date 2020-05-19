@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
 
-
+@CrossOrigin(origins = { "http://localhost"})
 @Controller
 public class AccountApiController implements AccountApi {
 
@@ -66,11 +67,7 @@ public class AccountApiController implements AccountApi {
 
     public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user", required = true) @PathVariable("userId") String userId) {
         String accept = request.getHeader("Accept");
-        Account account1 = new Account("NL32 INHO 0000 1234 5678", Account.AccountTypeEnum.SAVING, (long) 696969420, true, (long) 0);
-        Account account2 = new Account("NL32 INHO 0000 1234 5678", Account.AccountTypeEnum.SAVING, (long) 696969420, true, (long) 0);
-        List<Account> accountList = new ArrayList<Account>();
-        accountList.add(account1);
-        accountList.add(account2);
+        List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
 
         if (accept != null && accept.contains("application/json")) {
             try {
