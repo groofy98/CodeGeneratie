@@ -22,6 +22,11 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
 public class Balance   {
 
+  public Balance(String account, BigDecimal amount) {
+    this.account = account;
+    this.amount = amount;
+  }
+
   @Id
   @JsonProperty("account")
   private String account = null;

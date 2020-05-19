@@ -5,6 +5,7 @@ import io.swagger.model.Balance;
 import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.service.AccountService;
 import io.swagger.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,26 +15,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-<<<<<<< Updated upstream
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import org.threeten.bp.OffsetDateTime;
-=======
->>>>>>> Stashed changes
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< Updated upstream
-import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
-=======
+import java.math.BigDecimal;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-06T14:07:06.341Z[GMT]")
->>>>>>> Stashed changes
+
 @Controller
 public class AccountApiController implements AccountApi {
 
@@ -41,50 +31,51 @@ public class AccountApiController implements AccountApi {
 
     private final TransactionService transactionService;
 
+    private final AccountService accountService;
+
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public AccountApiController(ObjectMapper objectMapper, HttpServletRequest request, TransactionService transactionService) {
+    public AccountApiController(ObjectMapper objectMapper, HttpServletRequest request, TransactionService transactionService, AccountService accountService) {
         this.objectMapper = objectMapper;
         this.request = request;
         this.transactionService = transactionService;
+        this.accountService = accountService;
     }
 
-    public ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated",required=true) @PathVariable("accountId") String accountId
-) {
+    public ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String accountId) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Account> getAccount(@ApiParam(value = "Pass in the ID of the account",required=true) @PathVariable("accountId") String accountId
-) {
+    public ResponseEntity<Account> getAccount(@ApiParam(value = "Pass in the ID of the account", required = true) @PathVariable("accountId") String accountId) {
         String accept = request.getHeader("Accept");
+        Account account = accountService.getAccountById(accountId);
         if (accept != null && accept.contains("application/json")) {
-<<<<<<< Updated upstream
             try {
-                return new ResponseEntity<List<Account>>(objectMapper.readValue("[ {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n}, {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                return new ResponseEntity<Account>(account, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Account>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-=======
-            Account account = new Account("NL32 INHO 0000001", Account.AccountTypeEnum.SAVING, (long) 1234567890, true);
-            return new ResponseEntity<Account>(account, HttpStatus.NOT_IMPLEMENTED);
->>>>>>> Stashed changes
         }
-
         return new ResponseEntity<Account>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user",required=true) @PathVariable("userId") String userId
-) {
+    public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user", required = true) @PathVariable("userId") String userId) {
         String accept = request.getHeader("Accept");
+        Account account1 = new Account("NL32 INHO 0000 1234 5678", Account.AccountTypeEnum.SAVING, (long) 696969420, true, (long) 0);
+        Account account2 = new Account("NL32 INHO 0000 1234 5678", Account.AccountTypeEnum.SAVING, (long) 696969420, true, (long) 0);
+        List<Account> accountList = new ArrayList<Account>();
+        accountList.add(account1);
+        accountList.add(account2);
+
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Account>>(objectMapper.readValue("[ {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n}, {\n  \"accountID\" : \"ingb-219009315\",\n  \"accountHolder\" : 1234567890,\n  \"absoluteLimit\" : 0,\n  \"accountType\" : \"Saving\",\n  \"isActive\" : true\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -93,25 +84,29 @@ public class AccountApiController implements AccountApi {
         return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<Balance>> getBalance(@ApiParam(value = "Pass in the ID of the back account",required=true) @PathVariable("accountId") String accountId
-) {
+    public ResponseEntity<Balance> getBalance(@ApiParam(value = "Pass in the ID of the back account", required = true) @PathVariable("accountId") String accountId) {
         String accept = request.getHeader("Accept");
+        Balance balance = new Balance("NL32 INHO 0000 1234 5678", new BigDecimal("100.00"));
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Balance>>(objectMapper.readValue("[ {\n  \"amount\" : 1732.79,\n  \"account\" : \"12897865446567\"\n}, {\n  \"amount\" : 1732.79,\n  \"account\" : \"12897865446567\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                return new ResponseEntity<Balance>(balance, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Balance>>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Balance>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<List<Balance>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Balance>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<Transaction>> getTransaction(@ApiParam(value = "Pass in the ID of the account of which to get the transactions from",required=true) @PathVariable("accountId") String accountId
-,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-,@Min(1) @Max(100) @ApiParam(value = "The max number of results to return", allowableValues = "", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
-) {
+    public ResponseEntity<List<Transaction>> getTransaction
+            (@ApiParam(value = "Pass in the ID of the account of which to get the transactions from", required = true) @PathVariable("accountId") String
+                     accountId
+                    , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer
+                     offset
+                    , @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", allowableValues = "", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer
+                     limit
+            ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -125,15 +120,17 @@ public class AccountApiController implements AccountApi {
         return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> registerAccount(@ApiParam(value = ""  )  @Valid @RequestBody Account body
-) {
+    public ResponseEntity<Void> registerAccount(@ApiParam(value = "") @Valid @RequestBody Account body) {
+        System.out.println("hoi");
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> updateAcount(@ApiParam(value = "Updated account object" ,required=true )  @Valid @RequestBody Account body
-,@ApiParam(value = "id of account that needs to be updated",required=true) @PathVariable("accountId") String accountId
-) {
+    public ResponseEntity<Void> updateAcount
+            (@ApiParam(value = "Updated account object", required = true) @Valid @RequestBody Account body
+                    , @ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String
+                     accountId
+            ) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }

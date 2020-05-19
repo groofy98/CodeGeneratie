@@ -20,20 +20,27 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
 public class Account   {
+  public Account() {
+  }
 
-<<<<<<< Updated upstream
-  @Id
-  @JsonProperty("accountID")
-=======
-  public Account(String accountID, AccountTypeEnum accountType, Long accountHolder, Boolean isActive) {
+  public Account(String accountID, Long absoluteLimit, Long accountHolder, AccountTypeEnum accountType, Boolean isActive) {
+    this.accountID = accountID;
+    this.accountType = accountType;
+    this.accountHolder = accountHolder;
+    this.absoluteLimit = absoluteLimit;
+    this.isActive = isActive;
+  }
+
+  public Account(String accountID, AccountTypeEnum accountType, Long accountHolder, Boolean isActive, long absoluteLimit) {
     this.accountID = accountID;
     this.accountType = accountType;
     this.accountHolder = accountHolder;
     this.isActive = isActive;
+    this.absoluteLimit = absoluteLimit;
   }
 
+  @Id
   @JsonProperty("AccountID")
->>>>>>> Stashed changes
   private String accountID = null;
 
   /**

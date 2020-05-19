@@ -10,21 +10,16 @@ import io.swagger.model.Balance;
 import io.swagger.model.Transaction;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-import java.util.Map;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
 @Api(value = "account", description = "the account API")
 public interface AccountApi {
@@ -49,7 +44,7 @@ public interface AccountApi {
     @RequestMapping(value = "/account/{accountId}/details",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Account>> getAccount(@ApiParam(value = "Pass in the ID of the account",required=true) @PathVariable("accountId") String accountId
+    ResponseEntity<Account> getAccount(@ApiParam(value = "Pass in the ID of the account",required=true) @PathVariable("accountId") String accountId
 );
 
 
@@ -71,7 +66,7 @@ public interface AccountApi {
     @RequestMapping(value = "/account/balance/{accountId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Balance>> getBalance(@ApiParam(value = "Pass in the ID of the back account",required=true) @PathVariable("accountId") String accountId
+    ResponseEntity<Balance> getBalance(@ApiParam(value = "Pass in the ID of the back account",required=true) @PathVariable("accountId") String accountId
 );
 
 
