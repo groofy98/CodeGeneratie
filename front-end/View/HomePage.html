@@ -14,12 +14,16 @@
         <button id="LogOff" type="button" name="button">LogOff</button>
         <a id="accountDetails" href="#">T.Alberts</a>
     </div>
+    <div class="editLinks">
+    <a href="EditAccountsPage.html">Edit accounts</a>
+    <a href="#">Edit users</a>
+    </div>
 </nav>
 <button class="transfer" type="button" name="button">Transfer money</button>
 <!-- dit is voor het hele kopje betaalrekening of spaarreking -->
 <section class="accounts" id="deposit">
     <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
-    <p class="header">Deposit</p>
+    <p class="header">Current</p>
     <div class="accountContainer" id="savingContainer">
 
     </div>
@@ -35,6 +39,14 @@
 </body>
 </html>
 <script type="text/javascript">
+    $(document).ready(function () {
+    //hier komt een gedeelte om de tabjes alleen zichtbaar te maken als je admin bent
+       var user = GetUser(123456789);
+       if(user.isEmployee === true){
+            $('.editLinks').css("display", "inline-block");
+       }
+    });
+
     $(document).ready(function () {
         $.ajax({
             url: 'http://localhost:8080/Api/0.1/account/123456789',
@@ -57,20 +69,23 @@
     });
 
     function SortAccounts(account) {
-        var balance = GetBalance(account.AccountHolder);
-        var name = GetUser(account.AccountHolder);
-        if (account.accountType.localeCompare("Saving") === 0) {
-            $("#savingContainer").append("    <div id=\"2\" class=\"account\">\n" +
-                "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
-                "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
-                "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
-                "    </div>");
-        } else {
-            $("#depositContainer").append("    <div id=\"2\" class=\"account\">\n" +
-                "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
-                "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
-                "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
-                "    </div>");
+        if(account.isActive === true) {
+            var balance = GetBalance(account.AccountID);
+            var name = GetUser(account.AccountHolder);
+            account.AccountID = account.AccountID.replace(/(.{4})/g, '$1 ').replace(/(^\s+|\s+$)/, '');
+            if (account.accountType == "Current") {
+                $("#savingContainer").append("    <div id=\"2\" class=\"account\">\n" +
+                    "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
+                    "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
+                    "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
+                    "    </div>");
+            } else {
+                $("#depositContainer").append("    <div id=\"2\" class=\"account\">\n" +
+                    "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
+                    "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
+                    "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
+                    "    </div>");
+            }
         }
     }
 

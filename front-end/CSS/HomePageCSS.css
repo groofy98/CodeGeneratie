@@ -13,10 +13,10 @@ nav{
 }
 
 nav a img{
-  position: absolute;
-  top: 0vw;
+  display: inline-block;
+  position: relative;
+  margin-bottom: 2vw;
   height: 80%;
-  margin-top: 0.8vw;
 }
 
 nav .account{
@@ -46,6 +46,27 @@ nav .account #LogOff{
   padding-top: 0.5vw;
   padding-bottom: 0.5vw;
   cursor: pointer;
+}
+
+nav .editLinks{
+  display: none;
+  position: absolute;
+  float: top;
+  margin: 1.5vw 1vw 0 3vw;
+}
+
+nav .editLinks a{
+  font-size: 1.5vw;
+  text-decoration: none;
+  color: #303030;
+  margin-right: 3vw;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+}
+nav .editLinks a:hover{
+  color: #1f4069;
+  border-bottom: 0.1vw solid #1f4069;
 }
 
 .transfer{

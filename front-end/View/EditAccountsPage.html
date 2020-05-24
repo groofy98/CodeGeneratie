@@ -15,6 +15,10 @@
         <button id="LogOff" type="button" name="button">LogOff</button>
         <a id="accountDetails" href="#">T.Alberts</a>
     </div>
+    <div class="editLinks">
+        <a href="EditAccountsPage.html">Edit accounts</a>
+        <a href="#">Edit users</a>
+    </div>
 </nav>
 <div id="buttonContainer">
     <button id="create">Create Account</button>
@@ -23,7 +27,6 @@
 </div>
 
 <section class="accounts" id="newAccount">
-    <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
     <p class="header">Create New Account</p>
     <form action="">
         <div>
@@ -70,16 +73,23 @@
 </section>
 <section class="accounts" id="deactivateAccount">
     <p class="header">Deactivate Account</p>
-        <form action="">
-            <div>
-                <label for="userEmail">Account ID:</label>
-                <input name="userEmail" id="userEmail" type="text">
-            </div>
-            <input id="deactivateAccountSubmit" type="submit" value="Deactivate">
-        </form>
+    <form action="">
+        <div>
+            <label for="userEmail">Account ID:</label>
+            <input id="userEmail" type="text">
+        </div>
+        <input id="deactivateAccountSubmit" type="submit" value="Deactivate">
+    </form>
 </section>
 </body>
 <script type="text/javascript">
+    $(document).ready(function () {
+        //hier komt een gedeelte om de tabjes alleen zichtbaar te maken als je admin bent
+        var user = GetUser(123456789);
+        if(user.isEmployee === true){
+            $('.editLinks').css("display", "inline-block");
+        }
+    });
 
     $("#create").click(function () {
         $('html, body').animate({
@@ -97,22 +107,71 @@
         }, 1200);
     });
 
-    function CreateAccount(AccountType, AccountHolder) {
+    $('#newAccountSubmit').click(function () {
+        CreateAccount();
+    });
+    $('#deactivateAccountSubmit').click(function () {
+        DeactiveateAccount($('#userEmail').val());
+    });
+
+
+    function CreateAccount() {
+        var accountType = $('#accountTypeCreate').val();
+        var absoluteLimit = $('#AbsoluteLimitCreate').val();
+        var accountHolder = "123456789";
+
+        var account = {}
+        account["absoluteLimit"] = absoluteLimit;
+        account["accountHolder"] = accountHolder;
+        account["accountType"] = accountType;
+        account = JSON.stringify(account);
         $.ajax({
-            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1',
-            type: "PUT",
+            url: 'http://localhost:8080/Api/0.1/account/register',
+            type: "POST",
             contentType: "application/json",
-            data: {},
+            data: account,
             dataType: "json",
             success: function (data) {
-                $.each(data, function (index) {
-                    SortAccounts(data[index]);
-                });
             },
             error: function (error) {
-                console.log(`Error ${error}`);
+                alert("An error occured while making a new account, please try again later");
             }
         });
+    }
+
+    function DeactiveateAccount(id){
+            $.ajax({
+                url: 'http://localhost:8080/Api/0.1/account/'+id+'/deactivate',
+                type: "PUT",
+                async: false,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                },
+                error: function (error) {
+                    if(!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
+                        alert("An error occured while deactivating an account, please try again later: " + error)
+                    }
+                }
+            });
+            }
+
+    function GetUser(id) {
+        var name = "";
+        $.ajax({
+            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                name = data;
+            },
+            error: function (error) {
+                name = "-";
+            }
+        });
+        return name;
     }
 </script>
 </html>

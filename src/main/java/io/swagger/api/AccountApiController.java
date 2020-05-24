@@ -6,6 +6,7 @@ import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.service.AccountService;
+import io.swagger.service.BalanceService;
 import io.swagger.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
 
+//for testing on localhost
 @CrossOrigin(origins = { "http://localhost"})
 @Controller
 public class AccountApiController implements AccountApi {
@@ -34,25 +36,32 @@ public class AccountApiController implements AccountApi {
 
     private final AccountService accountService;
 
+    private final BalanceService balanceService;
+
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public AccountApiController(ObjectMapper objectMapper, HttpServletRequest request, TransactionService transactionService, AccountService accountService) {
+    public AccountApiController(ObjectMapper objectMapper, HttpServletRequest request, TransactionService transactionService, AccountService accountService, BalanceService balanceService) {
         this.objectMapper = objectMapper;
         this.request = request;
         this.transactionService = transactionService;
         this.accountService = accountService;
+        this.balanceService = balanceService;
     }
 
     public ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String accountId) {
+        System.out.println("tot hier komt ie: "+accountId);
+        HttpStatus httpStatus = accountService.deactivateAccount(accountId);
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Void>(httpStatus);
     }
 
     public ResponseEntity<Account> getAccount(@ApiParam(value = "Pass in the ID of the account", required = true) @PathVariable("accountId") String accountId) {
         String accept = request.getHeader("Accept");
+
+        //get account by accountId
         Account account = accountService.getAccountById(accountId);
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -67,8 +76,9 @@ public class AccountApiController implements AccountApi {
 
     public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user", required = true) @PathVariable("userId") String userId) {
         String accept = request.getHeader("Accept");
-        List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
 
+        //get account by userId
+        List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
@@ -83,7 +93,10 @@ public class AccountApiController implements AccountApi {
 
     public ResponseEntity<Balance> getBalance(@ApiParam(value = "Pass in the ID of the back account", required = true) @PathVariable("accountId") String accountId) {
         String accept = request.getHeader("Accept");
-        Balance balance = new Balance("NL32 INHO 0000 1234 5678", new BigDecimal("100.00"));
+
+        //get account by accountId
+        Balance balance = balanceService.getBalanceById(accountId);
+
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<Balance>(balance, HttpStatus.OK);
@@ -99,10 +112,8 @@ public class AccountApiController implements AccountApi {
     public ResponseEntity<List<Transaction>> getTransaction
             (@ApiParam(value = "Pass in the ID of the account of which to get the transactions from", required = true) @PathVariable("accountId") String
                      accountId
-                    , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer
-                     offset
-                    , @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", allowableValues = "", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer
-                     limit
+                    , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
+                    , @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", allowableValues = "", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
@@ -118,9 +129,8 @@ public class AccountApiController implements AccountApi {
     }
 
     public ResponseEntity<Void> registerAccount(@ApiParam(value = "") @Valid @RequestBody Account body) {
-        System.out.println("hoi");
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        HttpStatus httpStatus = accountService.createAccount(body);
+        return new ResponseEntity<Void>(httpStatus);
     }
 
     public ResponseEntity<Void> updateAcount
@@ -129,7 +139,7 @@ public class AccountApiController implements AccountApi {
                      accountId
             ) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }
