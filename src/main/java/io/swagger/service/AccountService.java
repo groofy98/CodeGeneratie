@@ -33,21 +33,11 @@ public class AccountService {
     }
 
     public Account getAccountById(String id) {
-        List<Account> accountList = (List<Account>) accountRepository.findAll();
-        List<Account> filteredList = accountList.stream().filter(account -> account.getAccountID().contains(id)).collect(Collectors.toList());
-        if (filteredList.size() > 0)
-            return filteredList.get(0);
-        else
-            return null;
+        return accountRepository.findByaccountID(id);
     }
 
     public List<Account> getAccountsByUserId(long userId) {
-        List<Account> accountList = (List<Account>) accountRepository.findAll();
-        List<Account> filteredList = accountList.stream().filter(account -> account.getAccountHolder().equals(userId)).collect(Collectors.toList());
-        if (filteredList.size() > 0)
-            return filteredList;
-        else
-            return null;
+        return accountRepository.findByaccountHolder(userId);
     }
 
     public HttpStatus createAccount(Account givenAccount){
