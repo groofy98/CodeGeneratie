@@ -8,8 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -23,6 +22,8 @@ public class User   {
 
   @Id
   @JsonProperty("id")
+  @SequenceGenerator(name = "user_seq", initialValue = 1000001)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
   private Integer id = null;
 
   @JsonProperty("firstname")

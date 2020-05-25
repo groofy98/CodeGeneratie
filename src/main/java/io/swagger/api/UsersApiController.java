@@ -1,9 +1,12 @@
 package io.swagger.api;
 
 import io.swagger.model.AuthToken;
+import io.swagger.model.Transaction;
 import io.swagger.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.service.TransactionService;
+import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,14 +32,17 @@ public class UsersApiController implements UsersApi {
 
     private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
 
+    private final UserService userService;
+
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request, UserService userService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.userService = userService;
     }
 
     public ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") String id
@@ -45,13 +51,14 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Object body
+    public ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<AuthToken>(objectMapper.readValue("{\n  \"authToken\" : \"b15938252a78\"\n}", AuthToken.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                return new ResponseEntity<AuthToken>(userService.loginUser(body), HttpStatus.OK);
+                //return new ResponseEntity<AuthToken>(objectMapper.readValue("{\n  \"authToken\" : \"b15938252a78\"\n}", AuthToken.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<AuthToken>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
