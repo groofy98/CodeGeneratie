@@ -16,25 +16,55 @@
         <a id="accountDetails" href="#">T.Alberts</a>
     </div>
 </nav>
-<form id = "loginForm" action="View/Login.php" method = "post">
+<form id = "loginForm" action="#">
       <header id = "loginHeader">
           <h3>Login</h3>
       </header>
       <section class="formGroup">
           <p><b>email:</b></p>
-          <input type="text" placeholder="email@example.com" name="email"></input>
+          <input type="text" placeholder="email@example.com" name="email" id="email"></input>
       </section>
       <section class="formGroup">
           <p><b>password:</b></p>
-          <input type="password" placeholder="password" name="password"></input>
+          <input type="password" placeholder="password" name="password" id="password"></input>
       </section>
       <a id ="pwReset" href="View/PasswordReset.php"> forgot password</a>
       <section class="formGroup">
-          <button type="submit"><b>login</b></button>
+          <button type="submit" id="loginSubmit"><b>login</b></button>
       </section >
       <section class="options">
         <i>no account?</i> <a href="Register.html">sign up</a>
       </section>
   </form>
 </body>
+<script type="text/javascript">
+
+    $('#loginSubmit').click(function () {
+        Login();
+        return false;
+    });
+
+    //get all info from fields
+    function Login() {
+        var email = $('#email').val();
+        var password = $('#password').val();
+
+        var account = {}
+        account["email"] = email;
+        account["password"] = password;
+        account = JSON.stringify(account);
+        $.ajax({
+            url: 'http://localhost:8080/Api/0.1/users/login',
+            type: "POST",
+            contentType: "application/json",
+            data: account,
+            dataType: "json",
+            success: function (data) {
+            },
+            error: function (error) {
+                alert("An error occured while logging in, please try again later");
+            }
+        });
+    }
+</script>
 </html>

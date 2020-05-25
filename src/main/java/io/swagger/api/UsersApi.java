@@ -49,7 +49,7 @@ public interface UsersApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Object body
+    ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
 );
 
 
