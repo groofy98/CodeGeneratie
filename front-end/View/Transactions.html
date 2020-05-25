@@ -33,122 +33,10 @@
       <table id="transactionTable">
         <tr>
           <th>Date</th>
-          <th>Firstname</th>
-          <th>Lastname</th>
-          <th>To/From</th>
+          <th>Type</th>
+          <th>To</th>
+          <th>From</th>
           <th>Amount</th>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Peter</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€100,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Lois</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€150,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Joe</td>
-          <td>Swanson</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€300,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Cleveland</td>
-          <td>Brown</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€250,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Peter</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€100,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Lois</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€150,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Joe</td>
-          <td>Swanson</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€300,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Cleveland</td>
-          <td>Brown</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€250,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Peter</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€100,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Lois</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€150,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Joe</td>
-          <td>Swanson</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€300,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Cleveland</td>
-          <td>Brown</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€250,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Peter</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€100,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Lois</td>
-          <td>Griffin</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€150,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Joe</td>
-          <td>Swanson</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€300,-</td>
-        </tr>
-        <tr>
-          <td>11/05/2020</td>
-          <td>Cleveland</td>
-          <td>Brown</td>
-          <td>NL02ABNA0123456789</td>
-          <td>€250,-</td>
         </tr>
       </table>
     </div>
@@ -158,6 +46,8 @@
 </html>
 <script type="text/javascript">
   $(document).ready(function() {
+    var transactions = GetTransactions("sjors");
+    populateTransactionTable(transactions);
     $.ajax({
       url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1',
       type: "GET",
@@ -191,6 +81,49 @@
         "    </div>");
     }
   }
+
+  // fill the html table with a list of transactions
+  function populateTransactionTable(transactions = []){
+    transactions.forEach((transaction, index) => {
+      let date = new Date(transaction.date)
+      console.log(date);
+      $("#transactionTable").append(
+        "<tr>" +
+          "<td>" + date.getDate() + "/" + (date.getMonth() + 1) +  "/" + date.getFullYear() + "</td>" +
+          "<td>" + transaction.transactionType + "</td>" +
+          "<td>" + transaction.accountTo + "</td>" +
+          "<td>" + transaction.accountFrom + "</td>" +
+          "<td>€"+ transaction.amount +"</td>" +
+        "</tr>"
+      )
+    });
+
+
+
+  }
+
+  function GetTransactions(accountId = "") {
+    var transactions = [];
+    $.ajax({
+        url: 'http://localhost:8080/Api/0.1/account/' + accountId + '/transactions',
+        type: "GET",
+        async: false,
+        contentType: "application/json",
+        headers:{
+            "Accept": "application/json",
+        },
+        dataType: "json",
+        success: function (data) {
+            transactions = data;
+            console.log(data);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+    return transactions;
+  }
+
 
   function GetBalance(id) {
     var balance = "";
