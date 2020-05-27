@@ -31,19 +31,19 @@
     <form action="">
         <div>
             <label for="accountTypeCreate">AccountType:</label>
-            <select id="accountTypeCreate">
+            <select id="accountTypeCreate" required>
                 <option hidden disabled selected value>Select type</option>
                 <option value="Saving">Saving</option>
                 <option value="Current">Current</option>
             </select>
         </div>
         <div>
-            <label for="accountHolderEmailCreate">Account Holder Email:</label>
-            <input name="accountHolder" id="accountHolderEmailCreate" type="text">
+            <label for="accountHolderIdCreate">Account Holder Id:</label>
+            <input name="accountHolder" id="accountHolderIdCreate" type="text" required>
         </div>
         <div>
             <label for="AbsoluteLimitCreate">Absolute Limit:</label>
-            <input name="AbsoluteLimitCreate" id="AbsoluteLimitCreate" type="text">
+            <input name="AbsoluteLimitCreate" id="AbsoluteLimitCreate" type="text" required>
         </div>
         <input id="newAccountSubmit" type="submit" value="Save">
     </form>
@@ -54,15 +54,15 @@
     <form action="">
         <div>
             <label for="accountIdChange">Account ID:</label>
-            <input name="accountIdChange" id="accountIdChange" type="text">
+            <input name="accountIdChange" id="accountIdChange" type="text" required>
         </div>
         <div>
             <label for="AbsoluteLimitChange">Absolute Limit:</label>
-            <input name="AbsoluteLimitChange" id="AbsoluteLimitChange" type="number">
+            <input name="AbsoluteLimitChange" id="AbsoluteLimitChange" type="number" required>
         </div>
         <div>
             <label for="accountIDDeactivate">AccountType</label>
-            <select id="accountIDDeactivate" name="accountIDDeactivate">
+            <select id="accountIDDeactivate" name="accountIDDeactivate" required>
                 <option hidden disabled selected value>Select type</option>
                 <option value="Saving">Saving</option>
                 <option value="Current">Current</option>
@@ -75,8 +75,8 @@
     <p class="header">Deactivate Account</p>
     <form action="">
         <div>
-            <label for="userEmail">Account ID:</label>
-            <input id="userEmail" type="text">
+            <label for="userId">Account ID:</label>
+            <input id="userId" type="text" required>
         </div>
         <input id="deactivateAccountSubmit" type="submit" value="Deactivate">
     </form>
@@ -85,8 +85,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         //hier komt een gedeelte om de tabjes alleen zichtbaar te maken als je admin bent
-        var user = GetUser(123456789);
-        if(user.isEmployee === true){
+        var user = getUser(123456789);
+        if (user.isEmployee === true) {
             $('.editLinks').css("display", "inline-block");
         }
     });
@@ -108,17 +108,22 @@
     });
 
     $('#newAccountSubmit').click(function () {
-        CreateAccount();
+        createAccount();
     });
+
     $('#deactivateAccountSubmit').click(function () {
-        DeactiveateAccount($('#userEmail').val());
+        deactiveateAccount($('#userId').val());
+    });
+
+    $('#changeAccountSubmit').click(function () {
+        updateAccount($('#accountIdChange').val(), $('#AbsoluteLimitChange').val(), $('#accountIDDeactivate').val());
     });
 
 
-    function CreateAccount() {
+    function createAccount() {
         var accountType = $('#accountTypeCreate').val();
         var absoluteLimit = $('#AbsoluteLimitCreate').val();
-        var accountHolder = "123456789";
+        var accountHolder = $('#accountHolderIdCreate').val();
 
         var account = {}
         account["absoluteLimit"] = absoluteLimit;
@@ -139,24 +144,48 @@
         });
     }
 
-    function DeactiveateAccount(id){
-            $.ajax({
-                url: 'http://localhost:8080/Api/0.1/account/'+id+'/deactivate',
-                type: "PUT",
-                async: false,
-                contentType: "application/json",
-                dataType: "json",
-                success: function (data) {
-                },
-                error: function (error) {
-                    if(!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
-                        alert("An error occured while deactivating an account, please try again later: " + error)
-                    }
+    function deactiveateAccount(id) {
+        $.ajax({
+            url: 'http://localhost:8080/Api/0.1/account/' + id + '/deactivate',
+            type: "PUT",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+            },
+            error: function (error) {
+                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
+                    alert("An error occured while deactivating an account, please try again later: " + error)
                 }
-            });
             }
+        });
+    }
 
-    function GetUser(id) {
+    function updateAccount(id, absoluteLimit, accountType){
+        var account = {}
+        account["absoluteLimit"] = absoluteLimit;
+        account["accountType"] = accountType;
+        account = JSON.stringify(account);
+        alert(account);
+
+        $.ajax({
+            url: 'http://localhost:8080/Api/0.1/account/' + id + '/details',
+            type: "PUT",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            data: account,
+            success: function (data) {
+            },
+            error: function (error) {
+                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
+                    alert("An error occured while deactivating an account, please try again later: " + error)
+                }
+            }
+        });
+    }
+
+    function getUser(id) {
         var name = "";
         $.ajax({
             url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,

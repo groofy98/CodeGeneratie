@@ -46,8 +46,8 @@
 </html>
 <script type="text/javascript">
   $(document).ready(function() {
-    sessionStorage.activeaccount = "NL42INHO0000000003"
-    var transactions = GetTransactions(sessionStorage.activeaccount);
+    var accountId = sessionStorage.getItem('activeAccount');
+    var transactions = GetTransactions(accountId);
     populateTransactionTable(transactions);
     getAccount();
   });
