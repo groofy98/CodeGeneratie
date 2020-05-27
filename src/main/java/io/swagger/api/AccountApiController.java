@@ -133,13 +133,13 @@ public class AccountApiController implements AccountApi {
         return new ResponseEntity<Void>(httpStatus);
     }
 
-    public ResponseEntity<Void> updateAcount
-            (@ApiParam(value = "Updated account object", required = true) @Valid @RequestBody Account body
+    public ResponseEntity<Void> updateAcount(@ApiParam(value = "Updated account object", required = true) @Valid @RequestBody Account body
                     , @ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String
                      accountId
             ) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        HttpStatus httpStatus = accountService.updateAccount(accountId, body);
+        return new ResponseEntity<Void>(httpStatus);
     }
 
 }

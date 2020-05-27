@@ -43,40 +43,41 @@ public class AccountService {
     public HttpStatus createAccount(Account givenAccount){
         //make new random
         Random random = new Random();
+
         // format the new iban
         //this makes bijv. NL03INHO
         String newAccountId = "NL"+String.format("%02d",random.nextInt(99))+"INHO";
 
-        //get all accounts
-        List<Account> accountList = (List<Account>) accountRepository.findAll();
-        //get the highest accountID
-        //String accountID = Collections.max(accountList, Comparator.comparing(a -> a.getAccountID().substring(10))).getAccountID();
-        //get only the numbers from the account id and +1 this.
         //this will make bijv. NL03INHO0000000023
         newAccountId += String.format("%010d", accountRepository.count()+2);
 
         //create new account
         Account account = new Account(newAccountId, givenAccount.getAbsoluteLimit(), givenAccount.getAccountHolder(), givenAccount.getAccountType(), true);
-        //add account to list
-        accountList.add(account);
         //add accounts to DB
-        accountList.forEach((accountRepository::save));
+        accountRepository.save(account);
 
+        //create balance for object
         createBalance(newAccountId);
 
         return HttpStatus.CREATED;
     }
+
     public void createBalance(String accountId){
-        List<Balance> accountList = (List<Balance>) balanceRepository.findAll();
-        accountList.add(new Balance(accountId, new BigDecimal("0.00")));
-        accountList.forEach((balanceRepository::save));
+        balanceRepository.save(new Balance(accountId, new BigDecimal("0.00")));
     }
 
     public HttpStatus deactivateAccount(String accountId){
-        List<Account> accountList = (List<Account>) accountRepository.findAll();
-        Account deactivateAccount = accountList.stream().filter(account -> account.getAccountID().equals(accountId)).collect(Collectors.toList()).get(0);
-        deactivateAccount.setIsActive(false);
-        accountList.forEach((accountRepository::save));
-        return HttpStatus.ACCEPTED;
+        Account account = accountRepository.findByaccountID(accountId);
+        account.setIsActive(false);
+        accountRepository.save(account);
+        return HttpStatus.OK;
+    }
+
+    public HttpStatus updateAccount(String accountId, Account newAccount){
+        Account account = accountRepository.findByaccountID(accountId);
+        account.setAbsoluteLimit(newAccount.getAbsoluteLimit());
+        account.setAccountType(newAccount.getAccountType());
+        accountRepository.save(account);
+        return HttpStatus.OK;
     }
 }
