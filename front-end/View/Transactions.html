@@ -23,7 +23,7 @@
   <section class="container" id="deposit">
     <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
     <p class="header">Account</p>
-    <div class="accountContainer" id="savingContainer">
+    <div class="accountContainer" id="accountContainer">
 
     </div>
   </section>
@@ -46,54 +46,56 @@
 </html>
 <script type="text/javascript">
   $(document).ready(function() {
-    var transactions = GetTransactions("sjors");
+    sessionStorage.activeaccount = "NL42INHO0000000003"
+    var transactions = GetTransactions(sessionStorage.activeaccount);
     populateTransactionTable(transactions);
+    getAccount();
+  });
+
+  function getAccount() {
     $.ajax({
-      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1',
+      url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.activeaccount + "/details",
       type: "GET",
+      crossDomain: true,
+      headers: {
+        "Accept": "application/json",
+      },
       contentType: "application/json",
-      dataType: "json",
+      dataType: 'json',
       success: function(data) {
-        $.each(data, function(index) {
-          SortAccounts(data[index]);
-        });
+        console.log(data);
+        SortAccounts(data);
       },
       error: function(error) {
         console.log(`Error ${error}`);
-      }
+      },
     });
-  });
+  }
 
   function SortAccounts(account) {
-    var balance = GetBalance(account.AccountHolder);
+    var balance = GetBalance(account.AccountID);
     var name = GetUser(account.AccountHolder);
-    if (account.AccountType == "Saving") {
-      $("#savingContainer").append("    <div id=\"2\" class=\"account\">\n" +
-        "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
-        "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
-        "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
-        "    </div>");
-    } else {
-      $("#depositContainer").append("    <div id=\"2\" class=\"account\">\n" +
-        "        <a class=\"name\" href=\"#\">" + account.AccountHolder + "</a>\n" +
-        "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
-        "        <a class=\"amount\" href=\"#\">account.Balance</a>\n" +
-        "    </div>");
-    }
+    $("#accountContainer").append("    <div id=\"2\" class=\"account\">\n" +
+      "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
+      "        <a class=\"number\" href=\"#\">" + account.AccountID + "</a>\n" +
+      "        <a class=\"amount\" href=\"#\"> €" + balance + "</a>\n" +
+      "    </div>");
+
   }
 
   // fill the html table with a list of transactions
-  function populateTransactionTable(transactions = []){
+  function populateTransactionTable(transactions = []) {
     transactions.forEach((transaction, index) => {
+      // Convert the string to a date object
       let date = new Date(transaction.date)
       console.log(date);
       $("#transactionTable").append(
         "<tr>" +
-          "<td>" + date.getDate() + "/" + (date.getMonth() + 1) +  "/" + date.getFullYear() + "</td>" +
-          "<td>" + transaction.transactionType + "</td>" +
-          "<td>" + transaction.accountTo + "</td>" +
-          "<td>" + transaction.accountFrom + "</td>" +
-          "<td>€"+ transaction.amount +"</td>" +
+        "<td>" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "</td>" +
+        "<td>" + transaction.transactionType + "</td>" +
+        "<td>" + transaction.accountTo + "</td>" +
+        "<td>" + transaction.accountFrom + "</td>" +
+        "<td>€" + transaction.amount + "</td>" +
         "</tr>"
       )
     });
@@ -101,25 +103,25 @@
 
 
   }
-
+// Get a list of transactions with corresponding account Id
   function GetTransactions(accountId = "") {
     var transactions = [];
     $.ajax({
-        url: 'http://localhost:8080/Api/0.1/account/' + accountId + '/transactions',
-        type: "GET",
-        async: false,
-        contentType: "application/json",
-        headers:{
-            "Accept": "application/json",
-        },
-        dataType: "json",
-        success: function (data) {
-            transactions = data;
-            console.log(data);
-        },
-        error: function (error) {
-            console.log(error);
-        }
+      url: 'http://localhost:8080/Api/0.1/account/' + accountId + '/transactions',
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      headers: {
+        "Accept": "application/json",
+      },
+      dataType: "json",
+      success: function(data) {
+        transactions = data;
+        console.log(data);
+      },
+      error: function(error) {
+        console.log(error);
+      }
     });
     return transactions;
   }
@@ -128,15 +130,20 @@
   function GetBalance(id) {
     var balance = "";
     $.ajax({
-      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/balance/' + id,
+      url: 'http://localhost:8080/Api/0.1/account/balance/' + id,
       type: "GET",
       async: false,
       contentType: "application/json",
+      headers: {
+        "Accept": "application/json",
+      },
       dataType: "json",
       success: function(data) {
-        balance = data[0].amount;
+        balance = data.amount;
+        console.log(data);
       },
       error: function(error) {
+        console.log(error);
         balance = "-";
       }
     });

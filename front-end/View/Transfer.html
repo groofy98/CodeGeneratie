@@ -23,14 +23,14 @@
   <section class="container" id="deposit">
     <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
     <p class="header">Account</p>
-    <div class="accountContainer" id="savingContainer">
+    <div class="accountContainer" id="accountContainer">
 
     </div>
   </section>
   <section class="container" id="saving">
     <p class="header">New Transaction</p>
     <div class="transactionContainer" id="transactionContainer">
-      <form action="">
+      <form action="" id="#transferForm">
         <label for="euro">Amount</label><br>
         <input type="number" id="euro" name="euro" placeholder="Amount      € 0," min="0" required>
         <input type="number" id="cent" name="cent" placeholder="00" max="100" min="0">
@@ -47,87 +47,116 @@
 </html>
 <script type="text/javascript">
   $(document).ready(function() {
-    $.ajax({
-      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1',
-      type: "GET",
-      contentType: "application/json",
-      dataType: "json",
-      success: function(data) {
-        $.each(data, function(index) {
-          SortAccounts(data[index]);
-        });
-      },
-      error: function(error) {
-        console.log(`Error ${error}`);
-      }
+    console.log(sessionStorage.activeaccount);
+    getAccount(sessionStorage.activeaccount);
+    $("#transferForm").submit(function(event) {
+      event.preventDefault();
+      newTransaction();
     });
   });
 
-  function SortAccounts(account) {
-    var balance = GetBalance(account.AccountHolder);
-    var name = GetUser(account.AccountHolder);
-    if (account.AccountType == "Saving") {
-      $("#savingContainer").append("    <div id=\"2\" class=\"account\">\n" +
+  function newTransaction() {
+    $.ajax({
+        url: "http://localhost:8080/Api/0.1/transactions",
+        method: "POST", //First change type to method here
+        data: {
+          amount: $("#euro").value ,
+          accountFrom: sessionStorage.activeaccount,
+          accountTo: $("#to").value,
+          userId: 0,
+          transactionType: "transfer"
+        },
+        success: function(response) {
+          console.log(response);
+        },
+        error: function() {
+          alert("error");
+        }
+      });
+    }
+
+    function getAccount() {
+      $.ajax({
+        url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.activeaccount + "/details",
+        type: "GET",
+        crossDomain: true,
+        headers: {
+          "Accept": "application/json",
+        },
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(data) {
+          console.log(data);
+          SortAccounts(data);
+        },
+        error: function(error) {
+          console.log(`Error ${error}`);
+        },
+      });
+    }
+
+    function SortAccounts(account) {
+      var balance = GetBalance(account.AccountID);
+      var name = GetUser(account.AccountHolder);
+      $("#accountContainer").append("    <div id=\"2\" class=\"account\">\n" +
         "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
-        "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
-        "        <a class=\"amount\" href=\"#\">" + balance + "</a>\n" +
-        "    </div>");
-    } else {
-      $("#depositContainer").append("    <div id=\"2\" class=\"account\">\n" +
-        "        <a class=\"name\" href=\"#\">" + account.AccountHolder + "</a>\n" +
-        "        <a class=\"number\" href=\"#\">" + account.AccountID.toUpperCase() + "</a>\n" +
-        "        <a class=\"amount\" href=\"#\">account.Balance</a>\n" +
+        "        <a class=\"number\" href=\"#\">" + account.AccountID + "</a>\n" +
+        "        <a class=\"amount\" href=\"#\"> €" + balance + "</a>\n" +
         "    </div>");
     }
-  }
 
-  function GetBalance(id) {
-    var balance = "";
-    $.ajax({
-      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/balance/' + id,
-      type: "GET",
-      async: false,
-      contentType: "application/json",
-      dataType: "json",
-      success: function(data) {
-        balance = data[0].amount;
-      },
-      error: function(error) {
-        balance = "-";
-      }
-    });
-    return balance;
-  }
+    function GetBalance(id) {
+      var balance = "";
+      $.ajax({
+        url: 'http://localhost:8080/Api/0.1/account/balance/' + id,
+        type: "GET",
+        async: false,
+        contentType: "application/json",
+        headers: {
+          "Accept": "application/json",
+        },
+        dataType: "json",
+        success: function(data) {
+          balance = data.amount;
+          console.log(data);
+        },
+        error: function(error) {
+          console.log(error);
+          balance = "-";
+        }
+      });
+      return balance;
+    }
 
-  function GetUser(id) {
-    var name = "";
-    $.ajax({
-      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
-      type: "GET",
-      async: false,
-      contentType: "application/json",
-      dataType: "json",
-      success: function(data) {
-        name = data;
-      },
-      error: function(error) {
-        name = "-";
-      }
-    });
-    return name;
-  }
+    function GetUser(id) {
+      var name = "";
+      $.ajax({
+        url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+        type: "GET",
+        async: false,
+        contentType: "application/json",
+        dataType: "json",
+        success: function(data) {
+          name = data;
+        },
+        error: function(error) {
+          name = "-";
+        }
+      });
+      return name;
+    }
 
 
-  //   var api_url = 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1';
-  //     //var key = '5b578yg9yvi8sogirbvegoiufg9v9g579gviuiub8' // not real
-  //     $.ajax({
-  //         url: api_url,
-  //         contentType: "application/json",
-  //         dataType: 'json',
-  //         success: function (result) {
-  //           var result = JSON.parse(result);
-  //             alert(result);
-  //         }
-  //     });
-  // });
+    //   var api_url = 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1';
+    //     //var key = '5b578yg9yvi8sogirbvegoiufg9v9g579gviuiub8' // not real
+    //     $.ajax({
+    //         url: api_url,
+    //         contentType: "application/json",
+    //         dataType: 'json',
+    //         success: function (result) {
+    //           var result = JSON.parse(result);
+    //             alert(result);
+    //         }
+    //     });
+    // });
 </script>

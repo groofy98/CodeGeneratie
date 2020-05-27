@@ -33,11 +33,13 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-        List<Transaction> transactions = Arrays.asList(new Transaction((double) 77777, "sjors", "patrick", (long) 5, Transaction.TransactionTypeEnum.TRANSFER), new Transaction((double) 98777, "Yolo", "Swek", (long) 5, Transaction.TransactionTypeEnum.TRANSFER));
+        List<Transaction> transactions = Arrays.asList(
+                new Transaction((double) 77777, "NL42INHO0000000002", "NL42INHO0000000003", (long) 5, Transaction.TransactionTypeEnum.TRANSFER),
+                new Transaction((double) 98777, "NL42INHO0000000003", "NL42INHO0000000002", (long) 5, Transaction.TransactionTypeEnum.TRANSFER));
         List<Account> accounts = Arrays.asList(
                 new Account("NL42INHO0000000002", (long) -100, (long) 123456789, Account.AccountTypeEnum.CURRENT, true),
                 new Account("NL42INHO0000000003", (long) -0, (long) 123456789, Account.AccountTypeEnum.SAVING, true),
-                new Account("NL42INHO0000000004", (long) 22.50, (long) 123456789, Account.AccountTypeEnum.CURRENT, true));
+                    new Account("NL42INHO0000000004", (long) 22.50, (long) 123456789, Account.AccountTypeEnum.CURRENT, true));
 
         List<Balance> balances = Arrays.asList(
             new Balance("NL42INHO0000000002", new BigDecimal("11.94")),

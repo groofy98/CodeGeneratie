@@ -16,81 +16,41 @@
         <a id="accountDetails" href="#">T.Alberts</a>
     </div>
 </nav>
-  <form id = "registerForm" action="#">
+  <form id = "registerForm" action="View/Register.php" method = "post">
         <header id = "registerHeader">
             <h3>Register account</h3>
         </header>
         <section class="formGroup">
             <p><b>first name:</b></p>
-            <input type="text" placeholder="first name" id="firstname"></input>
+            <input type="text" placeholder="first name" name="firstName"></input>
         </section>
         <section class="formGroup">
             <p><b>last name:</b></p>
-            <input type="text" placeholder="last name" id="lastname"></input>
+            <input type="text" placeholder="last name" name="lastName"></input>
         </section>
         <section class="formGroup">
             <p><b>username:</b></p>
-            <input type="text" placeholder="email@example.com" id="username"></input>
+            <input type="text" placeholder="email@example.com" name="username"></input>
         </section>
         <section class="formGroup">
             <p><b>email:</b></p>
-            <input type="text" placeholder="email@example.com" id="email"></input>
+            <input type="text" placeholder="email@example.com" name="email"></input>
         </section>
         <section class="formGroup">
             <p><b>date of birth:</b></p>
-            <input type="datetime" placeholder="email@example.com" id="dateOfBirth"></input>
+            <input type="datetime" placeholder="email@example.com" name="dateOfBirth"></input>
         </section>
         <section class="formGroup">
             <p><b>password:</b></p>
-            <input type="password" placeholder="password" id="password"></input>
+            <input type="password" placeholder="password" name="password"></input>
         </section>
         <section class="formGroup">
             <p><b>repeat password:</b></p>
-            <input type="password" placeholder="repeat password" id="passwordRepeat"></input>
+            <input type="password" placeholder="repeat password" name="passwordRepeat"></input>
         </section>
         <section class="formGroup">
-            <button type="submit" id="registerSubmit"><b>sign up</b></button>
+            <button type="submit"><b>sign up</b></button>
         </section >
   </form>
 </body>
-<script type="text/javascript">
-
-    $('#registerSubmit').click(function () {
-        Register();
-        return false;
-    });
-
-    //get all info from fields
-    function Register() {
-        var firstname = $('#firstname').val();
-        var lastname = $('#lastname').val();
-        var username = $('#username').val();
-        var email = $('#email').val();
-        var dateOfBirth = $('#dateOfBirth').val();
-        var password = $('#password').val();
-
-        //create JSON object and do post request
-        var account = {}
-        account["firstname"] = firstname;
-        account["lastname"] = lastname;
-        account["username"] = username;
-        account["email"] = email;
-        account["dateOfBirth"] = dateOfBirth;
-        account["password"] = password;
-        account = JSON.stringify(account);
-        $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/register',
-            type: "POST",
-            contentType: "application/json",
-            data: account,
-            dataType: "json",
-            success: function (data) {
-                alert("Your account has been created. You may now log in.");
-            },
-            error: function (error) {
-                alert("An error occurred while registering, please try again later");
-            }
-        });
-    }
-</script>
 </html>
