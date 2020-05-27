@@ -1,5 +1,6 @@
 package io.swagger.service;
 
+import io.swagger.dao.BalanceRepository;
 import io.swagger.dao.TransactionRepository;
 import io.swagger.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private BalanceService balanceService;
+
     // No Args constructor
     private TransactionService(){
     }
@@ -27,6 +32,11 @@ public class TransactionService {
 
     // Add a transaction to the database
     public void addTransaction(Transaction transaction){
+        // Remove funds from sending account
+        balanceService.removeAmount(transaction.getAccountFrom(), transaction.getAmount());
+        // Add funds to receiving account
+        balanceService.addAmount(transaction.getAccountTo(), transaction.getAmount());
+        // Save succesfull transaction
         transactionRepository.save(transaction);
         System.out.println(transaction);
     }

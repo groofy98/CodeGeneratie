@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BalanceRepository extends CrudRepository<Balance, Long> {
-
+    // Get a balance by accountId
+    Balance findOneByAccount(String account);
 }

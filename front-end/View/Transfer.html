@@ -47,8 +47,8 @@
 </html>
 <script type="text/javascript">
   $(document).ready(function() {
-    console.log(sessionStorage.activeaccount);
-    getAccount(sessionStorage.activeaccount);
+    console.log("Active account: " + sessionStorage.getItem('activeAccount'));
+    getAccount(sessionStorage.getItem('activeAccount'));
     $("#transferForm").submit(function(event) {
       event.preventDefault();
       newTransaction();
@@ -56,29 +56,31 @@
   });
 
   function newTransaction() {
-    console.log("doing this");
+    let transaction = {};
+    transaction["amount"] = $("#euro").val();
+    transaction["accountFrom"] = sessionStorage.getItem('activeAccount');
+    transaction["accountTo"] = $("#to").val();
+    transaction["userId"] = 0;
+    transaction["transactionType"] = "transfer";
+    transaction = JSON.stringify(transaction);
     $.ajax({
         url: "http://localhost:8080/Api/0.1/transactions",
-        method: "POST", //First change type to method here
-        data: {
-          amount: $("#euro").value ,
-          accountFrom: sessionStorage.activeaccount,
-          accountTo: $("#to").value,
-          userId: 0,
-          transactionType: "transfer"
-        },
+        method: "POST",
+        contentType: "application/json; charset=utf-8",
+        data: transaction,
+        dataType: "json",
         success: function(response) {
           console.log(response);
         },
         error: function() {
-          alert("error");
+          console.log("error");
         }
       });
     }
 
     function getAccount() {
       $.ajax({
-        url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.activeaccount + "/details",
+        url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.getItem('activeAccount') + "/details",
         type: "GET",
         crossDomain: true,
         headers: {

@@ -47,14 +47,15 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var accountId = sessionStorage.getItem('activeAccount');
+    console.log(accountId);
     var transactions = GetTransactions(accountId);
     populateTransactionTable(transactions);
-    getAccount();
+    getAccount(accountId);
   });
 
-  function getAccount() {
+  function getAccount(accountId) {
     $.ajax({
-      url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.activeaccount + "/details",
+      url: "http://localhost:8080/Api/0.1/account/" + accountId + "/details",
       type: "GET",
       crossDomain: true,
       headers: {
