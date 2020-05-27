@@ -72,10 +72,11 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> registerUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
+    public ResponseEntity<Void> registerUser(@ApiParam(value="user object that needs to be added") @Valid @RequestBody User body
 ) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        userService.registerUser(body);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<User> searchUser(@ApiParam(value = "user ID",required=true) @PathVariable("id") Integer id
@@ -83,14 +84,14 @@ public class UsersApiController implements UsersApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"isCustomer\" : true,\n  \"firstname\" : \"John\",\n  \"password\" : \"John123!\",\n  \"isEmployee\" : false,\n  \"dateOfBirth\" : \"0007-10-17T00:00:00.000+0000\",\n  \"id\" : 5,\n  \"isActive\" : true,\n  \"email\" : \"JohnDoe@example.com\",\n  \"lastname\" : \"Doe\",\n  \"username\" : \"Johnny69\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                return new ResponseEntity<User>(userService.getUserById(id), HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<List<User>> searchusers(@NotNull @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", required = true, allowableValues = "") @Valid @RequestParam(value = "count", required = true) Integer count

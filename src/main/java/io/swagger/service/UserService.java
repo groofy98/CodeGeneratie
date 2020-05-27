@@ -5,10 +5,7 @@ import io.swagger.api.UsersApiController;
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.BalanceRepository;
 import io.swagger.dao.UserRepository;
-import io.swagger.model.Account;
-import io.swagger.model.AuthToken;
-import io.swagger.model.Balance;
-import io.swagger.model.User;
+import io.swagger.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +40,17 @@ public class UserService {
 
     public HttpStatus createUser(User givenUser){
         return HttpStatus.NOT_IMPLEMENTED;
+    }
+
+    // Get a single user by userId
+    public User getUserById(long id){
+        return userRepository.findOne(id);
+    }
+
+    // Register user in database
+    public void registerUser(User user){
+        user.setId((long)1);
+        userRepository.save(user);
+        System.out.println(user);
     }
 }

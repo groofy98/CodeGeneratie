@@ -19,12 +19,11 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
 public class User   {
-
   @Id
   @JsonProperty("id")
   @SequenceGenerator(name = "user_seq", initialValue = 1000001)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-  private Integer id = null;
+  private Long id = null;
 
   @JsonProperty("firstname")
   private String firstname = null;
@@ -53,7 +52,22 @@ public class User   {
   @JsonProperty("isActive")
   private Boolean isActive = null;
 
-  public User id(Integer id) {
+  public User() {
+  }
+
+  public User(String firstname, String lastname, String email, String username, String password, LocalDate dateOfBirth, Boolean isEmployee, Boolean isCustomer, Boolean isActive) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.email = email;
+    this.username = username;
+    this.password = password;
+    this.dateOfBirth = dateOfBirth;
+    this.isEmployee = isEmployee;
+    this.isCustomer = isCustomer;
+    this.isActive = isActive;
+  }
+
+  public User id(Long id) {
     this.id = id;
     return this;
   }
@@ -64,11 +78,11 @@ public class User   {
   **/
   @ApiModelProperty(example = "5", value = "")
   
-    public Integer getId() {
+    public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
