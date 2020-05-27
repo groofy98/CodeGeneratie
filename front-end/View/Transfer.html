@@ -30,7 +30,7 @@
   <section class="container" id="saving">
     <p class="header">New Transaction</p>
     <div class="transactionContainer" id="transactionContainer">
-      <form action="" id="#transferForm">
+      <form action="" id="transferForm">
         <label for="euro">Amount</label><br>
         <input type="number" id="euro" name="euro" placeholder="Amount      € 0," min="0" required>
         <input type="number" id="cent" name="cent" placeholder="00" max="100" min="0">
@@ -56,6 +56,7 @@
   });
 
   function newTransaction() {
+    console.log("doing this");
     $.ajax({
         url: "http://localhost:8080/Api/0.1/transactions",
         method: "POST", //First change type to method here
