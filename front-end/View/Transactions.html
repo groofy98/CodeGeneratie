@@ -86,10 +86,12 @@
   // fill the html table with a list of transactions
   function populateTransactionTable(transactions = []) {
     transactions.forEach((transaction, index) => {
-      let date = transaction.date;
+      console.log(transactions.date);      
+      let date = new Date(transaction.date);
+      console.log(date);       
       $("#transactionTable").append(
         "<tr>" +
-        "<td>" + date.dayOfMonth + "/" + date.monthValue + "/" + date.year + "</td>" +
+        "<td>" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "</td>" +
         "<td>" + transaction.transactionType + "</td>" +
         "<td>" + transaction.accountTo + "</td>" +
         "<td>" + transaction.accountFrom + "</td>" +
