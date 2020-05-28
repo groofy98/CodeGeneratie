@@ -57,7 +57,10 @@
 
   function newTransaction() {
     let transaction = {};
-    transaction["amount"] = $("#euro").val();
+    let euro = Number($("#euro").val());
+    let cent = Number($("#cent").val() / 100);
+    let total = euro + cent;
+    transaction["amount"] = total;
     transaction["accountFrom"] = sessionStorage.getItem('activeAccount');
     transaction["accountTo"] = $("#to").val();
     transaction["userId"] = 0;
