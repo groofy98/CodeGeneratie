@@ -18,7 +18,7 @@
       <a id="accountDetails" href="#">T.Alberts</a>
     </div>
   </nav>
-  <button class="transfer" type="button" name="button">Transfer money</button>
+  <button class="transfer" onclick="linkToTransfer()" type="button" name="button">Transfer money</button>
   <!-- dit is voor het hele kopje betaalrekening of spaarreking -->
   <section class="container" id="deposit">
     <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
@@ -45,9 +45,8 @@
 
 </html>
 <script type="text/javascript">
-  $(document).ready(function() {
+  $(document).ready(function () {
     var accountId = sessionStorage.getItem('activeAccount');
-    console.log(accountId);
     var transactions = GetTransactions(accountId);
     populateTransactionTable(transactions);
     getAccount(accountId);
@@ -63,11 +62,11 @@
       },
       contentType: "application/json",
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         console.log(data);
         SortAccounts(data);
       },
-      error: function(error) {
+      error: function (error) {
         console.log(`Error ${error}`);
       },
     });
@@ -87,12 +86,10 @@
   // fill the html table with a list of transactions
   function populateTransactionTable(transactions = []) {
     transactions.forEach((transaction, index) => {
-      // Convert the string to a date object
-      let date = new Date(transaction.date)
-      console.log(date);
+      let date = transaction.date;
       $("#transactionTable").append(
         "<tr>" +
-        "<td>" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "</td>" +
+        "<td>" + date.dayOfMonth + "/" + date.monthValue + "/" + date.year + "</td>" +
         "<td>" + transaction.transactionType + "</td>" +
         "<td>" + transaction.accountTo + "</td>" +
         "<td>" + transaction.accountFrom + "</td>" +
@@ -104,7 +101,7 @@
 
 
   }
-// Get a list of transactions with corresponding account Id
+  // Get a list of transactions with corresponding account Id
   function GetTransactions(accountId = "") {
     var transactions = [];
     $.ajax({
@@ -116,11 +113,11 @@
         "Accept": "application/json",
       },
       dataType: "json",
-      success: function(data) {
+      success: function (data) {
         transactions = data;
         console.log(data);
       },
-      error: function(error) {
+      error: function (error) {
         console.log(error);
       }
     });
@@ -139,11 +136,11 @@
         "Accept": "application/json",
       },
       dataType: "json",
-      success: function(data) {
+      success: function (data) {
         balance = data.amount;
         console.log(data);
       },
-      error: function(error) {
+      error: function (error) {
         console.log(error);
         balance = "-";
       }
@@ -159,14 +156,18 @@
       async: false,
       contentType: "application/json",
       dataType: "json",
-      success: function(data) {
+      success: function (data) {
         name = data;
       },
-      error: function(error) {
+      error: function (error) {
         name = "-";
       }
     });
     return name;
+  }
+
+  function linkToTransfer() {
+    window.location.href = "transfer.html";
   }
 
 

@@ -46,10 +46,10 @@
 
 </html>
 <script type="text/javascript">
-  $(document).ready(function() {
+  $(document).ready(function () {
     console.log("Active account: " + sessionStorage.getItem('activeAccount'));
     getAccount(sessionStorage.getItem('activeAccount'));
-    $("#transferForm").submit(function(event) {
+    $("#transferForm").submit(function (event) {
       event.preventDefault();
       newTransaction();
     });
@@ -64,90 +64,90 @@
     transaction["transactionType"] = "transfer";
     transaction = JSON.stringify(transaction);
     $.ajax({
-        url: "http://localhost:8080/Api/0.1/transactions",
-        method: "POST",
-        contentType: "application/json; charset=utf-8",
-        data: transaction,
-        dataType: "json",
-        success: function(response) {
-          console.log(response);
-        },
-        error: function() {
-          console.log("error");
-        }
-      });
-    }
+      url: "http://localhost:8080/Api/0.1/transactions",
+      method: "POST",
+      contentType: "application/json; charset=utf-8",
+      data: transaction,
+      success: function (result) {
+        alert("Transaction succesfull");
+        window.location.href = "transactions.html";
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  }
 
-    function getAccount() {
-      $.ajax({
-        url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.getItem('activeAccount') + "/details",
-        type: "GET",
-        crossDomain: true,
-        headers: {
-          "Accept": "application/json",
-        },
-        contentType: "application/json",
-        dataType: 'json',
-        success: function(data) {
-          console.log(data);
-          SortAccounts(data);
-        },
-        error: function(error) {
-          console.log(`Error ${error}`);
-        },
-      });
-    }
+  function getAccount() {
+    $.ajax({
+      url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.getItem('activeAccount') + "/details",
+      type: "GET",
+      crossDomain: true,
+      headers: {
+        "Accept": "application/json",
+      },
+      contentType: "application/json",
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+        SortAccounts(data);
+      },
+      error: function (error) {
+        console.log(`Error ${error}`);
+      },
+    });
+  }
 
-    function SortAccounts(account) {
-      var balance = GetBalance(account.AccountID);
-      var name = GetUser(account.AccountHolder);
-      $("#accountContainer").append("    <div id=\"2\" class=\"account\">\n" +
-        "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
-        "        <a class=\"number\" href=\"#\">" + account.AccountID + "</a>\n" +
-        "        <a class=\"amount\" href=\"#\"> €" + balance + "</a>\n" +
-        "    </div>");
-    }
+  function SortAccounts(account) {
+    var balance = GetBalance(account.AccountID);
+    var name = GetUser(account.AccountHolder);
+    $("#accountContainer").append("    <div id=\"2\" class=\"account\">\n" +
+      "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
+      "        <a class=\"number\" href=\"#\">" + account.AccountID + "</a>\n" +
+      "        <a class=\"amount\" href=\"#\"> €" + balance + "</a>\n" +
+      "    </div>");
+  }
 
-    function GetBalance(id) {
-      var balance = "";
-      $.ajax({
-        url: 'http://localhost:8080/Api/0.1/account/balance/' + id,
-        type: "GET",
-        async: false,
-        contentType: "application/json",
-        headers: {
-          "Accept": "application/json",
-        },
-        dataType: "json",
-        success: function(data) {
-          balance = data.amount;
-          console.log(data);
-        },
-        error: function(error) {
-          console.log(error);
-          balance = "-";
-        }
-      });
-      return balance;
-    }
+  function GetBalance(id) {
+    var balance = "";
+    $.ajax({
+      url: 'http://localhost:8080/Api/0.1/account/balance/' + id,
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      headers: {
+        "Accept": "application/json",
+      },
+      dataType: "json",
+      success: function (data) {
+        balance = data.amount;
+        console.log(data);
+      },
+      error: function (error) {
+        console.log(error);
+        balance = "-";
+      }
+    });
+    return balance;
+  }
 
-    function GetUser(id) {
-      var name = "";
-      $.ajax({
-        url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
-        type: "GET",
-        async: false,
-        contentType: "application/json",
-        dataType: "json",
-        success: function(data) {
-          name = data;
-        },
-        error: function(error) {
-          name = "-";
-        }
-      });
-      return name;
-    }
+  function GetUser(id) {
+    var name = "";
+    $.ajax({
+      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      dataType: "json",
+      success: function (data) {
+        name = data;
+      },
+      error: function (error) {
+        name = "-";
+      }
+    });
+    return name;
+  }
 
 
     //   var api_url = 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1';

@@ -42,7 +42,7 @@ public class TransactionsApiController implements TransactionsApi {
 ) {
         String accept = request.getHeader("Accept");
         transactionService.addTransaction(body);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
     public ResponseEntity<Transaction> getTransactionById(@ApiParam(value = "Id of transaction to return",required=true) @PathVariable("transactionId") Long transactionId
