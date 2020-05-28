@@ -1,7 +1,10 @@
 package io.swagger.service;
 
+import io.swagger.dao.BalanceRepository;
 import io.swagger.dao.TransactionRepository;
+import io.swagger.model.Account;
 import io.swagger.model.Transaction;
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,13 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BalanceService balanceService;
+
     // No Args constructor
     private TransactionService(){
     }
@@ -27,8 +37,41 @@ public class TransactionService {
 
     // Add a transaction to the database
     public void addTransaction(Transaction transaction){
+        // Remove funds from sending account
+        balanceService.removeAmount(transaction.getAccountFrom(), transaction.getAmount());
+        // Add funds to receiving account
+        balanceService.addAmount(transaction.getAccountTo(), transaction.getAmount());
+        // Save succesfull transaction
         transactionRepository.save(transaction);
         System.out.println(transaction);
+    }
+
+    // Check for transaction type and legality
+    public Transaction.TransactionTypeEnum getTransactionType(String accountTo, String accountFrom){
+
+        // Check if transaction isn't to self
+        if (accountTo.equals(accountFrom))
+            throw new IllegalArgumentException("Can't transfer to the same account");
+
+        Account to = accountService.getAccountById(accountTo);
+        Account from = accountService.getAccountById(accountFrom);
+
+        // Check if transaction is a withdraw
+        if (from.getAccountType() == Account.AccountTypeEnum.SAVING){
+            if (from.getAccountHolder().equals(to.getAccountHolder()))
+                return Transaction.TransactionTypeEnum.DEPOSIT;
+            else
+                throw new IllegalArgumentException("Can't transfer from savings account to someone else");
+        }
+        // Check if transaction is a deposit
+        if (to.getAccountType() == Account.AccountTypeEnum.SAVING){
+            if (from.getAccountHolder().equals(to.getAccountHolder()))
+                return Transaction.TransactionTypeEnum.WITHDRAW;
+            else
+                throw new IllegalArgumentException("Can't transfer from current to someone else savings account");
+        }
+
+        return Transaction.TransactionTypeEnum.TRANSFER;
     }
 
     // Get all transactions
