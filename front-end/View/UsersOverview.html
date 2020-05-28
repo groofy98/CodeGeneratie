@@ -15,75 +15,180 @@
         <a id="accountDetails" href="#">T.Alberts</a>
     </div>
 </nav>
-<section id="tableBox">
-  <table>
-<tr>
-  <th>ID</th>
-  <th>First Name</th>
-  <th>Last Name</th>
-  <th>Email</th>
-  <th>Username</th>
-  <th>Birth Date</th>
-  <th>Employee</th>
-  <th>Customer</th>
-  <th>Active</th>
-  <th>DEACTIVATE USER</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td>John</td>
-  <td>Doe</td>
-  <td>JohnDoe@example.com</td>
-  <td>Johnny69</td>
-  <td>05/05/2000</td>
-  <td>false</td>
-  <td>true</td>
-  <td>true</td>
-  <td><button> deactivate </button></td>
-</tr>
-</table>
+    <!-- TODO: figure out if table should be implemented or removed-->
+    <section id="tableBox">
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Birth Date</th>
+          <th>Employee</th>
+          <th>Customer</th>
+          <th>Active</th>
+          <th>DEACTIVATE USER</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>John</td>
+          <td>Doe</td>
+          <td>JohnDoe@example.com</td>
+          <td>Johnny69</td>
+          <td>05/05/2000</td>
+          <td>false</td>
+          <td>true</td>
+          <td>true</td>
+          <td><button> deactivate </button></td>
+        </tr>
+      </table>
+    </section>
 
-</section>
+    <section class="users" id="editUser">
+        <p class="header">Edit User</p>
+        <form action="">
+            <div>
+                <label for="usersID">User ID:</label>
+                <input name="usersID" id="usersID" type="text" required>
+            </div>
+            <div>
+                <label for="editUsername">Username:</label>
+                <input name="editUsername" id="editUsername" type="text">
+            </div>
+            <div>
+                <label for="editFirstName">First Name:</label>
+                <input name="editFirstName" id="editFirstName" type="text">
+            </div>
+            <div>
+                <label for="editLastName">Last Name:</label>
+                <input name="editLastName" id="editLastName" type="text">
+            </div>
+            <div>
+                <label for="editEmail">Email:</label>
+                <input name="editEmail" id="editEmail" type="text">
+            </div>
+            <div>
+                <label>Customer</label>
+                <select id="customerSelect" name="customerSelect">
+                    <option id="customerUnselected" value="nonSelected">Select option</option>
+                    <option id="customerTrue" value="Yes">Yes</option>
+                    <option id="customerFalse" value="No">No</option>
+                </select>
+            </br><label>Employee</label>
+                <select id="employeeSelect" name="employeeSelect">
+                    <option id="selectOption" value="nonSelected">Select option</option>
+                    <option id="employeeTrue" value="Yes">Yes</option>
+                    <option id="employeeFalse" value="No">No</option>
+                </select>
+            </div>
+            <input id="editUserSubmit" type="submit" value="Save">
+        </form>
+    </section>
+    <section class="users" id="deactivateUser">
+        <p class="header">Deactivate User</p>
+        <form action="">
+            <div>
+                <label for="userId">User ID:</label>
+                <input id="userId" type="text" required>
+            </div>
+            <input id="deactivateUserSubmit" type="submit" value="Deactivate">
+        </form>
+    </section>
 </body>
 </html>
 
 <script type="text/javascript">
-  //TODO: make actual data load in from API
-  //commented out code is not yet functional:
-  /*
-  var users;
+    $('#editUserSubmit').click(function () {
+        updateUser($('#usersID').val(), $('#editUsername').val(), $('#editFirstName').val(), $('#editLastName').val(),
+                   $('#editEmail').val(), $('#employeeSelect').val(), $('#customerSelect').val());
+        return false;
+    });
 
-  fetch('https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users')
-    .then(res => res.json())
-    .then(data => users = data)
-    .then(() => console.log(users))
+    $('#deactivateUserSubmit').click(function () {
+        deactivateUser($('#usersId').val());
+        return false;
+    });
 
-  //  fetch('https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users')
-    //  .then(response => response.json())
-      //.then(data => console.log(data));
-      //let users = data
-
-    function generateTableHead(table, data) {
-      let thead = table.createTHead();
-      let row = thead.insertRow();
-      for (let key of data) {
-        let th = document.createElement("th");
-        let text = document.createTextNode(key);
-        th.appendChild(text);
-        row.appendChild(th);
-      }
-    }
-
-    function generateTable(table, data) {
-      for (let element of data) {
-      let row = table.insertRow();
-        for (key in element) {
-        let cell = row.insertCell();
-        let text = document.createTextNode(element[key]);
-        cell.appendChild(text);
+    function updateUser(id, username, firstName, lastName, email, employeeStatus, customerStatus){
+        var user = {}
+        if(id != ""){ //check which fields have been filled in
+            if(username != ""){
+                user["username"] = username;
+            }
+            if(firstName != ""){
+                user["firstName"] = firstName;
+            }
+            if(lastName != ""){
+                user["lastName"] = lastName;
+            }
+            if(email != ""){
+                user["email"] = email;
+            }
+            if(employeeStatus == "Yes"){
+                account["employeeStatus"] = true;
+            } else if (employeeStatus == "No"){
+                account["employeeStatus"] = false;
+            }
+            if(customerStatus == "Yes" ){
+               account["customerStatus"] = true;
+            } else if (customerStatus == "No") {
+               account["customerStatus"] =false;
+            }
         }
-      }
+        user = JSON.stringify(user);
+        alert(user);
+
+        $.ajax({
+            url: 'http://localhost:8080/Api/0.1/users/' + id + '/details',
+            type: "PUT",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            data: user,
+            success: function (data) {
+            },
+            error: function (error) {
+                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
+                    alert("An error occured while deactivating an account, please try again later: " + error)
+                }
+            }
+        });
     }
-    */
+
+    function deactivateUser(id) {
+        $.ajax({
+            url: 'http://localhost:8080/Api/0.1/users/' + id + '/deactivate',
+            type: "PUT",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+            },
+            error: function (error) {
+                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
+                    alert("An error occurred while deactivating an account, please try again later: " + error)
+                }
+            }
+        });
+    }
+
+    function getUser(id) {
+        var name = "";
+        $.ajax({
+            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                name = data;
+            },
+            error: function (error) {
+                name = "-";
+            }
+        });
+        return name;
+    }
 
 </script>
