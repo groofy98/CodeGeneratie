@@ -3,11 +3,13 @@ package io.swagger.service;
 import io.swagger.dao.BalanceRepository;
 import io.swagger.dao.TransactionRepository;
 import io.swagger.model.Account;
+import io.swagger.model.Balance;
 import io.swagger.model.Transaction;
 import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -41,7 +43,7 @@ public class TransactionService {
         balanceService.removeAmount(transaction.getAccountFrom(), transaction.getAmount());
         // Add funds to receiving account
         balanceService.addAmount(transaction.getAccountTo(), transaction.getAmount());
-        // Save succesfull transaction
+        // Save successful transaction
         transactionRepository.save(transaction);
         System.out.println(transaction);
     }
@@ -72,6 +74,15 @@ public class TransactionService {
         }
 
         return Transaction.TransactionTypeEnum.TRANSFER;
+    }
+
+    // Check if transaction is within account limitations
+    public void checkAccountLimits(Transaction transaction){
+        Account account = accountService.getAccountById(transaction.getAccountFrom());
+        Balance balance = balanceService.getBalanceById(transaction.getAccountFrom());
+        if ( -1 == balance.getAmount().subtract(BigDecimal.valueOf(transaction.getAmount())).compareTo(BigDecimal.valueOf(account.getAbsoluteLimit()))){
+            System.out.println("insufficient funds");
+        }
     }
 
     // Get all transactions

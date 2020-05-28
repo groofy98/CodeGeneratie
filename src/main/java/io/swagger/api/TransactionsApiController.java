@@ -41,7 +41,11 @@ public class TransactionsApiController implements TransactionsApi {
     public ResponseEntity<Void> createTransaction(@ApiParam(value = "Transaction object that needs to be added" ,required=true )  @Valid @RequestBody Transaction body
 ) {
         String accept = request.getHeader("Accept");
+        System.out.println(body);
+        // Set transaction type and check validity
         body.setTransactionType(transactionService.getTransactionType(body.getAccountFrom(), body.getAccountTo()));
+        // Check account limitations
+        transactionService.checkAccountLimits(body);
         transactionService.addTransaction(body);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
