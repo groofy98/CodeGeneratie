@@ -42,15 +42,39 @@ public class UserService {
         return HttpStatus.NOT_IMPLEMENTED;
     }
 
-    // Get a single user by userId
+    //Get a single user by userId
     public User getUserById(long id){
         return userRepository.findOne(id);
     }
 
-    // Register user in database
+    //Register user in database
     public void registerUser(User user){
-        user.setId((long)1);
         userRepository.save(user);
         System.out.println(user);
+    }
+
+    //Deactivate a user
+    public HttpStatus deactivateUser(Integer userID){
+        User user = userRepository.findUserById(userID);
+        user.setIsActive(false);
+        userRepository.save(user);
+        return HttpStatus.OK;
+    }
+
+    //Updates the user
+    public HttpStatus updateUser(Integer userID, User userEdit){
+        //find current data of user
+        User user = userRepository.findUserById(userID);
+
+        user.setFirstname(userEdit.getFirstname());
+        user.setLastname(userEdit.getLastname());
+        user.setUsername(userEdit.getUsername());
+        user.setEmail(userEdit.getEmail());
+        user.setIsEmployee(userEdit.isIsEmployee());
+        user.setIsCustomer(userEdit.isIsCustomer());
+
+        //save user to db with updated data
+        userRepository.save(user);
+        return HttpStatus.OK;
     }
 }

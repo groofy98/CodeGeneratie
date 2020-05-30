@@ -37,7 +37,6 @@
   </form>
 </body>
 <script type="text/javascript">
-
     $('#loginSubmit').click(function () {
         Login();
         return false;
@@ -55,9 +54,13 @@
         $.ajax({
             url: 'http://localhost:8080/Api/0.1/users/login',
             type: "POST",
-            contentType: "application/json",
             data: account,
-            dataType: "json",
+            crossDomain: true,
+          headers: {
+            "Accept": "application/json",
+          },
+          contentType: "application/json",
+          dataType: 'json',
             success: function (data) {
             },
             error: function (error) {

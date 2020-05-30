@@ -38,7 +38,7 @@
         </section>
         <section class="formGroup">
             <p><b>date of birth:</b></p>
-            <input type="datetime" placeholder="email@example.com" id="dateOfBirth"></input>
+            <input type="datetime" placeholder="yyyy-mm-dd" id="dateOfBirth"></input>
         </section>
         <section class="formGroup">
             <p><b>password:</b></p>
@@ -48,6 +48,7 @@
             <p><b>repeat password:</b></p>
             <input type="password" placeholder="repeat password" id="passwordRepeat"></input>
         </section>
+      <p><input type="checkbox" id="isCustomer" name="isCustomer" value="isCustomer"></input> Customer account</p>
         <section class="formGroup">
             <button type="submit" id="registerSubmit"><b>sign up</b></button>
         </section >
@@ -61,11 +62,13 @@
 
     //get all info from fields
     function Register() {
+        var checkBox = document.getElementById("isCustomer");
         var firstname = $('#firstname').val();
         var lastname = $('#lastname').val();
         var username = $('#username').val();
         var email = $('#email').val();
         var dateOfBirth = $('#dateOfBirth').val();
+        dateOfBirth = new Date(dateOfBirth);
         var password = $('#password').val();
 
         //create JSON object and do post request
@@ -76,15 +79,23 @@
         account["email"] = email;
         account["dateOfBirth"] = dateOfBirth;
         account["password"] = password;
+        if (checkBox.checked == true){
+            account["isCustomer"] = true;
+        }
         account = JSON.stringify(account);
+
         $.ajax({
             url: 'http://localhost:8080/Api/0.1/users/register',
             type: "POST",
-            contentType: "application/json",
             data: account,
-            dataType: "json",
+            crossDomain: true,
+            headers: {
+            "Accept": "application/json",
+          },
+          contentType: "application/json",
             success: function (data) {
                 alert("Your account has been created. You may now log in.");
+                window.location.href = "Login.html";
             },
             error: function (error) {
                 alert("An error occurred while registering, please try again later");
