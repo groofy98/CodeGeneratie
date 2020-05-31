@@ -22,9 +22,12 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 public class Transaction   {
 
+  // Max amount per transaction
+  private static final BigDecimal transactionLimit = BigDecimal.valueOf(75000) ;
+
   @JsonProperty("id")
   @Id
-  @SequenceGenerator(name = "transaction_seq", initialValue = 1000001)
+  @SequenceGenerator(name = "transaction_seq", initialValue = 1001)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
   private Long id = null;
 
@@ -47,7 +50,7 @@ public class Transaction   {
     this.date = OffsetDateTime.now();
   }
 
-  public Transaction(Double amount, String accountFrom, String accountTo, Long userId, TransactionTypeEnum transactionType) {
+  public Transaction(BigDecimal amount, String accountFrom, String accountTo, Long userId, TransactionTypeEnum transactionType) {
     this.date = OffsetDateTime.now();
     this.amount = amount;
     this.accountFrom = accountFrom;
@@ -147,7 +150,13 @@ public class Transaction   {
     return amount;
   }
 
+
   public void setAmount(BigDecimal amount) {
+    // Check if the given amount is within transaction limit
+    if (1 == amount.compareTo( transactionLimit))
+      throw new IllegalArgumentException("Given amount is to high");
+    if (-1 == amount.compareTo(BigDecimal.valueOf(0)))
+      throw new IllegalArgumentException("The given amount should be higher than 0");
     this.amount = amount;
   }
 

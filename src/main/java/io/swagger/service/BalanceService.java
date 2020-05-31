@@ -20,20 +20,20 @@ public class BalanceService {
     }
 
     // Add to balance off given account
-    public void addAmount(String accountId, Double amount){
+    public void addAmount(String accountId, BigDecimal amount){
         Balance balance = balanceRepository.findOneByAccount(accountId);
         // Add to old amount and make it the new amount
-        balance.setAmount(balance.getAmount().add(BigDecimal.valueOf(amount)));
+        balance.setAmount(balance.getAmount().add(amount));
         // Save the new balance
         balanceRepository.save(balance);
         System.out.println(balance);
     }
 
     // Remove from balance off given account
-    public void removeAmount(String accountId, Double amount){
+    public void removeAmount(String accountId, BigDecimal amount){
         Balance balance = balanceRepository.findOneByAccount(accountId);
         // Subtract from old amount and make it the new amount
-        balance.setAmount(balance.getAmount().subtract(BigDecimal.valueOf(amount)));
+        balance.setAmount(balance.getAmount().subtract(amount));
         // Save the new balance
         balanceRepository.save(balance);
         System.out.println(balance);

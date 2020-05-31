@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -22,6 +23,8 @@ import javax.validation.constraints.*;
 public class Account   {
   public Account() {
   }
+
+  public static final BigDecimal dayLimit = BigDecimal.valueOf(250000);
 
   public Account(String accountID, Long absoluteLimit, Long accountHolder, AccountTypeEnum accountType, Boolean isActive) {
     this.accountID = accountID;

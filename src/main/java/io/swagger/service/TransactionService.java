@@ -80,8 +80,8 @@ public class TransactionService {
     public void checkAccountLimits(Transaction transaction){
         Account account = accountService.getAccountById(transaction.getAccountFrom());
         Balance balance = balanceService.getBalanceById(transaction.getAccountFrom());
-        if ( -1 == balance.getAmount().subtract(BigDecimal.valueOf(transaction.getAmount())).compareTo(BigDecimal.valueOf(account.getAbsoluteLimit()))){
-            System.out.println("insufficient funds");
+        if ( -1 == balance.getAmount().subtract(transaction.getAmount()).compareTo(BigDecimal.valueOf(account.getAbsoluteLimit()))) {
+            throw new IllegalArgumentException("Insufficient funds");
         }
     }
 
