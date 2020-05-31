@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -23,11 +23,11 @@ import javax.validation.constraints.*;
 public class Transaction   {
 
   // Max amount per transaction
-  private static final BigDecimal transactionLimit = BigDecimal.valueOf(75000) ;
+  public static final BigDecimal transactionLimit = BigDecimal.valueOf(10000) ;
 
   @JsonProperty("id")
   @Id
-  @SequenceGenerator(name = "transaction_seq", initialValue = 1001)
+  @SequenceGenerator(name = "transaction_seq", initialValue = 1000001)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
   private Long id = null;
 
@@ -152,11 +152,6 @@ public class Transaction   {
 
 
   public void setAmount(BigDecimal amount) {
-    // Check if the given amount is within transaction limit
-    if (1 == amount.compareTo( transactionLimit))
-      throw new IllegalArgumentException("Given amount is to high");
-    if (-1 == amount.compareTo(BigDecimal.valueOf(0)))
-      throw new IllegalArgumentException("The given amount should be higher than 0");
     this.amount = amount;
   }
 
