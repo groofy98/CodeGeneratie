@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../CSS/GlobalCSS.css">
+    <link rel="stylesheet" href="../CSS/LoginCSS.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>DankBank</title>
+</head>
+<body>
+<nav>
+    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <div class="account">
+        <button id="LogOff" type="button" name="button">LogOff</button>
+        <a id="accountDetails" href="#">T.Alberts</a>
+    </div>
+</nav>
+<form id = "loginForm" action="#">
+      <header id = "loginHeader">
+          <h3>Login</h3>
+      </header>
+      <section class="formGroup">
+          <p><b>email:</b></p>
+          <input type="text" placeholder="email@example.com" name="email" id="email"></input>
+      </section>
+      <section class="formGroup">
+          <p><b>password:</b></p>
+          <input type="password" placeholder="password" name="password" id="password"></input>
+      </section>
+      <section class="formGroup">
+          <button type="submit" id="loginSubmit"><b>login</b></button>
+      </section >
+      <section class="options">
+        <i>no account?</i> <a href="Register.html">sign up</a>
+      </section>
+  </form>
+</body>
+<script type="text/javascript">
+
+    $('#loginSubmit').click(function () {
+        Login();
+        return false;
+    });
+
+    //get all info from fields
+    function Login() {
+        var email = $('#email').val();
+        var password = $('#password').val();
+
+        var account = {}
+        account["email"] = email;
+        account["password"] = password;
+        account = JSON.stringify(account);
+        $.ajax({
+            url: 'http://localhost:8080/Api/0.1/users/login',
+            type: "POST",
+            contentType: "application/json",
+            data: account,
+            dataType: "json",
+            success: function (data) {
+            },
+            error: function (error) {
+                alert("An error occured while logging in, please try again later");
+            }
+        });
+    }
+</script>
+</html>
