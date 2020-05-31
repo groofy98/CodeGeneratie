@@ -27,6 +27,8 @@ import java.math.BigDecimal;
 
 //for testing on localhost
 @CrossOrigin(origins = { "http://localhost"})
+import java.util.Map;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 @Controller
 public class AccountApiController implements AccountApi {
 

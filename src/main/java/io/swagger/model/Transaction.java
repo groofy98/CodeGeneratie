@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,7 +19,7 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 public class Transaction   {
 
   @JsonProperty("id")
@@ -31,7 +32,7 @@ public class Transaction   {
   private OffsetDateTime date = null;
 
   @JsonProperty("amount")
-  private Double amount = null;
+  private BigDecimal amount = null;
 
   @JsonProperty("accountFrom")
   private String accountFrom = null;
@@ -129,7 +130,7 @@ public class Transaction   {
     this.date = date;
   }
 
-  public Transaction amount(Double amount) {
+  public Transaction amount(BigDecimal amount) {
     this.amount = amount;
     return this;
   }
@@ -138,14 +139,15 @@ public class Transaction   {
    * Get amount
    * @return amount
   **/
-  @ApiModelProperty(example = "5000.5", required = true, value = "")
+  @ApiModelProperty(example = "5000", required = true, value = "")
       @NotNull
 
-    public Double getAmount() {
+    @Valid
+    public BigDecimal getAmount() {
     return amount;
   }
 
-  public void setAmount(Double amount) {
+  public void setAmount(BigDecimal amount) {
     this.amount = amount;
   }
 

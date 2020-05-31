@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
+import java.util.Map;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
