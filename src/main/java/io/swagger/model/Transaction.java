@@ -1,12 +1,13 @@
 package io.swagger.model;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.threeten.bp.OffsetDateTime;
+import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -18,8 +19,11 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 public class Transaction   {
+
+  // Max amount per transaction
+  public static final BigDecimal transactionLimit = BigDecimal.valueOf(10000) ;
 
   @JsonProperty("id")
   @Id
@@ -31,7 +35,7 @@ public class Transaction   {
   private OffsetDateTime date = null;
 
   @JsonProperty("amount")
-  private Double amount = null;
+  private BigDecimal amount = null;
 
   @JsonProperty("accountFrom")
   private String accountFrom = null;
@@ -46,7 +50,7 @@ public class Transaction   {
     this.date = OffsetDateTime.now();
   }
 
-  public Transaction(Double amount, String accountFrom, String accountTo, Long userId, TransactionTypeEnum transactionType) {
+  public Transaction(BigDecimal amount, String accountFrom, String accountTo, Long userId, TransactionTypeEnum transactionType) {
     this.date = OffsetDateTime.now();
     this.amount = amount;
     this.accountFrom = accountFrom;
@@ -129,7 +133,7 @@ public class Transaction   {
     this.date = date;
   }
 
-  public Transaction amount(Double amount) {
+  public Transaction amount(BigDecimal amount) {
     this.amount = amount;
     return this;
   }
@@ -138,14 +142,16 @@ public class Transaction   {
    * Get amount
    * @return amount
   **/
-  @ApiModelProperty(example = "5000.5", required = true, value = "")
+  @ApiModelProperty(example = "5000", required = true, value = "")
       @NotNull
 
-    public Double getAmount() {
+    @Valid
+    public BigDecimal getAmount() {
     return amount;
   }
 
-  public void setAmount(Double amount) {
+
+  public void setAmount(BigDecimal amount) {
     this.amount = amount;
   }
 

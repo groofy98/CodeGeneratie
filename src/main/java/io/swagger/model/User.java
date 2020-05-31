@@ -1,11 +1,11 @@
 package io.swagger.model;
 
+import java.util.Date;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -17,11 +17,11 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 public class User   {
   @Id
   @JsonProperty("id")
-  @SequenceGenerator(name = "user_seq", initialValue = 1000001)
+  @SequenceGenerator(name = "user_seq", initialValue = 100001)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
   private Long id = null;
 
@@ -41,21 +41,21 @@ public class User   {
   private String password = null;
 
   @JsonProperty("dateOfBirth")
-  private LocalDate dateOfBirth = null;
+  private Date dateOfBirth = null;
 
   @JsonProperty("isEmployee")
-  private Boolean isEmployee = null;
+  private Boolean isEmployee = false;
 
   @JsonProperty("isCustomer")
-  private Boolean isCustomer = null;
+  private Boolean isCustomer = false;
 
   @JsonProperty("isActive")
-  private Boolean isActive = null;
+  private Boolean isActive = true;
 
   public User() {
   }
 
-  public User(String firstname, String lastname, String email, String username, String password, LocalDate dateOfBirth, Boolean isEmployee, Boolean isCustomer, Boolean isActive) {
+  public User(String firstname, String lastname, String email, String username, String password, Date dateOfBirth, Boolean isEmployee, Boolean isCustomer, Boolean isActive) {
     this.firstname = firstname;
     this.lastname = lastname;
     this.email = email;
@@ -186,7 +186,7 @@ public class User   {
     this.password = password;
   }
 
-  public User dateOfBirth(LocalDate dateOfBirth) {
+  public User dateOfBirth(Date dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
     return this;
   }
@@ -199,11 +199,11 @@ public class User   {
       @NotNull
 
     @Valid
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
     return dateOfBirth;
   }
 
-  public void setDateOfBirth(LocalDate dateOfBirth) {
+  public void setDateOfBirth(Date dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
   }
 

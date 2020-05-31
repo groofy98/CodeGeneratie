@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 
 @Controller
 public class TransactionsApiController implements TransactionsApi {
@@ -41,11 +41,13 @@ public class TransactionsApiController implements TransactionsApi {
     public ResponseEntity<Void> createTransaction(@ApiParam(value = "Transaction object that needs to be added" ,required=true )  @Valid @RequestBody Transaction body
 ) {
         String accept = request.getHeader("Accept");
-        System.out.println(body);
         // Set transaction type and check validity
         body.setTransactionType(transactionService.getTransactionType(body.getAccountFrom(), body.getAccountTo()));
         // Check account limitations
         transactionService.checkAccountLimits(body);
+        // Check transaction limitations
+        transactionService.checkTransactionLimits(body);
+        // All ok and adding the transaction to the database an returning http status 201/created
         transactionService.addTransaction(body);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }

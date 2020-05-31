@@ -44,7 +44,7 @@ th {
     margin: 0vw;
     padding: 0vw;
     position: absolute;
-    top: 16vw;
+    top: 0vw;
     left: 10%;
     width: 80%;
     border: 0.1vw solid #303030;
@@ -134,10 +134,10 @@ th {
 
 #editUser{
     height: 25vw;
-    top: 34vw;
+    top: 25vw;
 }
 
 #deactivateUser{
     height: 9vw;
     margin-bottom: 10vw;
-    top: 60vw;
+    top: 52vw;

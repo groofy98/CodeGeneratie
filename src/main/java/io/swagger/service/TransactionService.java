@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -72,7 +74,6 @@ public class TransactionService {
             else
                 throw new IllegalArgumentException("Can't transfer from current to someone else savings account");
         }
-
         return Transaction.TransactionTypeEnum.TRANSFER;
     }
 
@@ -80,9 +81,38 @@ public class TransactionService {
     public void checkAccountLimits(Transaction transaction){
         Account account = accountService.getAccountById(transaction.getAccountFrom());
         Balance balance = balanceService.getBalanceById(transaction.getAccountFrom());
-        if ( -1 == balance.getAmount().subtract(BigDecimal.valueOf(transaction.getAmount())).compareTo(BigDecimal.valueOf(account.getAbsoluteLimit()))){
-            System.out.println("insufficient funds");
+        // Check if account doesn't surpass its absolute limit
+        if ( -1 == balance.getAmount().subtract(transaction.getAmount()).compareTo(BigDecimal.valueOf(account.getAbsoluteLimit()))) {
+            throw new IllegalArgumentException("Insufficient funds");
         }
+        // Check if transaction doesn't surpass day limit
+        if ( 1 == getTransactionTotalToday(transaction).add(transaction.getAmount()).compareTo(Account.dayLimit)){
+            throw new IllegalArgumentException("Day limit reached");
+        }
+    }
+
+    // Check if transaction is within the transaction limitations
+    public void checkTransactionLimits(Transaction transaction){
+        // Check if the given amount is within transaction limit
+        if (1 == transaction.getAmount().compareTo(Transaction.transactionLimit))
+            throw new IllegalArgumentException("Given amount is to high");
+        if (-1 == transaction.getAmount().compareTo(BigDecimal.valueOf(0)))
+            throw new IllegalArgumentException("The given amount should be higher than 0");
+    }
+
+    // Returns the amount of money that a account has transferred today
+    public BigDecimal getTransactionTotalToday(Transaction transaction){
+        List<Transaction> transactions = getTransactionsTodayByAccountId(transaction);
+        // Sums up all transactions of today
+        BigDecimal dayTotal =  transactions.stream().map(t -> t.getAmount()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return dayTotal;
+    }
+
+    // Get all transaction of today by account Id
+    public List<Transaction> getTransactionsTodayByAccountId(Transaction transaction){
+        OffsetDateTime dateFrom = OffsetDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        System.out.println(dateFrom);
+        return transactionRepository.findByAccountOnDate(dateFrom, transaction.getAccountFrom());
     }
 
     // Get all transactions

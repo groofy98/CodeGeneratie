@@ -16,7 +16,10 @@
     </div>
 </nav>
     <!-- TODO: figure out if table should be implemented or removed-->
-    <section id="tableBox">
+    <form id="tableBox">
+        <label>User ID:</label></br>
+        <input name="userSearchID" id="userSearchID" type="string" required>
+        <input id="findUserSubmit" type="submit" value="findUser"></input>
       <table>
         <tr>
           <th>ID</th>
@@ -28,26 +31,24 @@
           <th>Employee</th>
           <th>Customer</th>
           <th>Active</th>
-          <th>DEACTIVATE USER</th>
         </tr>
         <tr>
-          <td>1</td>
-          <td>John</td>
-          <td>Doe</td>
-          <td>JohnDoe@example.com</td>
-          <td>Johnny69</td>
-          <td>05/05/2000</td>
-          <td>false</td>
-          <td>true</td>
-          <td>true</td>
-          <td><button> deactivate </button></td>
+          <td id="tableID"></td>
+          <td id="tableFirstName"></td>
+          <td id="tableLastName"></td>
+          <td id="tableEmail"></td>
+          <td id="tableUsername"></td>
+          <td id="tableDate"></td>
+          <td id="tableCustomer"></td>
+          <td id="tableEmployee"></td>
+          <td id="tableActive"></td>
         </tr>
       </table>
-    </section>
+    </form>
 
     <section class="users" id="editUser">
         <p class="header">Edit User</p>
-        <form action="">
+        <form action="#">
             <div>
                 <label for="usersID">User ID:</label>
                 <input name="usersID" id="usersID" type="text" required>
@@ -82,12 +83,12 @@
                     <option id="employeeFalse" value="No">No</option>
                 </select>
             </div>
-            <input id="editUserSubmit" type="submit" value="Save">
+            <input id="editUserSubmit" type="submit" value="Save"></input>
         </form>
     </section>
     <section class="users" id="deactivateUser">
         <p class="header">Deactivate User</p>
-        <form action="">
+        <form action="#">
             <div>
                 <label for="userId">User ID:</label>
                 <input id="userId" type="text" required>
@@ -99,20 +100,60 @@
 </html>
 
 <script type="text/javascript">
+    //get data from all fields when submit button is clicked
     $('#editUserSubmit').click(function () {
         updateUser($('#usersID').val(), $('#editUsername').val(), $('#editFirstName').val(), $('#editLastName').val(),
                    $('#editEmail').val(), $('#employeeSelect').val(), $('#customerSelect').val());
         return false;
     });
 
+    //get user ID from field when deactivate button is clicked
     $('#deactivateUserSubmit').click(function () {
         deactivateUser($('#usersId').val());
         return false;
     });
 
+    //get user ID from field when find user button is clicked
+    $('#findUserSubmit').click(function () {
+        displayUser($('#userSearchID').val());
+        return false;
+    });
+
+    function displayUser(id){
+        //TODO: fix bug; table isCustomer, isEmployee and isActive are always true.
+        var user = findUser(id);
+        document.getElementById("tableID").innerHTML = id;
+        document.getElementById("tableFirstName").innerHTML = user.firstname;
+        document.getElementById("tableLastName").innerHTML = user.lastname;
+        document.getElementById("tableEmail").innerHTML = user.email;
+        document.getElementById("tableUsername").innerHTML = user.username;
+        document.getElementById("tableDate").innerHTML = user.dateOfBirth;
+        document.getElementById("tableCustomer").innerHTML = user.isCustomer;
+        document.getElementById("tableEmployee").innerHTML = user.isEmployee;
+        document.getElementById("tableActive").innerHTML = user.isActive;
+    }
+
+    function findUser(id) {
+        var name = "";
+        $.ajax({
+            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                name = data;
+            },
+            error: function (error) {
+                name = "-";
+            }
+        });
+        return name;
+    }
+
     function updateUser(id, username, firstName, lastName, email, employeeStatus, customerStatus){
         var user = {}
-        if(id != ""){ //check which fields have been filled in
+        if(id != ""){ //check if ID has been filled in
             if(username != ""){
                 user["username"] = username;
             }
@@ -126,31 +167,33 @@
                 user["email"] = email;
             }
             if(employeeStatus == "Yes"){
-                account["employeeStatus"] = true;
+               user["isEmployee"] = true;
             } else if (employeeStatus == "No"){
-                account["employeeStatus"] = false;
+                user["isEmployee"] = false;
             }
             if(customerStatus == "Yes" ){
-               account["customerStatus"] = true;
-            } else if (customerStatus == "No") {
-               account["customerStatus"] =false;
+               user["isCustomer"] = true;
+            } else if (customerStatus == "No"){
+                user["isCustomer"] == false;
             }
+        } else {
+            alert("Please fill in the ID of the user that should be updated");
         }
-        user = JSON.stringify(user);
-        alert(user);
 
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/' + id + '/details',
+            url: 'http://localhost:8080/Api/0.1/users/' + id,
             type: "PUT",
             async: false,
+            crossDomain: true,
             contentType: "application/json",
             dataType: "json",
             data: user,
             success: function (data) {
+                alert("Success");
             },
             error: function (error) {
                 if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
-                    alert("An error occured while deactivating an account, please try again later: " + error)
+                    alert("An error occurred while deactivating an account, please try again later: " + error)
                 }
             }
         });
@@ -171,24 +214,6 @@
                 }
             }
         });
-    }
-
-    function getUser(id) {
-        var name = "";
-        $.ajax({
-            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
-            type: "GET",
-            async: false,
-            contentType: "application/json",
-            dataType: "json",
-            success: function (data) {
-                name = data;
-            },
-            error: function (error) {
-                name = "-";
-            }
-        });
-        return name;
     }
 
 </script>

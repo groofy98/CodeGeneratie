@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -18,10 +19,12 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-14T10:13:19.888Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 public class Account   {
   public Account() {
   }
+
+  public static final BigDecimal dayLimit = BigDecimal.valueOf(250000);
 
   public Account(String accountID, Long absoluteLimit, Long accountHolder, AccountTypeEnum accountType, Boolean isActive) {
     this.accountID = accountID;
