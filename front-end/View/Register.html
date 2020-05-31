@@ -70,37 +70,48 @@
         var dateOfBirth = $('#dateOfBirth').val();
         dateOfBirth = new Date(dateOfBirth);
         var password = $('#password').val();
+        var passwordRepeat = $('#passwordRepeat').val();
 
-        //create JSON object and do post request
-        var account = {}
-        account["firstname"] = firstname;
-        account["lastname"] = lastname;
-        account["username"] = username;
-        account["email"] = email;
-        account["dateOfBirth"] = dateOfBirth;
-        account["password"] = password;
-        if (checkBox.checked == true){
-            account["isCustomer"] = true;
-        }
-        account = JSON.stringify(account);
+        //check if all fields are entered
+        if(firstname != "" && lastname != "" && username != "" && email != "" && dateOfBirth != "" && password != "" && passwordRepeat != ""){
+            //check if passwords align
+            if(password == passwordRepeat){
+                //create JSON object and do post request
+                var account = {}
+                account["firstname"] = firstname;
+                account["lastname"] = lastname;
+                account["username"] = username;
+                account["email"] = email;
+                account["dateOfBirth"] = dateOfBirth;
+                account["password"] = password;
+                if (checkBox.checked == true){
+                    account["isCustomer"] = true;
+                }
+                account = JSON.stringify(account);
 
-        $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/register',
-            type: "POST",
-            data: account,
-            crossDomain: true,
-            headers: {
-            "Accept": "application/json",
-          },
-          contentType: "application/json",
-            success: function (data) {
-                alert("Your account has been created. You may now log in.");
-                window.location.href = "Login.html";
-            },
-            error: function (error) {
-                alert("An error occurred while registering, please try again later");
+                $.ajax({
+                    url: 'http://localhost:8080/Api/0.1/users/register',
+                    type: "POST",
+                    data: account,
+                    crossDomain: true,
+                    headers: {
+                    "Accept": "application/json",
+                  },
+                  contentType: "application/json",
+                    success: function (data) {
+                        alert("Your account has been created. You may now log in.");
+                        window.location.href = "Login.html";
+                    },
+                    error: function (error) {
+                        alert("An error occurred while registering, please try again later");
+                    }
+                });
+            } else {
+                alert("Entered passwords don't match");
             }
-        });
+         } else {
+            alert("Please fill in all fields");
+         }
     }
 </script>
 </html>

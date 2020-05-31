@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long> {
-
-
     Account findByaccountID(String id);
 
     List<Account> findByaccountHolder(long userId);

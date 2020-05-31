@@ -19,7 +19,7 @@
     <form id="tableBox">
         <label>User ID:</label></br>
         <input name="userSearchID" id="userSearchID" type="string" required>
-        <input id="findUserSubmit" type="submit" value="findUser"></input>
+        <input id="findUserSubmit" type="submit" value="Find User"></input>
       <table>
         <tr>
           <th>ID</th>
@@ -49,8 +49,9 @@
     <section class="users" id="editUser">
         <p class="header">Edit User</p>
         <form action="#">
+            <p id="explanation"><i>*ID of user you wish to update</i></p>
             <div>
-                <label for="usersID">User ID:</label>
+                <label for="usersID">*User ID:</label>
                 <input name="usersID" id="usersID" type="text" required>
             </div>
             <div>
@@ -70,6 +71,10 @@
                 <input name="editEmail" id="editEmail" type="text">
             </div>
             <div>
+                <label for="editPassword">Password:</label>
+                <input name="editPassword" id="editPassword" type="text">
+            </div>
+            <div>
                 <label>Customer</label>
                 <select id="customerSelect" name="customerSelect">
                     <option id="customerUnselected" value="nonSelected">Select option</option>
@@ -83,7 +88,7 @@
                     <option id="employeeFalse" value="No">No</option>
                 </select>
             </div>
-            <input id="editUserSubmit" type="submit" value="Save"></input>
+            <button id="editUserSubmit" type="submit" value="Save">Save Changes</button>
         </form>
     </section>
     <section class="users" id="deactivateUser">
@@ -93,7 +98,7 @@
                 <label for="userId">User ID:</label>
                 <input id="userId" type="text" required>
             </div>
-            <input id="deactivateUserSubmit" type="submit" value="Deactivate">
+            <Button id="deactivateUserSubmit" type="submit" value="Deactivate">Deactivate</Button>
         </form>
     </section>
 </body>
@@ -103,7 +108,7 @@
     //get data from all fields when submit button is clicked
     $('#editUserSubmit').click(function () {
         updateUser($('#usersID').val(), $('#editUsername').val(), $('#editFirstName').val(), $('#editLastName').val(),
-                   $('#editEmail').val(), $('#employeeSelect').val(), $('#customerSelect').val());
+                   $('#editEmail').val(), $('#editPassword').val(), $('#employeeSelect').val(), $('#customerSelect').val());
         return false;
     });
 
@@ -136,7 +141,7 @@
     function findUser(id) {
         var name = "";
         $.ajax({
-            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+            url: 'http://localhost:8080/Api/0.1/users/' + id,
             type: "GET",
             async: false,
             contentType: "application/json",
@@ -151,8 +156,8 @@
         return name;
     }
 
-    function updateUser(id, username, firstName, lastName, email, employeeStatus, customerStatus){
-        var user = {}
+    function updateUser(id, username, firstName, lastName, email, password, employeeStatus, customerStatus){
+        var user = {};
         if(id != ""){ //check if ID has been filled in
             if(username != ""){
                 user["username"] = username;
@@ -165,6 +170,9 @@
             }
             if(email != ""){
                 user["email"] = email;
+            }
+            if(email != ""){
+                user["password"] = password;
             }
             if(employeeStatus == "Yes"){
                user["isEmployee"] = true;
@@ -180,6 +188,9 @@
             alert("Please fill in the ID of the user that should be updated");
         }
 
+        user = JSON.stringify(user);
+        alert(user);
+
         $.ajax({
             url: 'http://localhost:8080/Api/0.1/users/' + id,
             type: "PUT",
@@ -192,9 +203,7 @@
                 alert("Success");
             },
             error: function (error) {
-                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
-                    alert("An error occurred while deactivating an account, please try again later: " + error)
-                }
+                alert("An error has occurred.");
             }
         });
     }
@@ -209,9 +218,7 @@
             success: function (data) {
             },
             error: function (error) {
-                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
-                    alert("An error occurred while deactivating an account, please try again later: " + error)
-                }
+                alert("An error has occurred.");
             }
         });
     }

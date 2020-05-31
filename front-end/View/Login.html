@@ -47,14 +47,14 @@
         var email = $('#email').val();
         var password = $('#password').val();
 
-        var account = {}
-        account["email"] = email;
-        account["password"] = password;
-        account = JSON.stringify(account);
+        var user = {}
+        user["email"] = email;
+        user["password"] = password;
+        user = JSON.stringify(user);
         $.ajax({
             url: 'http://localhost:8080/Api/0.1/users/login',
             type: "POST",
-            data: account,
+            data: user,
             crossDomain: true,
           headers: {
             "Accept": "application/json",
@@ -64,7 +64,7 @@
             success: function (data) {
             },
             error: function (error) {
-                alert("An error occured while logging in, please try again later");
+                alert("An error occurred while logging in, please try again later");
             }
         });
     }

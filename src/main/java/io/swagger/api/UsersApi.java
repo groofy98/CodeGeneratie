@@ -32,7 +32,7 @@ public interface UsersApi {
         @ApiResponse(code = 404, message = "User not found") })
     @RequestMapping(value = "/users/{id}/deactivate",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") String id
+    ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") Long id
 );
 
 
@@ -75,9 +75,8 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<User> searchUser(@ApiParam(value = "user ID",required=true) @PathVariable("id") Integer id
+    ResponseEntity<User> searchUser(@ApiParam(value = "user ID",required=true) @PathVariable("id") Long id
 );
-
 
     @ApiOperation(value = "Get list of users", nickname = "searchusers", notes = "Calling this allows you to fetch the list of users in the system", response = User.class, responseContainer = "List", tags={ "users", })
     @ApiResponses(value = { 
@@ -90,8 +89,7 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Update existing User", nickname = "updateUser", notes = "By filling in this form, you update a user", authorizations = {
-        @Authorization(value = "ApiKeyAuth")    }, tags={ "users", })
+    @ApiOperation(value = "Update existing User", nickname = "updateUser", notes = "By filling in this form, you update a user", tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "executed"),
         @ApiResponse(code = 400, message = "Invalid user supplied"),
@@ -100,8 +98,8 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{id}",
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateUser(@ApiParam(value = "Updated user object" ,required=true )  @Valid @RequestBody User body
-,@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") Integer id
+    ResponseEntity<Void> updateUser(@ApiParam(value = "Updated user object" ,required=false )  @Valid @RequestBody User body
+,@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") Long id
 );
 
 }

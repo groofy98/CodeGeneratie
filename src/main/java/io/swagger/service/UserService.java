@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -31,10 +32,19 @@ public class UserService {
 
     }
 
-    //TODO: actual authentication, currently accepts any credentials and returns hardcoded auth token
-    public AuthToken loginUser(User givenUser) {
+    //TODO: make actual auth token; currently returns a hardcoded one (b15938252a78)
+    public AuthToken loginUser(User userInfo) {
         AuthToken authToken = new AuthToken();
-        authToken.setAuthToken("b15938252a78");
+        String enteredEmail = userInfo.getEmail();
+        String enteredPassword = userInfo.getPassword();
+        User user = userRepository.findUserByEmail(enteredEmail);
+
+        if (user.getEmail().toLowerCase().equals(enteredEmail.toLowerCase()) && user.getPassword().equals(enteredPassword)){
+            authToken.setAuthToken("b15938252a78");
+        } else {
+            System.err.println("Login failed"); //For testing - remove later
+            authToken.setAuthToken(null);
+        }
         return authToken;
     }
 
@@ -43,8 +53,8 @@ public class UserService {
     }
 
     //Get a single user by userId
-    public User getUserById(long id){
-        return userRepository.findOne(id);
+    public User getUserById(Long id){
+        return userRepository.findUserById(id);
     }
 
     //Register user in database
@@ -54,7 +64,7 @@ public class UserService {
     }
 
     //Deactivate a user
-    public HttpStatus deactivateUser(Integer userID){
+    public HttpStatus deactivateUser(Long userID){
         User user = userRepository.findUserById(userID);
         user.setIsActive(false);
         userRepository.save(user);
@@ -62,18 +72,39 @@ public class UserService {
     }
 
     //Updates the user
-    public HttpStatus updateUser(Integer userID, User userEdit){
+    public HttpStatus updateUser(Long userID, User userEdit){
         //find current data of user
-        User user = userRepository.findUserById(userID);
+        User user = getUserById(userID);
 
-        user.setFirstname(userEdit.getFirstname());
-        user.setLastname(userEdit.getLastname());
-        user.setUsername(userEdit.getUsername());
-        user.setEmail(userEdit.getEmail());
-        user.setIsEmployee(userEdit.isIsEmployee());
-        user.setIsCustomer(userEdit.isIsCustomer());
+        //check which fields are filled in in userEdit
+        if (userEdit.getFirstname() != null) {
+            user.setFirstname(userEdit.getFirstname());
+        }
+        if (userEdit.getUsername() != null) {
+            user.setUsername(userEdit.getUsername());
+        }
+        if (userEdit.getLastname() != null) {
+            user.setLastname(userEdit.getLastname());
+        }
+        if (userEdit.getDateOfBirth() != null) {
+            user.setDateOfBirth(userEdit.getDateOfBirth());
+        }
+        if (userEdit.getPassword() != null) {
+            user.setDateOfBirth(userEdit.getDateOfBirth());
+        }
+        if (userEdit.getEmail() != null) {
+            user.setEmail(userEdit.getEmail());
+        }
+        if (userEdit.getPassword() != null) {
+            user.setPassword(userEdit.getPassword());
+        }
+        if (userEdit.isIsEmployee() != null) {
+            user.setIsEmployee(userEdit.isIsEmployee());
+        }
+        if (userEdit.isIsCustomer() != null) {
+            user.setIsCustomer(userEdit.isIsCustomer());
+        }
 
-        //save user to db with updated data
         userRepository.save(user);
         return HttpStatus.OK;
     }

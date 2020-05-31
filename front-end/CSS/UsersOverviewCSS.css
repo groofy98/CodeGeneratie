@@ -99,7 +99,7 @@ th {
     width: 7vw;
 }
 
-.users form input[type=submit]{
+.users button{
     position: absolute;
     width: 9vw;
     padding-top: 0.5vw;
@@ -133,11 +133,17 @@ th {
 }
 
 #editUser{
-    height: 25vw;
+    height: 30vw;
     top: 25vw;
 }
 
 #deactivateUser{
     height: 9vw;
     margin-bottom: 10vw;
-    top: 52vw;
+    top: 56vw;
+}
+
+#explanation{
+    margin-left: 12vw;
+}
+

@@ -2,6 +2,8 @@ package io.swagger.model;
 
 import java.util.Date;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
@@ -23,25 +25,25 @@ public class User   {
   @JsonProperty("id")
   @SequenceGenerator(name = "user_seq", initialValue = 100001)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-  private Long id = null;
+  private Long id;
 
   @JsonProperty("firstname")
-  private String firstname = null;
+  private String firstname;
 
   @JsonProperty("lastname")
-  private String lastname = null;
+  private String lastname;
 
   @JsonProperty("email")
-  private String email = null;
+  private String email;
 
   @JsonProperty("username")
-  private String username = null;
+  private String username;
 
   @JsonProperty("password")
-  private String password = null;
+  private String password;
 
   @JsonProperty("dateOfBirth")
-  private Date dateOfBirth = null;
+  private Date dateOfBirth;
 
   @JsonProperty("isEmployee")
   private Boolean isEmployee = false;
@@ -96,7 +98,6 @@ public class User   {
    * @return firstname
   **/
   @ApiModelProperty(example = "John", required = true, value = "")
-      @NotNull
 
     public String getFirstname() {
     return firstname;
@@ -116,7 +117,6 @@ public class User   {
    * @return lastname
   **/
   @ApiModelProperty(example = "Doe", required = true, value = "")
-      @NotNull
 
     public String getLastname() {
     return lastname;
@@ -136,7 +136,6 @@ public class User   {
    * @return email
   **/
   @ApiModelProperty(example = "JohnDoe@example.com", required = true, value = "")
-      @NotNull
 
     public String getEmail() {
     return email;
@@ -156,7 +155,6 @@ public class User   {
    * @return username
   **/
   @ApiModelProperty(example = "Johnny69", required = true, value = "")
-      @NotNull
 
     public String getUsername() {
     return username;
@@ -165,6 +163,7 @@ public class User   {
   public void setUsername(String username) {
     this.username = username;
   }
+
 
   public User password(String password) {
     this.password = password;
@@ -175,12 +174,9 @@ public class User   {
    * Get password
    * @return password
   **/
-  @ApiModelProperty(example = "John123!", required = true, value = "")
-      @NotNull
 
-    public String getPassword() {
-    return password;
-  }
+  @ApiModelProperty(example = "John123!", required = true, value = "")
+    public String getPassword() { return password; }
 
   public void setPassword(String password) {
     this.password = password;
@@ -195,8 +191,7 @@ public class User   {
    * Get dateOfBirth
    * @return dateOfBirth
   **/
-  @ApiModelProperty(example = "Mon Oct 17 00:00:00 GMT 7", required = true, value = "")
-      @NotNull
+  @ApiModelProperty(example = "Mon Oct 17 00:00:00 GMT 7", required = false, value = "")
 
     @Valid
     public Date getDateOfBirth() {
@@ -217,7 +212,6 @@ public class User   {
    * @return isEmployee
   **/
   @ApiModelProperty(example = "false", required = true, value = "")
-      @NotNull
 
     public Boolean isIsEmployee() {
     return isEmployee;
@@ -237,7 +231,6 @@ public class User   {
    * @return isCustomer
   **/
   @ApiModelProperty(example = "true", required = true, value = "")
-      @NotNull
 
     public Boolean isIsCustomer() {
     return isCustomer;
@@ -257,7 +250,7 @@ public class User   {
    * @return isActive
   **/
   @ApiModelProperty(example = "true", value = "")
-  
+
     public Boolean isIsActive() {
     return isActive;
   }

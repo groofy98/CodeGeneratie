@@ -39,10 +39,11 @@ public class UsersApiController implements UsersApi {
         this.userService = userService;
     }
 
-    public ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") String id
+    public ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") Long id
 ) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        HttpStatus httpStatus = userService.deactivateUser(id);
+        return new ResponseEntity<Void>(httpStatus);
     }
 
     public ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
@@ -73,7 +74,7 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<User> searchUser(@ApiParam(value = "user ID",required=true) @PathVariable("id") Integer id
+    public ResponseEntity<User> searchUser(@ApiParam(value = "user ID",required=true) @PathVariable("id") Long id
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
@@ -102,12 +103,11 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<List<User>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> updateUser(@ApiParam(value = "Updated user object", required = true) @Valid @RequestBody User body
-            , @ApiParam(value = "id of user that needs to be updated", required = true) @PathVariable("userId") Integer
-                                                     userId
+    public ResponseEntity<Void> updateUser(@ApiParam(value = "Updated user object", required = false) @Valid @RequestBody User body
+            , @ApiParam(value = "id of user that needs to be updated", required = true) @PathVariable("id") Long id
     ) {
         String accept = request.getHeader("Accept");
-        HttpStatus httpStatus = userService.updateUser(userId, body);
+        HttpStatus httpStatus = userService.updateUser(id, body);
         return new ResponseEntity<Void>(httpStatus);
     }
 }
