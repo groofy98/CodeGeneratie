@@ -51,7 +51,7 @@ public class TransactionService {
     }
 
     // Check for transaction type and legality
-    public Transaction.TransactionTypeEnum getTransactionType(String accountTo, String accountFrom){
+    public Transaction.TransactionTypeEnum getTransactionType(String accountFrom, String accountTo){
 
         // Check if transaction isn't to self
         if (accountTo.equals(accountFrom))
@@ -61,14 +61,14 @@ public class TransactionService {
         Account from = accountService.getAccountById(accountFrom);
 
         // Check if transaction is a withdraw
-        if (from.getAccountType() == Account.AccountTypeEnum.SAVING){
+        if (to.getAccountType() == Account.AccountTypeEnum.SAVING){
             if (from.getAccountHolder().equals(to.getAccountHolder()))
                 return Transaction.TransactionTypeEnum.DEPOSIT;
             else
                 throw new IllegalArgumentException("Can't transfer from savings account to someone else");
         }
         // Check if transaction is a deposit
-        if (to.getAccountType() == Account.AccountTypeEnum.SAVING){
+        if (from.getAccountType() == Account.AccountTypeEnum.SAVING){
             if (from.getAccountHolder().equals(to.getAccountHolder()))
                 return Transaction.TransactionTypeEnum.WITHDRAW;
             else
