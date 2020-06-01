@@ -54,7 +54,7 @@
 
   function getAccount(accountId) {
     $.ajax({
-      url: "http://localhost:8080/Api/0.1/account/" + accountId + "/details",
+      url: "account/" + accountId + "/details",
       type: "GET",
       crossDomain: true,
       headers: {
@@ -86,9 +86,9 @@
   // fill the html table with a list of transactions
   function populateTransactionTable(transactions = []) {
     transactions.forEach((transaction, index) => {
-      console.log(transactions.date);      
+      console.log(transactions.date);
       let date = new Date(transaction.date);
-      console.log(date);       
+      console.log(date);
       $("#transactionTable").append(
         "<tr>" +
         "<td>" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "</td>" +
@@ -107,7 +107,7 @@
   function GetTransactions(accountId = "") {
     var transactions = [];
     $.ajax({
-      url: 'http://localhost:8080/Api/0.1/account/' + accountId + '/transactions',
+      url: 'account/' + accountId + '/transactions',
       type: "GET",
       async: false,
       contentType: "application/json",
@@ -130,7 +130,7 @@
   function GetBalance(id) {
     var balance = "";
     $.ajax({
-      url: 'http://localhost:8080/Api/0.1/account/balance/' + id,
+      url: 'account/balance/' + id,
       type: "GET",
       async: false,
       contentType: "application/json",

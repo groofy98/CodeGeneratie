@@ -52,7 +52,7 @@
         account["password"] = password;
         account = JSON.stringify(account);
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/login',
+            url: 'users/login',
             type: "POST",
             data: account,
             crossDomain: true,

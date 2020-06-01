@@ -131,7 +131,7 @@
         account["accountType"] = accountType;
         account = JSON.stringify(account);
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/account/register',
+            url: 'account/register',
             type: "POST",
             contentType: "application/json",
             data: account,
@@ -146,7 +146,7 @@
 
     function deactiveateAccount(id) {
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/account/' + id + '/deactivate',
+            url: 'account/' + id + '/deactivate',
             type: "PUT",
             async: false,
             contentType: "application/json",
@@ -169,7 +169,7 @@
         alert(account);
 
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/account/' + id + '/details',
+            url: 'account/' + id + '/details',
             type: "PUT",
             async: false,
             contentType: "application/json",
@@ -188,7 +188,7 @@
     function getUser(id) {
         var name = "";
         $.ajax({
-            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+            url: 'users/' + id,
             type: "GET",
             async: false,
             contentType: "application/json",

@@ -67,13 +67,13 @@
     transaction["transactionType"] = "transfer";
     transaction = JSON.stringify(transaction);
     $.ajax({
-      url: "http://localhost:8080/Api/0.1/transactions",
+      url: "transactions",
       method: "POST",
       contentType: "application/json; charset=utf-8",
       data: transaction,
       success: function (result) {
         alert("Transaction succesfull");
-        window.location.href = "transactions.html";
+        window.location.href = "transactionView.html";
       },
       error: function (error) {
         console.log(error);
@@ -83,7 +83,7 @@
 
   function getAccount() {
     $.ajax({
-      url: "http://localhost:8080/Api/0.1/account/" + sessionStorage.getItem('activeAccount') + "/details",
+      url: "account/" + sessionStorage.getItem('activeAccount') + "/details",
       type: "GET",
       crossDomain: true,
       headers: {
@@ -114,7 +114,7 @@
   function GetBalance(id) {
     var balance = "";
     $.ajax({
-      url: 'http://localhost:8080/Api/0.1/account/balance/' + id,
+      url: 'account/balance/' + id,
       type: "GET",
       async: false,
       contentType: "application/json",

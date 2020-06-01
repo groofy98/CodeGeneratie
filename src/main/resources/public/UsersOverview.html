@@ -181,7 +181,7 @@
         }
 
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/' + id,
+            url: 'users/' + id,
             type: "PUT",
             async: false,
             crossDomain: true,
@@ -201,7 +201,7 @@
 
     function deactivateUser(id) {
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/' + id + '/deactivate',
+            url: 'users/' + id + '/deactivate',
             type: "PUT",
             async: false,
             contentType: "application/json",

@@ -85,7 +85,7 @@
         account = JSON.stringify(account);
 
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/register',
+            url: 'users/register',
             type: "POST",
             data: account,
             crossDomain: true,
