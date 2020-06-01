@@ -36,7 +36,7 @@ public class TransactionService {
 
     // Get a single transaction by transactionId
     public Transaction getTransactionById(long id){
-        return transactionRepository.findOne(id);
+        return null;
     }
 
     // Add a transaction to the database
