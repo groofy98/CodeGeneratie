@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="CSS/GlobalCSS.css">
+  <link rel="stylesheet" href="CSS/TransactionCSS.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>DankBank</title>
+</head>
+
+<body>
+  <nav>
+    <a href="HomePage.html"><img src="Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <div class="account">
+      <button id="LogOff" type="button" name="button">LogOff</button>
+      <a id="accountDetails" href="#">T.Alberts</a>
+    </div>
+  </nav>
+  <button class="transfer" onclick="linkToTransfer()" type="button" name="button">Transfer money</button>
+  <!-- dit is voor het hele kopje betaalrekening of spaarreking -->
+  <section class="container" id="deposit">
+    <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
+    <p class="header">Account</p>
+    <div class="accountContainer" id="accountContainer">
+
+    </div>
+  </section>
+  <section class="container" id="saving">
+    <p class="header">Transactions</p>
+    <div class="transactionContainer" id="transactionContainer">
+      <table id="transactionTable">
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+          <th>To</th>
+          <th>From</th>
+          <th>Amount</th>
+        </tr>
+      </table>
+    </div>
+  </section>
+</body>
+
+</html>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var accountId = sessionStorage.getItem('activeAccount');
+    var transactions = GetTransactions(accountId);
+    populateTransactionTable(transactions);
+    getAccount(accountId);
+  });
+
+  function getAccount(accountId) {
+    $.ajax({
+      url: "account/" + accountId + "/details",
+      type: "GET",
+      crossDomain: true,
+      headers: {
+        "Accept": "application/json",
+      },
+      contentType: "application/json",
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+        SortAccounts(data);
+      },
+      error: function (error) {
+        console.log(`Error ${error}`);
+      },
+    });
+  }
+
+  function SortAccounts(account) {
+    var balance = GetBalance(account.AccountID);
+    var name = GetUser(account.AccountHolder);
+    $("#accountContainer").append("    <div id=\"2\" class=\"account\">\n" +
+      "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
+      "        <a class=\"number\" href=\"#\">" + account.AccountID + "</a>\n" +
+      "        <a class=\"amount\" href=\"#\"> €" + balance + "</a>\n" +
+      "    </div>");
+
+  }
+
+  // fill the html table with a list of transactions
+  function populateTransactionTable(transactions = []) {
+    transactions.forEach((transaction, index) => {
+      console.log(transactions.date);
+      let date = new Date(transaction.date);
+      console.log(date);
+      $("#transactionTable").append(
+        "<tr>" +
+        "<td>" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "</td>" +
+        "<td>" + transaction.transactionType + "</td>" +
+        "<td>" + transaction.accountTo + "</td>" +
+        "<td>" + transaction.accountFrom + "</td>" +
+        "<td>€" + transaction.amount + "</td>" +
+        "</tr>"
+      )
+    });
+
+
+
+  }
+  // Get a list of transactions with corresponding account Id
+  function GetTransactions(accountId = "") {
+    var transactions = [];
+    $.ajax({
+      url: 'account/' + accountId + '/transactions',
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      headers: {
+        "Accept": "application/json",
+      },
+      dataType: "json",
+      success: function (data) {
+        transactions = data;
+        console.log(data);
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+    return transactions;
+  }
+
+
+  function GetBalance(id) {
+    var balance = "";
+    $.ajax({
+      url: 'account/balance/' + id,
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      headers: {
+        "Accept": "application/json",
+      },
+      dataType: "json",
+      success: function (data) {
+        balance = data.amount;
+        console.log(data);
+      },
+      error: function (error) {
+        console.log(error);
+        balance = "-";
+      }
+    });
+    return balance;
+  }
+
+  function GetUser(id) {
+    var name = "";
+    $.ajax({
+      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+      type: "GET",
+      async: false,
+      contentType: "application/json",
+      dataType: "json",
+      success: function (data) {
+        name = data;
+      },
+      error: function (error) {
+        name = "-";
+      }
+    });
+    return name;
+  }
+
+  function linkToTransfer() {
+    window.location.href = "transfer.html";
+  }
+
+
+  //   var api_url = 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1';
+  //     //var key = '5b578yg9yvi8sogirbvegoiufg9v9g579gviuiub8' // not real
+  //     $.ajax({
+  //         url: api_url,
+  //         contentType: "application/json",
+  //         dataType: 'json',
+  //         success: function (result) {
+  //           var result = JSON.parse(result);
+  //             alert(result);
+  //         }
+  //     });
+  // });
+</script>

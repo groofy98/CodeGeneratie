@@ -1,0 +1,143 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #1F4068;
+  color: white;
+}
+
+#tableBox {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 15%;
+}
+
+#buttonContainer{
+    position: absolute;
+    top: 10vw;
+    left: 10%;
+    width: 80%;
+}
+
+#buttonContainer button{
+    width: 30%;
+    background-color: #162447;
+    color: white;
+    font-size: 1.5vw;
+    border: none;
+    border-radius: 0.6vw;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    margin-left: 2vw;
+}
+
+.users{
+    margin: 0vw;
+    padding: 0vw;
+    position: absolute;
+    top: 0vw;
+    left: 10%;
+    width: 80%;
+    border: 0.1vw solid #303030;
+    border-radius: 0.8vw;
+    height: 18vw;
+}
+
+.users .userContainer{
+    height: 10.5vw;
+    overflow-y: scroll;
+}
+
+.users .header{
+    font-family: 'Merriweather', serif;
+    display: block;
+    position: relative;
+    top: 0;
+    margin-top: 0;
+    width: calc(100% - 2vw);
+    background-color: #162447;
+    font-size: 2vw;
+    color: white;
+    border-radius: 0.6vw 0.6vw 0 0;
+    margin-bottom: 0.5vw;
+    padding: 1vw 0 1vw 2.2vw;
+}
+
+.users form div{
+    display: block;
+    width: 70vw;
+}
+
+.users form div label{
+    width: 18vw;
+    display: inline-block;
+    text-align: right;
+    margin-bottom: 1vw;
+    font-size: 1.5vw;
+}
+.user form div input{
+    width: 30vw;
+    display: inline-block;
+    font-size: 1.5vw;
+    border: none;
+    border-bottom: 0.1vw solid #162447;
+    background: none;
+    font-family: sans-serif;
+    margin-left: 1vw;
+}
+
+.users form div input[type=number]{
+    width: 7vw;
+}
+
+.users form input[type=submit]{
+    position: absolute;
+    width: 9vw;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
+    border-radius: 0.8vw;
+    right: 1vw;
+    bottom: 1vw;
+    border: none;
+    background-color: #1F4068;
+    color: white;
+    font-size: 1.5vw;
+    text-align: center;
+    cursor: pointer;
+}
+
+.users form div select{
+    margin-left: 1vw;
+    width: 12vw;
+    border: none;
+    border-bottom: 0.1vw solid #162447;
+    font-size: 1.5vw;
+    background: none;
+}
+
+#deactivateUserSubmit{
+    background-color: #E43F5A;
+}
+
+#newUser{
+    height: 14vw;
+}
+
+#editUser{
+    height: 25vw;
+    top: 25vw;
+}
+
+#deactivateUser{
+    height: 9vw;
+    margin-bottom: 10vw;
+    top: 52vw;
