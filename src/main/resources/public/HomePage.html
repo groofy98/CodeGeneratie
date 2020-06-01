@@ -2,14 +2,14 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../CSS/HomePageCSS.css">
+    <link rel="stylesheet" href="CSS/HomePageCSS.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>DankBank</title>
 </head>
 <body>
 <nav>
-    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <a href="HomePage.html"><img src="Assets/DankBank2.png" alt="Logo, Back to Home"></a>
     <div class="account">
         <button onclick="LogOff()" id="LogOff" type="button" name="button">LogOff</button>
         <a id="accountDetails" href="#">T.Alberts</a>
@@ -130,7 +130,7 @@
 
     function linkToTransaction(id){
             sessionStorage.setItem('activeAccount', id);
-            window.location.href = "transactions.html";
+            window.location.href = "transactionView.html";
     }
 
     //   var api_url = 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1';
