@@ -23,9 +23,11 @@ public class AuthToken   {
   @Id
   @JsonProperty("authToken")
   private String authToken = null;
+  private Long userId = null;
 
-  public AuthToken authToken(String authToken) {
+  public AuthToken authToken(String authToken, Long userId) {
     this.authToken = authToken;
+    this.userId = userId;
     return this;
   }
 
@@ -44,6 +46,13 @@ public class AuthToken   {
     this.authToken = authToken;
   }
 
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
 
   @Override
   public boolean equals(java.lang.Object o) {

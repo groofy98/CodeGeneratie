@@ -34,18 +34,19 @@ public class UserService {
 
     //TODO: make actual auth token; currently returns a hardcoded one (b15938252a78)
     public AuthToken loginUser(User userInfo) {
-        AuthToken authToken = new AuthToken();
-        String enteredEmail = userInfo.getEmail();
-        String enteredPassword = userInfo.getPassword();
-        User user = userRepository.findUserByEmail(enteredEmail);
+            AuthToken authToken = new AuthToken();
+            String enteredEmail = userInfo.getEmail();
+            String enteredPassword = userInfo.getPassword();
+            User user = userRepository.findUserByEmail(enteredEmail);
 
-        if (user.getEmail().toLowerCase().equals(enteredEmail.toLowerCase()) && user.getPassword().equals(enteredPassword)){
-            authToken.setAuthToken("b15938252a78");
-        } else {
-            System.err.println("Login failed"); //For testing - remove later
-            authToken.setAuthToken(null);
-        }
-        return authToken;
+            if (user.getEmail().toLowerCase().equals(enteredEmail.toLowerCase()) && user.getPassword().equals(enteredPassword)){
+                authToken.setAuthToken("b15938252a78");
+                authToken.setUserId(user.getId()); //set user ID in authtoken object
+            } else {
+                System.err.println("Login failed"); //For testing - remove later
+                authToken.setAuthToken(null);
+            }
+            return authToken;
     }
 
     public HttpStatus createUser(User givenUser){
