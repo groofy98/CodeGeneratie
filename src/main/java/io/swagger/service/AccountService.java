@@ -28,63 +28,97 @@ public class AccountService {
 
     private static final Logger log = LoggerFactory.getLogger(AccountApiController.class);
 
-    AccountService() {
-
-    }
-
     public Account getAccountById(String id) {
-        Account mockAccount = new Account("NL47INHO0000000069", (long) 0, (long) 123456789, Account.AccountTypeEnum.SAVING, true);
         try {
             Account account = accountRepository.findByaccountID(id);
             return account;
-        }
-        catch (Exception e){
-            return mockAccount;
+        } catch (Exception e) {
+            log.error("Error whilst getting an account via IBAN:" + e);
+            return null;
         }
     }
 
     public List<Account> getAccountsByUserId(long userId) {
-        return accountRepository.findByaccountHolder(userId);
+        try {
+            return accountRepository.findByaccountHolder(userId);
+        } catch (Exception e) {
+            log.error("Error whilst getting an account via a user:" + e);
+            return null;
+        }
     }
 
     public HttpStatus createAccount(Account givenAccount) {
-        //make new random
-        Random random = new Random();
+        try {
+            //make new random
+            Random random = new Random();
 
-        // format the new iban
-        //this makes bijv. NL03INHO
-        String newAccountId = "NL" + String.format("%02d", random.nextInt(99)) + "INHO";
+            // format the new iban
+            //this makes bijv. NL03INHO
+            String newAccountId = "NL" + String.format("%02d", random.nextInt(99)) + "INHO";
 
-        //this will make bijv. NL03INHO0000000023
-        newAccountId += String.format("%010d", accountRepository.count() + 2);
+            //this will make bijv. NL03INHO0000000023
+            newAccountId += String.format("%010d", accountRepository.count() + 2);
 
-        //create new account
-        Account account = new Account(newAccountId, givenAccount.getAbsoluteLimit(), givenAccount.getAccountHolder(), givenAccount.getAccountType(), true);
-        //add accounts to DB
-        accountRepository.save(account);
+            //create new account
+            Account account = new Account(newAccountId, givenAccount.getAbsoluteLimit(), givenAccount.getAccountHolder(), givenAccount.getAccountType(), true);
+            //add accounts to DB
+            accountRepository.save(account);
 
-        //create balance for object
-        createBalance(newAccountId);
+            //create balance for object
+            HttpStatus status = createBalance(newAccountId);
 
-        return HttpStatus.CREATED;
+            //check if creating a balance went well
+            if (status != HttpStatus.INTERNAL_SERVER_ERROR)
+                return HttpStatus.CREATED;
+            else
+                return HttpStatus.INTERNAL_SERVER_ERROR;
+        } catch (Exception e) {
+            log.error("Error whilst creating a new");
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
 
-    public void createBalance(String accountId) {
-        balanceRepository.save(new Balance(accountId, new BigDecimal("0.00")));
+    public HttpStatus createBalance(String accountId) {
+        try {
+            //check if the account exists
+            if (getAccountById(accountId) != null) {
+                //try creating the account, else return error
+                balanceRepository.save(new Balance(accountId, new BigDecimal("0.00")));
+                return HttpStatus.CREATED;
+            } else {
+                log.error("Error whilst creating balance, account does not exist");
+                return HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        } catch (Exception e) {
+            log.error("Error whilst creating balance" + e);
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
 
     public HttpStatus deactivateAccount(String accountId) {
-        Account account = accountRepository.findByaccountID(accountId);
-        account.setIsActive(false);
-        accountRepository.save(account);
-        return HttpStatus.OK;
+        try {
+            Account account = accountRepository.findByaccountID(accountId);
+            account.setIsActive(false);
+            accountRepository.save(account);
+            return HttpStatus.OK;
+        }
+        catch (Exception e){
+            log.error("Error whilst deactivating account" + e);
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
 
     public HttpStatus updateAccount(String accountId, Account newAccount) {
-        Account account = accountRepository.findByaccountID(accountId);
-        account.setAbsoluteLimit(newAccount.getAbsoluteLimit());
-        account.setAccountType(newAccount.getAccountType());
-        accountRepository.save(account);
-        return HttpStatus.OK;
+        try {
+            Account account = accountRepository.findByaccountID(accountId);
+            account.setAbsoluteLimit(newAccount.getAbsoluteLimit());
+            account.setAccountType(newAccount.getAccountType());
+            accountRepository.save(account);
+            return HttpStatus.OK;
+        }
+        catch (Exception e){
+            log.error("Error whilst deactivating account" +e);
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
 }

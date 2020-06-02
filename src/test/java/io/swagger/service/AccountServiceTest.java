@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import javax.validation.constraints.AssertTrue;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,26 +30,52 @@ class AccountServiceTest {
     @MockBean
     AccountRepository accountRepository;
 
-    Account account1;
-    Account account2;
-
     @BeforeEach
     public void setUp() {
         accountService = new AccountService();
-        account1 = new Account("NL42INHO0000000002", (long) -100, (long) 123456789, Account.AccountTypeEnum.CURRENT, true);
-//        account2 = new Account("NL42INHO0000000003", (long) -0, (long) 123456789, Account.AccountTypeEnum.SAVING, true);
-
-//        Mockito.when(accountRepository.findByaccountID("NL42INHO0000000002"))
-//                .thenReturn(account1);
-//        Mockito.when(transactionRepository.findByAccountToOrderByDateDesc("NL42INHO0000000002"))
-//                .thenReturn(Arrays.asList(new Transaction(BigDecimal.valueOf(97777), "NL42INHO0000000003", "NL42INHO0000000002", (long) 5, Transaction.TransactionTypeEnum.DEPOSIT)));
-    }
+}
 
     @Test
     public void GetNullWhenAccountDoesNotExist(){
-        Account account = accountService.getAccountById("NL42INHO0000000004");
+        Account account = accountService.getAccountById("invalid_IBAN");
+        assertNull(account);
         System.out.println(account);
     }
+
+    @Test
+    public void GetNullWhenUserDoesNotExist(){
+        List<Account> accountList = accountService.getAccountsByUserId(0);
+        assertNull(accountList);
+        System.out.println(accountList);
+    }
+
+    @Test
+    public void GetHttpErrorWhenAccountCannotBeMade(){
+        Account account = new Account("NL42INHO000000002", (long) 0, (long) 0, Account.AccountTypeEnum.SAVING, true);
+        HttpStatus status = accountService.createAccount(account);
+        assertSame(status, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    public void GetHttpErrorWhenBalanceCannotBeMade(){
+        HttpStatus status = accountService.createBalance("hoihoi");
+        assertSame(status, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    public void GetHttpErrorWhenDeactivateIsUnsuccessful(){
+        HttpStatus status = accountService.deactivateAccount("hoihoi");
+        assertSame(status, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    public void GetHttpErrorWhenUpdateIsUnsuccessful(){
+        Account account = new Account("NL42INHO000000002", (long) 0, (long) 0, Account.AccountTypeEnum.SAVING, true);
+
+        HttpStatus status = accountService.updateAccount("hoihoi", account);
+        assertSame(status, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 //    @Test
 //    void multiplicationOfZeroIntegersShouldReturnZero() {
