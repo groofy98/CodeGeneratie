@@ -12,6 +12,14 @@ public class UserDetail implements UserDetails {
 
     private String userName;
 
+    private User user;
+
+    private String password;
+
+    private Collection<SimpleGrantedAuthority> authorities;
+
+    private boolean active;
+
     public UserDetail(String userName) {
         this.userName = userName;
     }
@@ -19,15 +27,31 @@ public class UserDetail implements UserDetails {
     public UserDetail() {
     }
 
+    public UserDetail(User user) {
+        this.user = user;
+        this.userName = user.getEmail();
+        this.password = user.getPassword();
+        this.authorities = new ArrayList<>();
+        if (user.isIsCustomer())
+            authorities.add(new SimpleGrantedAuthority("USER"));
+        if (user.isIsEmployee())
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        this.active = user.isIsActive();
+    }
+
+    public User getUser(){
+        return user;
+    }
+
     // Returns the authorisation a user has
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("USER"));
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return "pass";
+        return password;
     }
 
     @Override
@@ -42,7 +66,7 @@ public class UserDetail implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return active;
     }
 
     @Override
@@ -52,6 +76,6 @@ public class UserDetail implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 }
