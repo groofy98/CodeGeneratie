@@ -69,11 +69,6 @@ public class User   {
     this.isActive = isActive;
   }
 
-  public User id(Long id) {
-    this.id = id;
-    return this;
-  }
-
   /**
    * Get id
    * @return id
@@ -88,10 +83,6 @@ public class User   {
     this.id = id;
   }
 
-  public User firstname(String firstname) {
-    this.firstname = firstname;
-    return this;
-  }
 
   /**
    * Get firstname
@@ -105,11 +96,6 @@ public class User   {
 
   public void setFirstname(String firstname) {
     this.firstname = firstname;
-  }
-
-  public User lastname(String lastname) {
-    this.lastname = lastname;
-    return this;
   }
 
   /**
@@ -126,11 +112,6 @@ public class User   {
     this.lastname = lastname;
   }
 
-  public User email(String email) {
-    this.email = email;
-    return this;
-  }
-
   /**
    * Get email
    * @return email
@@ -143,11 +124,6 @@ public class User   {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public User username(String username) {
-    this.username = username;
-    return this;
   }
 
   /**
@@ -164,12 +140,6 @@ public class User   {
     this.username = username;
   }
 
-
-  public User password(String password) {
-    this.password = password;
-    return this;
-  }
-
   /**
    * Get password
    * @return password
@@ -180,11 +150,6 @@ public class User   {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public User dateOfBirth(Date dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-    return this;
   }
 
   /**
@@ -202,11 +167,6 @@ public class User   {
     this.dateOfBirth = dateOfBirth;
   }
 
-  public User isEmployee(Boolean isEmployee) {
-    this.isEmployee = isEmployee;
-    return this;
-  }
-
   /**
    * Get isEmployee
    * @return isEmployee
@@ -221,11 +181,6 @@ public class User   {
     this.isEmployee = isEmployee;
   }
 
-  public User isCustomer(Boolean isCustomer) {
-    this.isCustomer = isCustomer;
-    return this;
-  }
-
   /**
    * Get isCustomer
    * @return isCustomer
@@ -238,11 +193,6 @@ public class User   {
 
   public void setIsCustomer(Boolean isCustomer) {
     this.isCustomer = isCustomer;
-  }
-
-  public User isActive(Boolean isActive) {
-    this.isActive = isActive;
-    return this;
   }
 
   /**
@@ -316,3 +266,4 @@ public class User   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+
