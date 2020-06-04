@@ -1,8 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.model.Account;
-import io.swagger.model.Balance;
-import io.swagger.model.Transaction;
+import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.service.AccountService;
@@ -12,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -118,6 +117,9 @@ public class AccountApiController implements AccountApi {
                     , @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", allowableValues = "", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             ) {
         String accept = request.getHeader("Accept");
+        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) bla).getUser();
+        System.out.println(user.getEmail());
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<List<Transaction>>(this.transactionService.getAllTransactionsById(accountId), HttpStatus.OK);
