@@ -4,7 +4,6 @@ import io.swagger.dao.AccountRepository;
 import io.swagger.dao.TransactionRepository;
 import io.swagger.model.Account;
 import io.swagger.model.Transaction;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

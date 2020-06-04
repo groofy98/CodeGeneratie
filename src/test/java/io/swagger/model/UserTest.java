@@ -1,6 +1,5 @@
 package io.swagger.model;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,9 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class UserTest {
@@ -30,7 +27,6 @@ public class UserTest {
     }
 
     @Test
-    @Before
     public void createUserShouldNotBeNull() {
         assertNotNull(user);
     }
@@ -48,12 +44,11 @@ public class UserTest {
     }
 
     @Test
-    @Before
     public void getFirstnameShouldNotReturnNull(){
         assertNotNull(user.getFirstname());
     }
+
     @Test
-    @Before
     public void setFirstName(){
         String name = "firstname";
         user.setFirstname(name);
@@ -154,7 +149,6 @@ public class UserTest {
         assertEquals(user.isIsActive(), false);
     }
 
-    @Before
     @Test
     void testEqualsReturnsBoolean() {
         Boolean bool = user.equals(user);
