@@ -5,10 +5,13 @@ import io.swagger.dao.AccountRepository;
 import io.swagger.dao.BalanceRepository;
 import io.swagger.model.Account;
 import io.swagger.model.Balance;
+import io.swagger.model.User;
+import io.swagger.model.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -39,6 +42,11 @@ public class AccountService {
     }
 
     public List<Account> getAccountsByUserId(long userId) {
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) userDetails).getUser();
+        user.getId();
+
+
         try {
             return accountRepository.findByaccountHolder(userId);
         } catch (Exception e) {

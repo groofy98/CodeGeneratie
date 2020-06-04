@@ -33,14 +33,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/account/**").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/HomePage.html").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers(HttpMethod.GET,"/users/**").hasAnyAuthority("ADMIN", "USER")
                 .and()
                 .formLogin()
+                .loginPage("/login.html")
                 .loginProcessingUrl("/perform_login")
                 .defaultSuccessUrl("/HomePage.html", false)
                 .permitAll()
-                .and()
-                .httpBasic()
+
+
 
         ;
 
