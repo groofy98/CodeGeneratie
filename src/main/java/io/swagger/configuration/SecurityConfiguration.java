@@ -3,6 +3,7 @@ package io.swagger.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,13 +32,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/account/**").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/**").hasAnyAuthority("ADMIN", "USER")
-                .anyRequest().authenticated()
+                .antMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET,"/users/**").hasAnyAuthority("ADMIN", "USER")
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/perform_login")
                 .defaultSuccessUrl("/HomePage.html", false)
                 .permitAll()
+                .and()
+                .httpBasic()
 
         ;
 
