@@ -31,7 +31,7 @@ public class TransactionService {
     private BalanceService balanceService;
 
     // No Args constructor
-    private TransactionService(){
+    TransactionService(){
     }
 
     // Get a single transaction by transactionId

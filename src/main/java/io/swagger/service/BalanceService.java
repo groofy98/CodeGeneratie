@@ -15,7 +15,7 @@ public class BalanceService {
     @Autowired
     private BalanceRepository balanceRepository;
 
-    private BalanceService() {
+    BalanceService() {
 
     }
 

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +53,6 @@ public class AccountApiController implements AccountApi {
     }
 
     public ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String accountId) {
-        System.out.println("tot hier komt ie: "+accountId);
         HttpStatus httpStatus = accountService.deactivateAccount(accountId);
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(httpStatus);
