@@ -35,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/HomePage.html").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/Users.Overview/**").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET,"/users/**").hasAnyAuthority("ADMIN", "USER")
                 .and()
                 .httpBasic()

@@ -147,3 +147,14 @@ th {
     margin-left: 12vw;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+}
+
+#register{
+    margin-left: 10%;
+    margin-top: 50%;
+    margin-bottom: 5%;
+}
+

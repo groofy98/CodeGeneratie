@@ -18,7 +18,7 @@
 </nav>
   <form id = "registerForm" action="#">
         <header id = "registerHeader">
-            <h3>Register account</h3>
+            <h3>Register Customer Account</h3>
         </header>
         <section class="formGroup">
             <p><b>first name:</b></p>
@@ -48,7 +48,6 @@
             <p><b>repeat password:</b></p>
             <input type="password" placeholder="repeat password" id="passwordRepeat"></input>
         </section>
-      <p><input type="checkbox" id="isCustomer" name="isCustomer" value="isCustomer"></input> Customer account</p>
         <section class="formGroup">
             <button type="submit" id="registerSubmit"><b>sign up</b></button>
         </section >
@@ -84,9 +83,7 @@
                 account["email"] = email;
                 account["dateOfBirth"] = dateOfBirth;
                 account["password"] = password;
-                if (checkBox.checked == true){
-                    account["isCustomer"] = true;
-                }
+                account["isCustomer"] = true;
                 account = JSON.stringify(account);
 
                 $.ajax({
