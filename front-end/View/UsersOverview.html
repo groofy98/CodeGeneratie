@@ -141,7 +141,7 @@
     function findUser(id) {
         var name = "";
         $.ajax({
-            url: 'http://localhost:8080/Api/0.1/users/' + id,
+            url: '/users/' + id,
             type: "GET",
             async: false,
             contentType: "application/json",

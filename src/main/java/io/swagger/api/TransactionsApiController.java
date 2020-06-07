@@ -38,9 +38,12 @@ public class TransactionsApiController implements TransactionsApi {
         this.transactionService = transactionService;
     }
 
+    //TODO change return type ApiResponseMessage instead of void
     public ResponseEntity<Void> createTransaction(@ApiParam(value = "Transaction object that needs to be added" ,required=true )  @Valid @RequestBody Transaction body
 ) {
         String accept = request.getHeader("Accept");
+        // Check if currently logged in user can acces this account
+        transactionService.checkTransactionAuthorized(body);
         // Set transaction type and check validity
         body.setTransactionType(transactionService.getTransactionType(body.getAccountFrom(), body.getAccountTo()));
         // Check account limitations
@@ -49,7 +52,10 @@ public class TransactionsApiController implements TransactionsApi {
         transactionService.checkTransactionLimits(body);
         // All ok and adding the transaction to the database an returning http status 201/created
         transactionService.addTransaction(body);
+
         return new ResponseEntity<Void>(HttpStatus.CREATED);
+
+
     }
 
     public ResponseEntity<Transaction> getTransactionById(@ApiParam(value = "Id of transaction to return",required=true) @PathVariable("transactionId") Long transactionId

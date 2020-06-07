@@ -48,8 +48,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/perform_login")
                 .defaultSuccessUrl("/HomePage.html", false)
                 .permitAll()
-
-
+                .and()
+                .logout()
+                .logoutUrl("/perform_logout")
+                .deleteCookies("JSESSIONID")
+                .permitAll();
 
         ;
 
