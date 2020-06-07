@@ -1,12 +1,15 @@
 package io.swagger.service;
 
+import io.swagger.api.NotFoundException;
 import io.swagger.dao.BalanceRepository;
 import io.swagger.dao.TransactionRepository;
-import io.swagger.model.Account;
-import io.swagger.model.Balance;
-import io.swagger.model.Transaction;
+import io.swagger.model.*;
 import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,6 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,7 +40,27 @@ public class TransactionService {
 
     // Get a single transaction by transactionId
     public Transaction getTransactionById(long id){
-        return null;
+        return transactionRepository.findById((id));
+    }
+
+    // Check if user has access to account
+    public boolean checkAuthorized(String accountId){
+        Account account = accountService.getAccountById(accountId);
+        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) bla).getUser();
+        if (! account.getAccountHolder().equals(user.getId()) && !((UserDetail) bla).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
+            return false;
+        return true;
+    }
+
+    // Check if transaction is authorized
+    public void checkTransactionAuthorized(Transaction transaction) {
+        Account account = accountService.getAccountById(transaction.getAccountFrom());
+        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) bla).getUser();
+        if (! account.getAccountHolder().equals(user.getId()) && !((UserDetail) bla).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
+            throw new IllegalArgumentException("You dont have the authorisation to transfer from this account");
+        transaction.setUserId(user.getId());
     }
 
     // Add a transaction to the database
@@ -130,9 +154,11 @@ public class TransactionService {
         return transactionRepository.findByAccountFromOrderByDateDesc(accountId);
     }
 
+
     // Get all transactions with corresponding accountID
     public List<Transaction> getAllTransactionsById(String accountId){
         // Get all transactions from and to an account and merge the results
+        //TODO Replace by transactionRepository.findByAccountOrderByDateDesc
         List<Transaction> result = Stream.concat(getTransactionsFromAccountById(accountId).stream(), getTransactionsToAccountById(accountId).stream())
                 .collect(Collectors.toList());
         // Sort the list by date

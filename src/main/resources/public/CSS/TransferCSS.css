@@ -1,3 +1,8 @@
+nav{
+  display: inline-block;
+  position: relative;
+}
+
 .transfer{
   border-radius: 10vw;
   border: none;
@@ -24,7 +29,7 @@
   margin: 0vw;
   padding: 0vw;
   position: relative;
-  top: 16vw;
+  top: 10vw;
   left: 10%;
   width: 80%;
   margin-bottom: 2vw;
@@ -134,4 +139,26 @@ input[type=submit]:hover {
   background-color: #f2f2f2;
   padding: 20px;
 
+}
+.alert {
+  display: block;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
 }
