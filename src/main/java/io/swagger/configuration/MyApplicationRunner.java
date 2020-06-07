@@ -48,9 +48,10 @@ public class MyApplicationRunner implements ApplicationRunner {
                 new Transaction(BigDecimal.valueOf(777), "NL42INHO0000000002", "NL42INHO0000000003", (long) 5, Transaction.TransactionTypeEnum.TRANSFER),
                 new Transaction(BigDecimal.valueOf(987), "NL42INHO0000000003", "NL42INHO0000000002", (long) 5, Transaction.TransactionTypeEnum.TRANSFER));
         List<Account> accounts = Arrays.asList(
-                new Account("NL42INHO0000000002", (long) -100, (long) 123456789, Account.AccountTypeEnum.CURRENT, true),
-                new Account("NL42INHO0000000003", (long) -0, (long) 123456789, Account.AccountTypeEnum.SAVING, true),
-                    new Account("NL42INHO0000000004", (long) 22.50, (long) 123456789, Account.AccountTypeEnum.CURRENT, true));
+                new Account("NL42INHO0000000002", (long) -100, (long) 100001, Account.AccountTypeEnum.CURRENT, true),
+                new Account("NL42INHO0000000003", (long) 0, (long) 100001, Account.AccountTypeEnum.SAVING, true),
+                new Account("NL42INHO0000000004", (long) 22.50, (long) 100003, Account.AccountTypeEnum.CURRENT, true),
+                new Account("NL42INHO0000000005", (long) 0, (long) 100003, Account.AccountTypeEnum.CURRENT, true));
 
         List<Balance> balances = Arrays.asList(
             new Balance("NL42INHO0000000002", new BigDecimal("11.94")),

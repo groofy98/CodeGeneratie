@@ -76,10 +76,12 @@ public class AccountApiController implements AccountApi {
     }
 
     public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user", required = true) @PathVariable("userId") String userId) {
-        String accept = request.getHeader("Accept");
+        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) bla).getUser();
 
+        String accept = request.getHeader("Accept");
         //get account by userId
-        List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
+        List<Account> accountList = accountService.getAccountsByUserId(user.getId());
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
@@ -117,9 +119,6 @@ public class AccountApiController implements AccountApi {
                     , @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", allowableValues = "", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             ) {
         String accept = request.getHeader("Accept");
-        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = ((UserDetail) bla).getUser();
-        System.out.println(user.getEmail());
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<List<Transaction>>(this.transactionService.getAllTransactionsById(accountId), HttpStatus.OK);
