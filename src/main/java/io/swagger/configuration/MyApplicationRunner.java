@@ -56,7 +56,8 @@ public class MyApplicationRunner implements ApplicationRunner {
         List<Balance> balances = Arrays.asList(
             new Balance("NL42INHO0000000002", new BigDecimal("11.94")),
             new Balance("NL42INHO0000000003", new BigDecimal("2394.87")),
-            new Balance("NL42INHO0000000004", new BigDecimal("900123.32"))
+            new Balance("NL42INHO0000000004", new BigDecimal("900123.32")),
+            new Balance("NL42INHO0000000005", new BigDecimal("0.15"))
         );
 
         List<User> users = Arrays.asList(

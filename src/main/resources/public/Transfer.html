@@ -2,46 +2,46 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="CSS/GlobalCSS.css">
-  <link rel="stylesheet" href="CSS/TransferCSS.css">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <title>DankBank</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="CSS/GlobalCSS.css">
+    <link rel="stylesheet" href="CSS/TransferCSS.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>DankBank</title>
 </head>
 
 <body>
-  <nav>
+<nav>
     <a href="HomePage.html"><img src="Assets/DankBank2.png" alt="Logo, Back to Home"></a>
     <div class="account">
-      <button id="LogOff" type="button" name="button">LogOff</button>
-      <a id="accountDetails" href="#">T.Alberts</a>
+        <button id="LogOff" type="button" name="button">LogOff</button>
+        <a id="accountDetails" href="#">T.Alberts</a>
     </div>
-  </nav>
-  <button class="transfer" type="button" name="button">Transfer money</button>
-  <!-- dit is voor het hele kopje betaalrekening of  spaarreking -->
-  <section class="container" id="deposit">
+</nav>
+<button class="transfer" type="button" name="button">Transfer money</button>
+<!-- dit is voor het hele kopje betaalrekening of  spaarreking -->
+<section class="container" id="deposit">
     <!-- dit is de header waar "betaalrekening" of iets komt te staan -->
     <p class="header">Account</p>
     <div class="accountContainer" id="accountContainer">
 
     </div>
-  </section>
-  <section class="container" id="saving">
+</section>
+<section class="container" id="saving">
     <p class="header">New Transaction</p>
     <div class="transactionContainer" id="transactionContainer">
-      <form action="" id="transferForm">
-        <label for="euro">Amount</label><br>
-        <input type="number" id="euro" name="euro" placeholder="Amount      € 0," min="0" required>
-        <input type="number" id="cent" name="cent" placeholder="00" max="100" min="0">
+        <form action="" id="transferForm">
+            <label for="euro">Amount</label><br>
+            <input type="number" id="euro" name="euro" placeholder="Amount      € 0," min="0" required>
+            <input type="number" id="cent" name="cent" placeholder="00" max="100" min="0">
 
-        <label for="to">Recipient</label>
-        <input type="text" id="to" name="to" placeholder="NL02 DANK 0123 4567 89" required>
+            <label for="to">Recipient</label>
+            <input type="text" id="to" name="to" placeholder="NL02 DANK 0123 4567 89" required>
 
-        <input type="submit" value="Submit">
-      </form>
+            <input type="submit" value="Submit">
+        </form>
     </div>
-  </section>
+</section>
 </body>
 
 </html>
@@ -53,6 +53,8 @@
       event.preventDefault();
       newTransaction();
     });
+    var user = GetLoggedInUser();
+    $('#accountDetails').text(user.firstname + " " + user.lastname);
   });
 
   function newTransaction() {
@@ -80,6 +82,24 @@
       }
     });
   }
+
+      function GetLoggedInUser() {
+        var user = "";
+        $.ajax({
+            url: 'users/loggedInUser',
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                user = data;
+            },
+            error: function (error) {
+                user = "-";
+            }
+        });
+        return user;
+    }
 
   function getAccount() {
     $.ajax({
@@ -165,4 +185,5 @@
     //         }
     //     });
     // });
+
 </script>

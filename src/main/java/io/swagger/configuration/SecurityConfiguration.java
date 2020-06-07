@@ -32,6 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/account/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/account/{accountId}/details}").hasAnyAuthority("ADMIN")
+                .antMatchers("/account/{accountId}/deactivate}").hasAnyAuthority("ADMIN")
+                .antMatchers("/account/register").hasAnyAuthority("ADMIN")
                 .antMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/HomePage.html").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")

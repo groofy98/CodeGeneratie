@@ -51,6 +51,8 @@
     populateTransactionTable(transactions);
     getAccount(accountId);
   });
+    var user = GetLoggedInUser();
+    $('#accountDetails').text(user.firstname + " " + user.lastname);
 
   function getAccount(accountId) {
     $.ajax({
@@ -171,6 +173,24 @@
   function linkToTransfer() {
     window.location.href = "Transfer.html";
   }
+
+  function GetLoggedInUser() {
+        var user = "";
+        $.ajax({
+            url: 'users/loggedInUser',
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                user = data;
+            },
+            error: function (error) {
+                user = "-";
+            }
+        });
+        return user;
+    }
 
 
   //   var api_url = 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/account/1';
