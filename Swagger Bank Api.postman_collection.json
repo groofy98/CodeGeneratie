@@ -1,0 +1,2036 @@
+{
+	"info": {
+		"_postman_id": "16eaf739-364a-4be0-a1e5-0a6f5251b003",
+		"name": "Swagger Bank Api",
+		"description": "This is a Bank Api build by students of Hogeschool Inholland\n\nContact Support:\n Name: Sjors Grooff\n Email: 634293@student.inholland.nl",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Get user by ID",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<integer>",
+											"description": "(Required) user ID"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "User not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "bad input parameter",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "user",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"firstname\": \"John\",\n \"lastname\": \"Doe\",\n \"email\": \"JohnDoe@example.com\",\n \"username\": \"Johnny69\",\n \"password\": \"John123!\",\n \"dateOfBirth\": \"02-05-1996\",\n \"isEmployee\": false,\n \"isCustomer\": true,\n \"id\": 5,\n \"isActive\": true\n}"
+								}
+							]
+						},
+						{
+							"name": "Update existing User",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-authtoken",
+										"value": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstname\": \"<string>\",\n    \"lastname\": \"<string>\",\n    \"email\": \"<string>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"dateOfBirth\": \"<date>\",\n    \"isEmployee\": \"<boolean>\",\n    \"isCustomer\": \"<boolean>\",\n    \"id\": \"<integer>\",\n    \"isActive\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) id of user that needs to be updated"
+										}
+									]
+								},
+								"description": "By filling in this form, you update a user"
+							},
+							"response": [
+								{
+									"name": "failed to authenticate",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstname\": \"John\",\n    \"lastname\": \"Doe\",\n    \"email\": \"JohnDoe@example.com\",\n    \"username\": \"Johnny69\",\n    \"password\": \"John123!\",\n    \"dateOfBirth\": \"02-05-1996\",\n    \"isEmployee\": false,\n    \"isCustomer\": true,\n    \"id\": 5,\n    \"isActive\": true\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "User not found",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstname\": \"John\",\n    \"lastname\": \"Doe\",\n    \"email\": \"JohnDoe@example.com\",\n    \"username\": \"Johnny69\",\n    \"password\": \"John123!\",\n    \"dateOfBirth\": \"02-05-1996\",\n    \"isEmployee\": false,\n    \"isCustomer\": true,\n    \"id\": 5,\n    \"isActive\": true\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Invalid user supplied",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstname\": \"John\",\n    \"lastname\": \"Doe\",\n    \"email\": \"JohnDoe@example.com\",\n    \"username\": \"Johnny69\",\n    \"password\": \"John123!\",\n    \"dateOfBirth\": \"02-05-1996\",\n    \"isEmployee\": false,\n    \"isCustomer\": true,\n    \"id\": 5,\n    \"isActive\": true\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "executed",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstname\": \"John\",\n    \"lastname\": \"Doe\",\n    \"email\": \"JohnDoe@example.com\",\n    \"username\": \"Johnny69\",\n    \"password\": \"John123!\",\n    \"dateOfBirth\": \"02-05-1996\",\n    \"isEmployee\": false,\n    \"isCustomer\": true,\n    \"id\": 5,\n    \"isActive\": true\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Deactivate existing user",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-authtoken",
+										"value": ""
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/deactivate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										"deactivate"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) id of user that needs to be updated"
+										}
+									]
+								},
+								"description": "Deacivate a user"
+							},
+							"response": [
+								{
+									"name": "executed",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "User not found",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Invalid user id supplied",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "failed to authenticate",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get list of users",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users?count=<integer>&offset=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "<integer>",
+									"description": "(Required) The max number of results to return"
+								},
+								{
+									"key": "offset",
+									"value": "<integer>",
+									"description": "The number of items to skip before starting to collect the result set"
+								}
+							]
+						},
+						"description": "Calling this allows you to fetch the list of users in the system"
+					},
+					"response": [
+						{
+							"name": "user data",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users?count=10&offset=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "count",
+											"value": "10"
+										},
+										{
+											"key": "offset",
+											"value": "<integer>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"email\": \"JohnDoe@example.com\",\n  \"username\": \"Johnny69\",\n  \"password\": \"John123!\",\n  \"dateOfBirth\": \"02-05-1996\",\n  \"isEmployee\": false,\n  \"isCustomer\": true,\n  \"id\": 5,\n  \"isActive\": true\n },\n {\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"email\": \"JohnDoe@example.com\",\n  \"username\": \"Johnny69\",\n  \"password\": \"John123!\",\n  \"dateOfBirth\": \"02-05-1996\",\n  \"isEmployee\": false,\n  \"isCustomer\": true,\n  \"id\": 5,\n  \"isActive\": true\n }\n]"
+						}
+					]
+				},
+				{
+					"name": "get logged in user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/loggedInUser",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"loggedInUser"
+							]
+						},
+						"description": "get the logged in user"
+					},
+					"response": [
+						{
+							"name": "user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/loggedInUser",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"loggedInUser"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"firstname\": \"John\",\n \"lastname\": \"Doe\",\n \"email\": \"JohnDoe@example.com\",\n \"username\": \"Johnny69\",\n \"password\": \"John123!\",\n \"dateOfBirth\": \"02-05-1996\",\n \"isEmployee\": false,\n \"isCustomer\": true,\n \"id\": 5,\n \"isActive\": true\n}"
+						},
+						{
+							"name": "User not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/loggedInUser",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"loggedInUser"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Adds a new User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"<string>\",\n    \"lastname\": \"<string>\",\n    \"email\": \"<string>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\",\n    \"dateOfBirth\": \"<date>\",\n    \"isEmployee\": \"<boolean>\",\n    \"isCustomer\": \"<boolean>\",\n    \"id\": \"<integer>\",\n    \"isActive\": \"<boolean>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "executed",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstname\": \"John\",\n    \"lastname\": \"Doe\",\n    \"email\": \"JohnDoe@example.com\",\n    \"username\": \"Johnny69\",\n    \"password\": \"John123!\",\n    \"dateOfBirth\": \"02-05-1996\",\n    \"isEmployee\": false,\n    \"isCustomer\": true,\n    \"id\": 5,\n    \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "bad input parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstname\": \"John\",\n    \"lastname\": \"Doe\",\n    \"email\": \"JohnDoe@example.com\",\n    \"username\": \"Johnny69\",\n    \"password\": \"John123!\",\n    \"dateOfBirth\": \"02-05-1996\",\n    \"isEmployee\": false,\n    \"isCustomer\": true,\n    \"id\": 5,\n    \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Logs in user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"UserName\": \"<string>\",\n    \"Password\": \"<string>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "authentication token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"authToken\": \"b15938252a78\"\n}"
+						},
+						{
+							"name": "bad input parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Logs out current logged in user session",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"logout"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "transactions",
+			"item": [
+				{
+					"name": "Handle a new transaction",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": \"<number>\",\n    \"accountFrom\": \"<string>\",\n    \"accountTo\": \"<string>\",\n    \"userId\": \"<long>\",\n    \"transactionType\": \"<string>\",\n    \"id\": \"<long>\",\n    \"date\": \"<dateTime>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/transactions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Invalid input",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/transactions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"status": "Method Not Allowed",
+							"code": 405,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "transaction creation successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/transactions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Find transaction by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/transactions/:transactionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"transactions",
+								":transactionId"
+							],
+							"variable": [
+								{
+									"key": "transactionId",
+									"value": "<long>",
+									"description": "(Required) Id of transaction to return"
+								}
+							]
+						},
+						"description": "Returns a single transaction with corresponding ID"
+					},
+					"response": [
+						{
+							"name": "Transaction not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/transactions/:transactionId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"transactions",
+										":transactionId"
+									],
+									"variable": [
+										{
+											"key": "transactionId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/transactions/:transactionId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"transactions",
+										":transactionId"
+									],
+									"variable": [
+										{
+											"key": "transactionId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"amount\": 5000,\n \"accountFrom\": \"NL69INGB0123456789\",\n \"accountTo\": \"NL02ABNA0123456789\",\n \"userId\": \"<long>\",\n \"transactionType\": \"<string>\",\n \"id\": \"<long>\",\n \"date\": \"2012-04-23T18:25:43\"\n}"
+						},
+						{
+							"name": "Invalid transactionId supplied",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/transactions/:transactionId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"transactions",
+										":transactionId"
+									],
+									"variable": [
+										{
+											"key": "transactionId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "{account Id}",
+					"item": [
+						{
+							"name": "details",
+							"item": [
+								{
+									"name": "Get the account details",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/details",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"details"
+											],
+											"variable": [
+												{
+													"key": "accountId",
+													"value": "<string>",
+													"description": "(Required) Pass in the ID of the account"
+												}
+											]
+										},
+										"description": "By passing in the appropriate AccountID, you get the account details"
+									},
+									"response": [
+										{
+											"name": "bad input parameter",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/account/:accountId/details",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"account",
+														":accountId",
+														"details"
+													],
+													"variable": [
+														{
+															"key": "accountId"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "account details gotten",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/account/:accountId/details",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"account",
+														":accountId",
+														"details"
+													],
+													"variable": [
+														{
+															"key": "accountId"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "[\n {\n  \"accountID\": \"ingb-219009315\",\n  \"accountType\": \"Saving\",\n  \"accountHolder\": 1234567890,\n  \"absoluteLimit\": 0,\n  \"isActive\": true\n },\n {\n  \"accountID\": \"ingb-219009315\",\n  \"accountType\": \"Saving\",\n  \"accountHolder\": 1234567890,\n  \"absoluteLimit\": 0,\n  \"isActive\": true\n }\n]"
+										}
+									]
+								},
+								{
+									"name": "Updated existing account",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "x-authtoken",
+												"value": ""
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"accountID\": \"<string>\",\n    \"accountType\": \"<string>\",\n    \"accountHolder\": \"<long>\",\n    \"absoluteLimit\": \"<long>\",\n    \"isActive\": \"<boolean>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/details",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"details"
+											],
+											"variable": [
+												{
+													"key": "accountId",
+													"value": "<string>",
+													"description": "(Required) id of account that needs to be updated"
+												}
+											]
+										},
+										"description": "By filling in this form, you update an account"
+									},
+									"response": [
+										{
+											"name": "Invalid account supplied",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"accountID\": \"ingb-219009315\",\n    \"accountType\": \"Saving\",\n    \"accountHolder\": 1234567890,\n    \"absoluteLimit\": 0,\n    \"isActive\": true\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/account/:accountId/details",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"account",
+														":accountId",
+														"details"
+													],
+													"variable": [
+														{
+															"key": "accountId"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "account not found",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"accountID\": \"ingb-219009315\",\n    \"accountType\": \"Saving\",\n    \"accountHolder\": 1234567890,\n    \"absoluteLimit\": 0,\n    \"isActive\": true\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/account/:accountId/details",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"account",
+														":accountId",
+														"details"
+													],
+													"variable": [
+														{
+															"key": "accountId"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Get a list of transactions",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/account/:accountId/transactions?offset=<integer>&limit=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										":accountId",
+										"transactions"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "<integer>",
+											"description": "The number of items to skip before starting to collect the result set"
+										},
+										{
+											"key": "limit",
+											"value": "20",
+											"description": "The max number of results to return"
+										}
+									],
+									"variable": [
+										{
+											"key": "accountId",
+											"value": "<string>",
+											"description": "(Required) Pass in the ID of the account of which to get the transactions from"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Invalid status value",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/transactions?offset=<integer>&limit=10",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"transactions"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "<integer>"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												}
+											],
+											"variable": [
+												{
+													"key": "accountId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "successful operation",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/transactions?offset=<integer>&limit=10",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"transactions"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "<integer>"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												}
+											],
+											"variable": [
+												{
+													"key": "accountId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n {\n  \"amount\": 5000,\n  \"accountFrom\": \"NL69INGB0123456789\",\n  \"accountTo\": \"NL02ABNA0123456789\",\n  \"userId\": \"<long>\",\n  \"transactionType\": \"<string>\",\n  \"id\": \"<long>\",\n  \"date\": \"2012-04-23T18:25:43\"\n },\n {\n  \"amount\": 5000,\n  \"accountFrom\": \"NL69INGB0123456789\",\n  \"accountTo\": \"NL02ABNA0123456789\",\n  \"userId\": \"<long>\",\n  \"transactionType\": \"<string>\",\n  \"id\": \"<long>\",\n  \"date\": \"2012-04-23T18:25:43\"\n }\n]"
+								},
+								{
+									"name": "Account not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/transactions?offset=<integer>&limit=10",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"transactions"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "<integer>"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												}
+											],
+											"variable": [
+												{
+													"key": "accountId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Deactivate existing account",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-authtoken",
+										"value": ""
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/account/:accountId/deactivate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										":accountId",
+										"deactivate"
+									],
+									"variable": [
+										{
+											"key": "accountId",
+											"value": "<string>",
+											"description": "(Required) id of account that needs to be updated"
+										}
+									]
+								},
+								"description": "Deacivate an account"
+							},
+							"response": [
+								{
+									"name": "Account not found",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "accountId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "executed",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "accountId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Invalid account id supplied",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "accountId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "failed to authenticate",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/account/:accountId/deactivate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												":accountId",
+												"deactivate"
+											],
+											"variable": [
+												{
+													"key": "accountId"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get the ammount of balance on your account",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/account/balance/:accountId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"account",
+								"balance",
+								":accountId"
+							],
+							"variable": [
+								{
+									"key": "accountId",
+									"value": "<string>",
+									"description": "(Required) Pass in the ID of the back account"
+								}
+							]
+						},
+						"description": "By passing in the appropriate balance, you can check how much balance you have"
+					},
+					"response": [
+						{
+							"name": "Balance gotten from account",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/account/balance/:accountId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										"balance",
+										":accountId"
+									],
+									"variable": [
+										{
+											"key": "accountId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"account\": 12897865446567,\n  \"amount\": 1732.79\n },\n {\n  \"account\": 12897865446567,\n  \"amount\": 1732.79\n }\n]"
+						},
+						{
+							"name": "bad input parameter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/account/balance/:accountId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										"balance",
+										":accountId"
+									],
+									"variable": [
+										{
+											"key": "accountId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get all the accounts belonging to one user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/account/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"account",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "<string>",
+									"description": "(Required) Pass in the ID of the user"
+								}
+							]
+						},
+						"description": "By passing in the appropriate userId, you get all accounts belonging to that user"
+					},
+					"response": [
+						{
+							"name": "bad input parameter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/account/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "accounts gotten",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/account/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"accountID\": \"ingb-219009315\",\n  \"accountType\": \"Saving\",\n  \"accountHolder\": 1234567890,\n  \"absoluteLimit\": 0,\n  \"isActive\": true\n },\n {\n  \"accountID\": \"ingb-219009315\",\n  \"accountType\": \"Saving\",\n  \"accountHolder\": 1234567890,\n  \"absoluteLimit\": 0,\n  \"isActive\": true\n }\n]"
+						}
+					]
+				},
+				{
+					"name": "Adds a new Account",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountID\": \"<string>\",\n    \"accountType\": \"<string>\",\n    \"accountHolder\": \"<long>\",\n    \"absoluteLimit\": \"<long>\",\n    \"isActive\": \"<boolean>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/account/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"account",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "bad input parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"accountID\": \"ingb-219009315\",\n    \"accountType\": \"Saving\",\n    \"accountHolder\": 1234567890,\n    \"absoluteLimit\": 0,\n    \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/account/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "executed",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"accountID\": \"ingb-219009315\",\n    \"accountType\": \"Saving\",\n    \"accountHolder\": 1234567890,\n    \"absoluteLimit\": 0,\n    \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/account/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "123",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "Johnnyboy@example.com",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d059b7c4-7b31-4cb2-883c-ecbcc48c6345",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "be5aa368-6703-49a5-98f2-72d93804f1e3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "f7010506-1050-47d5-837a-cc738784438e",
+			"key": "baseUrl",
+			"value": "https://salty-falls-53646.herokuapp.com/Api/0.1",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,573 @@
+openapi: 3.0.0
+info:
+  description:
+    This is a Bank Api build by students of Hogeschool Inholland
+  version: "1.0.0"
+  title: Swagger Bank Api
+  contact:
+    name: Sjors Grooff
+    email: 634293@student.inholland.nl
+servers:
+# Added by API Auto Mocking Plugin
+# Added by API Auto Mocking Plugin
+  - description: Live Api Server
+    url: https://salty-falls-53646.herokuapp.com/Api/0.1
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Lidda/Project2.4/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/apis/codegeneratie/BankAPI/1.0.0
+tags:
+  - name: users
+    description: Operations about user   
+  - name: accounts
+    description: Everything about accounts    
+  - name: transactions
+    description: Operations regarding transactions
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get list of users
+      operationId: searchusers
+      parameters:
+        - name: count
+          in: query
+          description: The max number of results to return
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 10
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+      description: Calling this allows you to fetch the list of users in the system
+      responses:
+        '200':
+          description: user data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'  
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Get user by ID
+      operationId: SearchUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: user ID
+      responses:
+        '200':
+          description: user
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/User'
+        '400':
+          description: bad input parameter
+        '404':
+          description: User not found
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - users
+      summary: Update existing User
+      description: By filling in this form, you update a user
+      operationId: UpdateUser
+      parameters:
+        - name: id
+          in: path
+          description: id of user that needs to be updated
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: executed
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+        '401':
+          description: failed to authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Updated user object
+        required: true    
+  /users/loggedInUser:
+    get:
+      tags:
+      - users
+      summary: get logged in user
+      description: get the logged in user
+      operationId: GetLoggedInUser
+      responses:
+        '200':          
+          description: user
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+  /users/{id}/deactivate:
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - users
+      summary: Deactivate existing user
+      description: Deacivate a user
+      operationId: DeactivateUser
+      parameters:
+        - name: id
+          in: path
+          description: id of user that needs to be updated
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: executed
+        '400':
+          description: Invalid user id supplied
+        '404':
+          description: User not found
+        '401':
+          description: failed to authenticate
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Adds a new User
+      operationId: RegisterUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: executed
+        '400':
+          description: bad input parameter
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Logs in user
+      operationId: LoginUser
+      responses:
+        '200':
+          description: authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+        '400':
+          description: bad input parameter
+      requestBody:
+        $ref: '#/components/requestBodies/Authentication'
+  /users/logout:
+    get:
+      tags:
+        - users
+      summary: Logs out current logged in user session
+      operationId: logoutUser
+      responses:
+        default:
+          description: successful operation
+  /transactions:
+    post:
+      tags:
+        - transactions
+      summary: Handle a new transaction
+      operationId: createTransaction
+      responses:
+        '405':
+          description: Invalid input
+        '201':
+          description: transaction creation successful
+      requestBody:
+        $ref: '#/components/requestBodies/Transaction'
+  '/account/{accountId}/transactions':
+    get:
+      tags:
+        - transactions
+      summary: Get a list of transactions
+      operationId: getTransaction
+      parameters:
+        - in: path
+          name: accountId
+          description: Pass in the ID of the account of which to get the transactions from
+          required: true
+          schema:
+            type: string
+          example: NL69INGB0123456789
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - name: limit
+          in: query
+          description: The max number of results to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            example: 10
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Account not found
+  '/transactions/{transactionId}':
+    get:
+      tags:
+        - transactions
+      summary: Find transaction by ID
+      description: Returns a single transaction with corresponding ID
+      operationId: getTransactionById
+      parameters:
+        - name: transactionId
+          in: path
+          description: Id of transaction to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid transactionId supplied
+        '404':
+          description: Transaction not found
+  /account/balance/{accountId}:
+    get:
+      tags:
+        - accounts
+      summary: Get the ammount of balance on your account
+      operationId: getBalance
+      description: By passing in the appropriate balance, you can check how much balance you have
+      parameters:
+        - in: path
+          name: accountId
+          description: Pass in the ID of the back account
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Balance gotten from account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Balance'
+        '400':
+          description: bad input parameter
+  /account/{accountId}/details:
+    get:
+      tags:
+        - accounts
+      summary: Get the account details
+      operationId: getAccount
+      description: By passing in the appropriate AccountID, you get the account details 
+      parameters:
+        - in: path
+          name: accountId
+          description: Pass in the ID of the account
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: account details gotten
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '400':
+          description: bad input parameter
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - accounts
+      summary: Updated existing account
+      description: By filling in this form, you update an account
+      operationId: updateAcount
+      parameters:
+        - name: accountId
+          in: path
+          description: id of account that needs to be updated
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid account supplied
+        '404':
+          description: account not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        description: Updated account object
+        required: true
+  /account/{accountId}/deactivate:
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - accounts
+      summary: Deactivate existing account
+      description: Deacivate an account
+      operationId: deactivateAccount
+      parameters:
+        - name: accountId
+          in: path
+          description: id of account that needs to be updated
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: executed
+        '400':
+          description: Invalid account id supplied
+        '404':
+          description: Account not found
+        '401':
+          description: failed to authenticate
+  /account/{userId}:
+    get:
+      tags:
+        - accounts
+      summary: Get all the accounts belonging to one user
+      operationId: getAccountsWithUserId
+      description: By passing in the appropriate userId, you get all accounts belonging to that user
+      parameters:
+        - in: path
+          name: userId
+          description: Pass in the ID of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: accounts gotten
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '400':
+          description: bad input parameter
+  /account/register:
+    post:
+      tags:
+        - accounts
+      summary: Adds a new Account
+      operationId: registerAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: executed
+        '400':
+          description: bad input parameter
+components:
+  schemas:
+    Transaction:
+      type: object
+      required:
+        - amount
+        - accountFrom
+        - accountTo
+        - userId
+        - transactionType
+      properties:
+        id:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
+          example: '2012-04-23T18:25:43'
+        amount:
+          type: number          
+          example: 5000
+        accountFrom:	
+          type: string
+          example: NL69INGB0123456789
+        accountTo:	
+          type: string
+          example: NL02ABNA0123456789
+        userId:
+          type: integer
+          format: int64
+        transactionType:
+          description: Specifies the type of transaction
+          type: string
+          enum:
+            - transfer
+            - deposit
+            - withdraw
+    User:
+      type: object
+      required:
+        - firstname
+        - lastname
+        - email
+        - username
+        - password
+        - dateOfBirth
+        - isEmployee
+        - isCustomer
+      properties:
+        id:
+          type: integer
+          example: 5
+        firstname:
+          type: string
+          example: "John"
+        lastname:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          example: "JohnDoe@example.com"
+        username:
+          type: string
+          example: "Johnny69"
+        password:
+          type: string
+          example: "John123!"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "02-05-1996"
+        isEmployee:
+          type: boolean
+          example: false
+        isCustomer:
+          type: boolean
+          example: true
+        isActive:
+          type: boolean
+          example: true
+    AuthToken:
+      type: object
+      required:
+        - authToken
+      properties:
+        authToken:
+          type: string
+          example: b15938252a78
+    Balance:
+      type: object
+      required:
+        - account
+        - amount
+      properties:
+        account:
+          type: string
+          example: 12897865446567
+        amount:
+          type: number
+          example: 1732.79
+    Account:
+      type: object
+      required:
+        - AccountType
+        - AccountHolder
+      properties:
+        accountID:
+          type: string
+          example: ingb-219009315
+        accountType:
+          type: string
+          enum: [Saving, Current]
+          example: Saving
+        accountHolder:
+          type: integer
+          format: int64
+          example: 1234567890
+        absoluteLimit:
+          type: integer
+          format: int64
+          example: 0
+        isActive:
+          type: boolean
+          example: true
+  requestBodies:
+    Transaction:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Transaction'
+      description: Transaction object that needs to be added
+      required: true
+    User:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+      description: User object that needs to be added to the store
+      required: true
+    Authentication:
+      content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                UserName:
+                  type: string
+                Password:
+                  type: string
+  securitySchemes: # define authentication
+    ApiKeyAuth:        
+      type: apiKey
+      in: header
+      name: x-authtoken  # name of the header
