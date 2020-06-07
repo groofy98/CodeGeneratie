@@ -96,7 +96,7 @@
 
   function SortAccounts(account) {
     var balance = GetBalance(account.AccountID);
-    var name = GetUser(account.AccountHolder);
+    var name = GetUser(account.accountHolder);
     $("#accountContainer").append("    <div id=\"2\" class=\"account\">\n" +
       "        <a class=\"name\" href=\"#\">" + name.username + "</a>\n" +
       "        <a class=\"number\" href=\"#\">" + account.AccountID + "</a>\n" +
@@ -173,21 +173,21 @@
   }
 
   function GetUser(id) {
-    var name = "";
-    $.ajax({
-      url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
-      type: "GET",
-      async: false,
-      contentType: "application/json",
-      dataType: "json",
-      success: function (data) {
-        name = data;
-      },
-      error: function (error) {
-        name = "-";
-      }
-    });
-    return name;
+      var name = "";
+      $.ajax({
+          url: 'users/' + id,
+          type: "GET",
+          async: false,
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data) {
+              name = data;
+          },
+          error: function (error) {
+              name = "-";
+          }
+      });
+      return name;
   }
 
   function linkToTransfer() {
