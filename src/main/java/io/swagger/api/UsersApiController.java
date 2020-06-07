@@ -4,11 +4,13 @@ import io.swagger.model.AuthToken;
 import io.swagger.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.model.UserDetail;
 import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,8 +54,10 @@ public class UsersApiController implements UsersApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"isCustomer\" : true,\n  \"firstname\" : \"John\",\n  \"password\" : \"John123!\",\n  \"isEmployee\" : false,\n  \"dateOfBirth\" : \"0007-10-17T00:00:00.000+0000\",\n  \"id\" : 5,\n  \"isActive\" : true,\n  \"email\" : \"JohnDoe@example.com\",\n  \"lastname\" : \"Doe\",\n  \"username\" : \"Johnny69\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                User user = ((UserDetail) bla).getUser();
+                return new ResponseEntity<User>(user, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
