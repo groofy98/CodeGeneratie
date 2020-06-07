@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T10:02:40.697Z[GMT]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
@@ -34,6 +34,16 @@ public interface UsersApi {
         method = RequestMethod.PUT)
     ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") Long id
 );
+
+
+    @ApiOperation(value = "get logged in user", nickname = "getLoggedInUser", notes = "get the logged in user", response = User.class, tags={ "users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "user", response = User.class),
+        @ApiResponse(code = 404, message = "User not found") })
+    @RequestMapping(value = "/users/loggedInUser",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<User> getLoggedInUser();
 
 
     @ApiOperation(value = "Logs in user", nickname = "loginUser", notes = "", response = AuthToken.class, tags={ "users", })

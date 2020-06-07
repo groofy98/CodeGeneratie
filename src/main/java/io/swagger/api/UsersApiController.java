@@ -48,6 +48,20 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<Void>(httpStatus);
     }
 
+    public ResponseEntity<User> getLoggedInUser() {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"isCustomer\" : true,\n  \"firstname\" : \"John\",\n  \"password\" : \"John123!\",\n  \"isEmployee\" : false,\n  \"dateOfBirth\" : \"0007-10-17T00:00:00.000+0000\",\n  \"id\" : 5,\n  \"isActive\" : true,\n  \"email\" : \"JohnDoe@example.com\",\n  \"lastname\" : \"Doe\",\n  \"username\" : \"Johnny69\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
     public ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
 ) {
         String accept = request.getHeader("Accept");
