@@ -13,4 +13,10 @@ public class HomeController {
         System.out.println("swagger-ui.html");
         return "redirect:swagger-ui.html";
     }
+
+    @RequestMapping(value = "/")
+    public String Home() {
+        System.out.println("Redirecting to Login.html");
+        return "redirect:Login.html";
+    }
 }
