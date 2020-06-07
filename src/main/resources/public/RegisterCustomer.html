@@ -2,23 +2,19 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="CSS/GlobalCSS.css">
-    <link rel="stylesheet" href="CSS/RegisterCSS.css">
+    <link rel="stylesheet" href="../CSS/GlobalCSS.css">
+    <link rel="stylesheet" href="../CSS/RegisterCSS.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>DankBank</title>
 </head>
 <body>
 <nav>
-    <a href="HomePage.html"><img src="Assets/DankBank2.png" alt="Logo, Back to Home"></a>
-    <div class="account">
-        <button onclick="location.href='/perform_logout'"  id="LogOff" type="button" name="button">LogOff</button>
-        <a id="accountDetails" href="#">T.Alberts</a>
-    </div>
+    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
 </nav>
   <form id = "registerForm" action="#">
         <header id = "registerHeader">
-            <h3>Register account</h3>
+            <h3>Register Customer Account</h3>
         </header>
         <section class="formGroup">
             <p><b>first name:</b></p>
@@ -48,7 +44,6 @@
             <p><b>repeat password:</b></p>
             <input type="password" placeholder="repeat password" id="passwordRepeat"></input>
         </section>
-      <p><input type="checkbox" id="isCustomer" name="isCustomer" value="isCustomer"></input> Customer account</p>
         <section class="formGroup">
             <button type="submit" id="registerSubmit"><b>sign up</b></button>
         </section >
@@ -70,37 +65,46 @@
         var dateOfBirth = $('#dateOfBirth').val();
         dateOfBirth = new Date(dateOfBirth);
         var password = $('#password').val();
+        var passwordRepeat = $('#passwordRepeat').val();
 
-        //create JSON object and do post request
-        var account = {}
-        account["firstname"] = firstname;
-        account["lastname"] = lastname;
-        account["username"] = username;
-        account["email"] = email;
-        account["dateOfBirth"] = dateOfBirth;
-        account["password"] = password;
-        if (checkBox.checked == true){
-            account["isCustomer"] = true;
-        }
-        account = JSON.stringify(account);
+        //check if all fields are entered
+        if(firstname != "" && lastname != "" && username != "" && email != "" && dateOfBirth != "" && password != "" && passwordRepeat != ""){
+            //check if passwords align
+            if(password == passwordRepeat){
+                //create JSON object and do post request
+                var account = {}
+                account["firstname"] = firstname;
+                account["lastname"] = lastname;
+                account["username"] = username;
+                account["email"] = email;
+                account["dateOfBirth"] = dateOfBirth;
+                account["password"] = password;
+                account["isCustomer"] = true;
+                account = JSON.stringify(account);
 
-        $.ajax({
-            url: 'users/register',
-            type: "POST",
-            data: account,
-            crossDomain: true,
-            headers: {
-            "Accept": "application/json",
-          },
-          contentType: "application/json",
-            success: function (data) {
-                alert("Your account has been created. You may now log in.");
-                window.location.href = "Login.html";
-            },
-            error: function (error) {
-                alert("An error occurred while registering, please try again later");
+                $.ajax({
+                    url: 'users/register',
+                    type: "POST",
+                    data: account,
+                    crossDomain: true,
+                    headers: {
+                    "Accept": "application/json",
+                  },
+                  contentType: "application/json",
+                    success: function (data) {
+                        alert("Your account has been created. You may now log in.");
+                        window.location.href = "Login.html";
+                    },
+                    error: function (error) {
+                        alert("An error occurred while registering, please try again later");
+                    }
+                });
+            } else {
+                alert("Entered passwords don't match");
             }
-        });
+         } else {
+            alert("Please fill in all fields");
+         }
     }
 </script>
 </html>

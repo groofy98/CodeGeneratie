@@ -54,8 +54,8 @@ public class UsersApiController implements UsersApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                User user = ((UserDetail) bla).getUser();
+                Object security = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                User user = ((UserDetail) security).getUser();
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
@@ -106,21 +106,6 @@ public class UsersApiController implements UsersApi {
             }
         }
         return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    public ResponseEntity<List<User>> searchusers(@NotNull @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", required = true, allowableValues = "") @Valid @RequestParam(value = "count", required = true) Integer count
-,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<User>>(objectMapper.readValue("[ {\n  \"isCustomer\" : true,\n  \"firstname\" : \"John\",\n  \"password\" : \"John123!\",\n  \"isEmployee\" : false,\n  \"dateOfBirth\" : \"0007-10-17T00:00:00.000+0000\",\n  \"id\" : 5,\n  \"isActive\" : true,\n  \"email\" : \"JohnDoe@example.com\",\n  \"lastname\" : \"Doe\",\n  \"username\" : \"Johnny69\"\n}, {\n  \"isCustomer\" : true,\n  \"firstname\" : \"John\",\n  \"password\" : \"John123!\",\n  \"isEmployee\" : false,\n  \"dateOfBirth\" : \"0007-10-17T00:00:00.000+0000\",\n  \"id\" : 5,\n  \"isActive\" : true,\n  \"email\" : \"JohnDoe@example.com\",\n  \"lastname\" : \"Doe\",\n  \"username\" : \"Johnny69\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<User>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return new ResponseEntity<List<User>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> updateUser(@ApiParam(value = "Updated user object", required = false) @Valid @RequestBody User body
