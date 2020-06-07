@@ -17,7 +17,7 @@
     </div>
     <div class="editLinks">
         <a href="EditAccountsPage.html">Edit accounts</a>
-        <a href="#">Edit users</a>
+        <a href="UsersOverview.html">Edit users</a>
     </div>
 </nav>
 <div id="buttonContainer">
@@ -119,6 +119,25 @@
         updateAccount($('#accountIdChange').val(), $('#AbsoluteLimitChange').val(), $('#accountIDDeactivate').val());
     });
 
+    function LogOff() {
+        $.ajax({
+            url: 'perform_logout',
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                window.location.replace("Login.html");
+            },
+            error: function (error) {
+                alert("An error has occurred.");
+            }
+        });
+    }
+
+    $('#LogOff').click(function () {
+        LogOff();
+        return false;
+    });
 
     function createAccount() {
         var accountType = $('#accountTypeCreate').val();

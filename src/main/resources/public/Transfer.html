@@ -26,6 +26,10 @@
     <div class="accountContainer" id="accountContainer">
 
     </div>
+    <div class="editLinks">
+        <a href="EditAccountsPage.html">Edit accounts</a>
+        <a href="UsersOverview.html">Edit users</a>
+    </div>
 </section>
 <section class="container" id="saving">
     <p class="header">New Transaction</p>
@@ -46,6 +50,26 @@
 
 </html>
 <script type="text/javascript">
+    function LogOff() {
+        $.ajax({
+            url: 'perform_logout',
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                window.location.replace("Login.html");
+            },
+            error: function (error) {
+                alert("An error has occurred.");
+            }
+        });
+    }
+
+    $('#LogOff').click(function () {
+        LogOff();
+        return false;
+    });
+
   $(document).ready(function () {
     console.log("Active account: " + sessionStorage.getItem('activeAccount'));
     getAccount(sessionStorage.getItem('activeAccount'));

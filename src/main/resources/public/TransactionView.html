@@ -45,6 +45,26 @@
 
 </html>
 <script type="text/javascript">
+  function LogOff() {
+        $.ajax({
+            url: 'perform_logout',
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                window.location.replace("Login.html");
+            },
+            error: function (error) {
+                alert("An error has occurred.");
+            }
+        });
+    }
+
+    $('#LogOff').click(function () {
+        LogOff();
+        return false;
+    });
+
   $(document).ready(function () {
     var accountId = sessionStorage.getItem('activeAccount');
     var transactions = GetTransactions(accountId);

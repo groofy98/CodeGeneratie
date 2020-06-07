@@ -1,25 +1,27 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="CSS/GlobalCSS.css">
-    <link rel="stylesheet" href="CSS/UsersOverviewCSS.css">
+    <link rel="stylesheet" href="../CSS/GlobalCSS.css">
+    <link rel="stylesheet" href="../CSS/UsersOverviewCSS.css">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>DankBank</title>
 </head>
 <body>
 <nav>
-    <a href="HomePage.html"><img src="Assets/DankBank2.png" alt="Logo, Back to Home"></a>
+    <a href="HomePage.html"><img src="../Assets/DankBank2.png" alt="Logo, Back to Home"></a>
     <div class="account">
         <button id="LogOff" type="button" name="button">LogOff</button>
-        <a id="accountDetails" href="#">T.Alberts</a>
+    </div>
+    <div class="editLinks">
+        <a href="EditAccountsPage.html">Edit accounts</a>
+        <a href="UsersOverview.html">Edit users</a>
     </div>
 </nav>
-    <!-- TODO: figure out if table should be implemented or removed-->
     <form id="tableBox">
         <label>User ID:</label></br>
         <input name="userSearchID" id="userSearchID" type="string" required>
-        <input id="findUserSubmit" type="submit" value="findUser"></input>
+        <input id="findUserSubmit" type="submit" value="Find User"></input>
       <table>
         <tr>
           <th>ID</th>
@@ -49,8 +51,9 @@
     <section class="users" id="editUser">
         <p class="header">Edit User</p>
         <form action="#">
+            <p id="explanation"><i>*ID of user you wish to update</i></p>
             <div>
-                <label for="usersID">User ID:</label>
+                <label for="usersID">*User ID:</label>
                 <input name="usersID" id="usersID" type="text" required>
             </div>
             <div>
@@ -70,6 +73,10 @@
                 <input name="editEmail" id="editEmail" type="text">
             </div>
             <div>
+                <label for="editPassword">Password:</label>
+                <input name="editPassword" id="editPassword" type="text">
+            </div>
+            <div>
                 <label>Customer</label>
                 <select id="customerSelect" name="customerSelect">
                     <option id="customerUnselected" value="nonSelected">Select option</option>
@@ -83,7 +90,7 @@
                     <option id="employeeFalse" value="No">No</option>
                 </select>
             </div>
-            <input id="editUserSubmit" type="submit" value="Save"></input>
+            <button id="editUserSubmit" type="submit" value="Save">Save Changes</button>
         </form>
     </section>
     <section class="users" id="deactivateUser">
@@ -93,23 +100,44 @@
                 <label for="userId">User ID:</label>
                 <input id="userId" type="text" required>
             </div>
-            <input id="deactivateUserSubmit" type="submit" value="Deactivate">
+            <Button id="deactivateUserSubmit" type="submit" value="Deactivate">Deactivate</Button>
         </form>
     </section>
+    <button id="register"><a href="RegisterEmployee.html" id="registerEmployee">Register new Employee account</a></button>
 </body>
 </html>
 
 <script type="text/javascript">
+    function LogOff() {
+        $.ajax({
+            url: 'perform_logout',
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                window.location.replace("Login.html");
+            },
+            error: function (error) {
+                alert("An error has occurred.");
+            }
+        });
+    }
+
+    $('#LogOff').click(function () {
+        LogOff();
+        return false;
+    });
+
     //get data from all fields when submit button is clicked
     $('#editUserSubmit').click(function () {
         updateUser($('#usersID').val(), $('#editUsername').val(), $('#editFirstName').val(), $('#editLastName').val(),
-                   $('#editEmail').val(), $('#employeeSelect').val(), $('#customerSelect').val());
+                   $('#editEmail').val(), $('#editPassword').val(), $('#employeeSelect').val(), $('#customerSelect').val());
         return false;
     });
 
     //get user ID from field when deactivate button is clicked
     $('#deactivateUserSubmit').click(function () {
-        deactivateUser($('#usersId').val());
+        deactivateUser($('#userId').val());
         return false;
     });
 
@@ -136,7 +164,7 @@
     function findUser(id) {
         var name = "";
         $.ajax({
-            url: 'https://virtserver.swaggerhub.com/codegeneratie/Homework/1.0.0/users/' + id,
+            url: 'users/' + id,
             type: "GET",
             async: false,
             contentType: "application/json",
@@ -151,8 +179,8 @@
         return name;
     }
 
-    function updateUser(id, username, firstName, lastName, email, employeeStatus, customerStatus){
-        var user = {}
+    function updateUser(id, username, firstName, lastName, email, password, employeeStatus, customerStatus){
+        var user = {};
         if(id != ""){ //check if ID has been filled in
             if(username != ""){
                 user["username"] = username;
@@ -165,6 +193,9 @@
             }
             if(email != ""){
                 user["email"] = email;
+            }
+            if(email != ""){
+                user["password"] = password;
             }
             if(employeeStatus == "Yes"){
                user["isEmployee"] = true;
@@ -180,21 +211,21 @@
             alert("Please fill in the ID of the user that should be updated");
         }
 
+        user = JSON.stringify(user);
+        alert(user);
+
         $.ajax({
             url: 'users/' + id,
             type: "PUT",
             async: false,
             crossDomain: true,
             contentType: "application/json",
-            dataType: "json",
             data: user,
             success: function (data) {
                 alert("Success");
             },
             error: function (error) {
-                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
-                    alert("An error occurred while deactivating an account, please try again later: " + error)
-                }
+                alert("An error has occurred.");
             }
         });
     }
@@ -205,13 +236,11 @@
             type: "PUT",
             async: false,
             contentType: "application/json",
-            dataType: "json",
             success: function (data) {
+                alert("Success");
             },
             error: function (error) {
-                if (!error.status.localeCompare("202") && !error.status.localeCompare("201") && !error.status.localeCompare("200")) {
-                    alert("An error occurred while deactivating an account, please try again later: " + error)
-                }
+                alert("An error has occurred.");
             }
         });
     }
