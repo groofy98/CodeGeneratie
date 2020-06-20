@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -76,12 +77,11 @@ public class AccountApiController implements AccountApi {
     }
 
     public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user", required = true) @PathVariable("userId") String userId) {
-        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = ((UserDetail) bla).getUser();
+        //Boolean isAutherized = accountService.checkAuthorization(Long.parseLong(userId));
 
         String accept = request.getHeader("Accept");
         //get account by userId
-        List<Account> accountList = accountService.getAccountsByUserId(user.getId());
+        List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
@@ -90,8 +90,25 @@ public class AccountApiController implements AccountApi {
                 return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-
         return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
+
+//        if (accountService.checkAuthorization(Long.parseLong(userId))){
+//            //get account by userId
+//            List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
+//            if (accept != null && accept.contains("application/json")) {
+//                try {
+//                    return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
+//                } catch (Exception e) {
+//                    log.error("Couldn't serialize response for content type application/json", e);
+//                    return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
+//                }
+//            }
+//            return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
+//        }
+//        else{
+//            log.error("You are not an admin bruv");
+//            return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
+//        }
     }
 
     public ResponseEntity<Balance> getBalance(@ApiParam(value = "Pass in the ID of the back account", required = true) @PathVariable("accountId") String accountId) {
