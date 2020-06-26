@@ -64,7 +64,7 @@ public class TransactionService {
     }
 
     // Add a transaction to the database
-    public void addTransaction(Transaction transaction){
+    public void addTransactionToDatabase(Transaction transaction){
         // Remove funds from sending account
         balanceService.removeAmount(transaction.getAccountFrom(), transaction.getAmount());
         // Add funds to receiving account
@@ -72,6 +72,20 @@ public class TransactionService {
         // Save successful transaction
         transactionRepository.save(transaction);
         System.out.println(transaction);
+    }
+
+    // Handle a new incoming transaction from the api
+    public void newTransaction(Transaction transaction){
+        // Check if currently logged in user can acces this account
+        checkTransactionAuthorized(transaction);
+        // Set transaction type and check validity
+        transaction.setTransactionType(getTransactionType(transaction.getAccountFrom(), transaction.getAccountTo()));
+        // Check account limitations
+        checkAccountLimits(transaction);
+        // Check transaction limitations
+        checkTransactionLimits(transaction);
+        // All ok and adding the transaction to the database an returning http status 201/created
+        addTransactionToDatabase(transaction);
     }
 
     // Check for transaction type and legality
