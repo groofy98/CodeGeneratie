@@ -45,9 +45,14 @@ public class UsersApiController implements UsersApi {
 
     public ResponseEntity<Void> deactivateUser(@ApiParam(value = "id of user that needs to be updated",required=true) @PathVariable("id") Long id
 ) {
-        String accept = request.getHeader("Accept");
-        HttpStatus httpStatus = userService.deactivateUser(id);
-        return new ResponseEntity<Void>(httpStatus);
+        if(userService.checkAuthorization()){
+            String accept = request.getHeader("Accept");
+            HttpStatus httpStatus = userService.deactivateUser(id);
+            return new ResponseEntity<Void>(httpStatus);
+        } else {
+            log.error("Couldn't serialize response for content type application/json");
+            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     public ResponseEntity<User> getLoggedInUser() {
@@ -58,29 +63,13 @@ public class UsersApiController implements UsersApi {
                 User user = ((UserDetail) security).getUser();
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
+                log.error("Couldn't serialize response for content type application/json");
                 return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
-) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<AuthToken>(userService.loginUser(body), HttpStatus.OK);
-                //return new ResponseEntity<AuthToken>(objectMapper.readValue("{\n  \"authToken\" : \"b15938252a78\"\n}", AuthToken.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<AuthToken>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<AuthToken>(HttpStatus.NOT_IMPLEMENTED);
-    }
 
     public ResponseEntity<Void> logoutUser() {
         String accept = request.getHeader("Accept");
@@ -88,10 +77,14 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<Void> registerUser(@ApiParam(value="user object that needs to be added") @Valid @RequestBody User body
-) {
-        String accept = request.getHeader("Accept");
-        userService.registerUser(body);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+)   {
+        if(userService.checkAuthorization()) {
+            String accept = request.getHeader("Accept");
+            userService.registerUser(body);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     public ResponseEntity<User> searchUser(@ApiParam(value = "user ID",required=true) @PathVariable("id") Long id
@@ -111,8 +104,13 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<Void> updateUser(@ApiParam(value = "Updated user object", required = false) @Valid @RequestBody User body
             , @ApiParam(value = "id of user that needs to be updated", required = true) @PathVariable("id") Long id
     ) {
-        String accept = request.getHeader("Accept");
-        HttpStatus httpStatus = userService.updateUser(id, body);
-        return new ResponseEntity<Void>(httpStatus);
+        if(userService.checkAuthorization()){
+            String accept = request.getHeader("Accept");
+            HttpStatus httpStatus = userService.updateUser(id, body);
+            return new ResponseEntity<Void>(httpStatus);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+        }
+
     }
 }

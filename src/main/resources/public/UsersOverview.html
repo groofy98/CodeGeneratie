@@ -103,7 +103,8 @@
             <Button id="deactivateUserSubmit" type="submit" value="Deactivate">Deactivate</Button>
         </form>
     </section>
-    <button id="register"><a href="RegisterEmployee.html" id="registerEmployee">Register new Employee account</a></button>
+    <button class="register"><a href="RegisterEmployee.html" class="registerEmployee">Register new Employee account</a></button>
+    <button class="register"><a href="RegisterCustomer.html" class="registerCustomer">Register new Customer account</a></button>
 </body>
 </html>
 
@@ -148,7 +149,6 @@
     });
 
     function displayUser(id){
-        //TODO: fix bug; table isCustomer, isEmployee and isActive are always true.
         var user = findUser(id);
         document.getElementById("tableID").innerHTML = id;
         document.getElementById("tableFirstName").innerHTML = user.firstname;

@@ -30,39 +30,26 @@ public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
 
-    public UserService() {
+    public UserService(){}
 
-    }
-
+    //check if currently logged in user corresponds with requested user
     public boolean checkAuthorization(Long userId) {
-
         Object AuthDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = ((UserDetail) AuthDetails).getUser();
+        User user = ((UserDetail) AuthDetails).getUser(); //gets currently logged in user
 
         if (!userId.equals(user.getId()) && !((UserDetail) AuthDetails).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
             return false;
         return true;
     }
 
-    //TODO: make actual auth token; currently returns a hardcoded one (b15938252a78)
-    public AuthToken loginUser(User userInfo) {
-            AuthToken authToken = new AuthToken();
-            String enteredEmail = userInfo.getEmail();
-            String enteredPassword = userInfo.getPassword();
-            User user = userRepository.findUserByEmail(enteredEmail);
+    //checks if currently logged in user is admin
+    public boolean checkAuthorization() {
+        Object AuthDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) AuthDetails).getUser(); //gets currently logged in user
 
-            if (user.getEmail().toLowerCase().equals(enteredEmail.toLowerCase()) && user.getPassword().equals(enteredPassword)){
-                authToken.setAuthToken("b15938252a78");
-                authToken.setUserId(user.getId()); //set user ID in authtoken object
-            } else {
-                System.err.println("Login failed"); //For testing - remove later
-                authToken.setAuthToken(null);
-            }
-            return authToken;
-    }
-
-    public HttpStatus createUser(User givenUser){
-        return HttpStatus.NOT_IMPLEMENTED;
+        if (((UserDetail) AuthDetails).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
+            return true;
+        return false;
     }
 
     //Get a single user by userId
@@ -76,7 +63,7 @@ public class UserService {
         System.out.println(user);
     }
 
-    //Deactivate a user
+    //Deactivate a user by userID
     public HttpStatus deactivateUser(Long userID){
         User user = userRepository.findUserById(userID);
         user.setIsActive(false);

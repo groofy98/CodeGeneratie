@@ -45,19 +45,6 @@ public interface UsersApi {
         method = RequestMethod.GET)
     ResponseEntity<User> getLoggedInUser();
 
-
-    @ApiOperation(value = "Logs in user", nickname = "loginUser", notes = "", response = AuthToken.class, tags={ "users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "authentication token", response = AuthToken.class),
-        @ApiResponse(code = 400, message = "bad input parameter") })
-    @RequestMapping(value = "/users/login",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<AuthToken> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
-);
-
-
     @ApiOperation(value = "Logs out current logged in user session", nickname = "logoutUser", notes = "", tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
