@@ -36,6 +36,7 @@ public class UserTest {
         user.setId(101L);
         assertNotNull(user.getId());
     }
+
     @Test
     void setId() {
         Long id = 101L;
