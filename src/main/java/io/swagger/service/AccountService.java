@@ -32,16 +32,15 @@ public class AccountService {
 
     private static final Logger log = LoggerFactory.getLogger(AccountApiController.class);
 
-    public boolean checkAuthorization(Long userId){
+    public boolean checkAuthorization(String accountId){
+        Account account = getAccountById(accountId);
 
         Object AuthDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = ((UserDetail) AuthDetails).getUser();
 
-        if (! userId.equals(user.getId()) && !((UserDetail) AuthDetails).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
+        if (! account.getAccountHolder().equals(user.getId()) && !((UserDetail) AuthDetails).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
             return false;
         return true;
-
-        //return userId.equals(user.getId()) || ((UserDetail) AuthDetails).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
     }
 
     public Account getAccountById(String id) {

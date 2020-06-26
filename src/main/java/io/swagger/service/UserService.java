@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +30,18 @@ public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
 
-    private UserService() {
+    public UserService() {
 
+    }
+
+    public boolean checkAuthorization(Long userId) {
+
+        Object AuthDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) AuthDetails).getUser();
+
+        if (!userId.equals(user.getId()) && !((UserDetail) AuthDetails).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
+            return false;
+        return true;
     }
 
     //TODO: make actual auth token; currently returns a hardcoded one (b15938252a78)
