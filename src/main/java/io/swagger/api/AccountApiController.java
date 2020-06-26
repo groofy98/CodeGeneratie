@@ -6,6 +6,7 @@ import io.swagger.annotations.*;
 import io.swagger.service.AccountService;
 import io.swagger.service.BalanceService;
 import io.swagger.service.TransactionService;
+import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
 import java.util.Map;
+
 //for testing on localhost
-@CrossOrigin(origins = { "http://localhost"})
+@CrossOrigin(origins = {"http://localhost"})
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-31T06:47:48.298Z[GMT]")
 @Controller
@@ -37,6 +39,8 @@ public class AccountApiController implements AccountApi {
     private final TransactionService transactionService;
 
     private final AccountService accountService;
+
+    private final UserService userService;
 
     private final BalanceService balanceService;
 
@@ -49,12 +53,13 @@ public class AccountApiController implements AccountApi {
         this.objectMapper = objectMapper;
         this.request = request;
         this.transactionService = transactionService;
+        this.userService = new UserService();
         this.accountService = accountService;
         this.balanceService = balanceService;
     }
 
     public ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String accountId) {
-        System.out.println("tot hier komt ie: "+accountId);
+        System.out.println("tot hier komt ie: " + accountId);
         HttpStatus httpStatus = accountService.deactivateAccount(accountId);
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(httpStatus);
@@ -63,70 +68,63 @@ public class AccountApiController implements AccountApi {
     public ResponseEntity<Account> getAccount(@ApiParam(value = "Pass in the ID of the account", required = true) @PathVariable("accountId") String accountId) {
         String accept = request.getHeader("Accept");
 
-        //get account by accountId
-        Account account = accountService.getAccountById(accountId);
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Account>(account, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Account>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accountService.checkAuthorization(accountId)) {
+            //get account by accountId
+            Account account = accountService.getAccountById(accountId);
+            if (accept != null && accept.contains("application/json")) {
+                try {
+                    return new ResponseEntity<Account>(account, HttpStatus.OK);
+                } catch (Exception e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<Account>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
             }
+            return new ResponseEntity<Account>(HttpStatus.NOT_IMPLEMENTED);
         }
-        return new ResponseEntity<Account>(HttpStatus.NOT_IMPLEMENTED);
+        else{
+            return new ResponseEntity<Account>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     public ResponseEntity<List<Account>> getAccountsWithUserId(@ApiParam(value = "Pass in the ID of the user", required = true) @PathVariable("userId") String userId) {
-        //Boolean isAutherized = accountService.checkAuthorization(Long.parseLong(userId));
-
         String accept = request.getHeader("Accept");
-        //get account by userId
-        List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
 
-//        if (accountService.checkAuthorization(Long.parseLong(userId))){
-//            //get account by userId
-//            List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
-//            if (accept != null && accept.contains("application/json")) {
-//                try {
-//                    return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
-//                } catch (Exception e) {
-//                    log.error("Couldn't serialize response for content type application/json", e);
-//                    return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
-//                }
-//            }
-//            return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
-//        }
-//        else{
-//            log.error("You are not an admin bruv");
-//            return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
-//        }
+        if (userService.checkAuthorization(Long.parseLong(userId))) {
+            //get account by userId
+            List<Account> accountList = accountService.getAccountsByUserId(Long.parseLong(userId));
+            if (accept != null && accept.contains("application/json")) {
+                try {
+                    return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);
+                } catch (Exception e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<List<Account>>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+            return new ResponseEntity<List<Account>>(HttpStatus.NOT_IMPLEMENTED);
+        } else {
+            return new ResponseEntity<List<Account>>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     public ResponseEntity<Balance> getBalance(@ApiParam(value = "Pass in the ID of the back account", required = true) @PathVariable("accountId") String accountId) {
         String accept = request.getHeader("Accept");
 
-        //get account by accountId
-        Balance balance = balanceService.getBalanceById(accountId);
+        if (accountService.checkAuthorization(accountId)) {
+            //get account by accountId
+            Balance balance = balanceService.getBalanceById(accountId);
 
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Balance>(balance, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Balance>(HttpStatus.INTERNAL_SERVER_ERROR);
+            if (accept != null && accept.contains("application/json")) {
+                try {
+                    return new ResponseEntity<Balance>(balance, HttpStatus.OK);
+                } catch (Exception e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<Balance>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
             }
+            return new ResponseEntity<Balance>(HttpStatus.NOT_IMPLEMENTED);
+        } else {
+            return new ResponseEntity<Balance>(HttpStatus.UNAUTHORIZED);
         }
-
-        return new ResponseEntity<Balance>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<Transaction>> getTransaction
@@ -158,9 +156,8 @@ public class AccountApiController implements AccountApi {
     }
 
     public ResponseEntity<Void> updateAcount(@ApiParam(value = "Updated account object", required = true) @Valid @RequestBody Account body
-                    , @ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String
-                     accountId
-            ) {
+            , @ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String
+                                                     accountId) {
         String accept = request.getHeader("Accept");
         HttpStatus httpStatus = accountService.updateAccount(accountId, body);
         return new ResponseEntity<Void>(httpStatus);
