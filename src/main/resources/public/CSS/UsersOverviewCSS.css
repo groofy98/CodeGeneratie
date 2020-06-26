@@ -152,9 +152,10 @@ a {
     color: white;
 }
 
-#register{
+.register{
     margin-left: 10%;
     margin-top: 50%;
     margin-bottom: 5%;
+    display: inline-block;
 }
 

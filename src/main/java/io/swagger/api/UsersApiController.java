@@ -63,7 +63,7 @@ public class UsersApiController implements UsersApi {
                 User user = ((UserDetail) security).getUser();
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json");
+                log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -91,11 +91,13 @@ public class UsersApiController implements UsersApi {
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<User>(userService.getUserById(id), HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+            if(userService.checkAuthorization(id)){
+                try {
+                    return new ResponseEntity<User>(userService.getUserById(id), HttpStatus.OK);
+                } catch (Exception e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
             }
         }
         return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
