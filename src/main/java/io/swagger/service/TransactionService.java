@@ -1,5 +1,6 @@
 package io.swagger.service;
 
+import io.swagger.api.ApiException;
 import io.swagger.api.NotFoundException;
 import io.swagger.dao.BalanceRepository;
 import io.swagger.dao.TransactionRepository;
@@ -39,8 +40,10 @@ public class TransactionService {
     }
 
     // Get a single transaction by transactionId
-    public Transaction getTransactionById(long id){
-        return transactionRepository.findById((id));
+    public Transaction getTransactionById(long id) throws ApiException {
+        Transaction transaction = transactionRepository.findById(id);
+        checkTransactionAuthorized(transaction);
+        return transaction;
     }
 
     // Check if user has access to account
@@ -54,12 +57,12 @@ public class TransactionService {
     }
 
     // Check if transaction is authorized
-    public void checkTransactionAuthorized(Transaction transaction) {
+    public void checkTransactionAuthorized(Transaction transaction) throws ApiException {
         Account account = accountService.getAccountById(transaction.getAccountFrom());
         Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = ((UserDetail) bla).getUser();
         if (! account.getAccountHolder().equals(user.getId()) && !((UserDetail) bla).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
-            throw new IllegalArgumentException("You dont have the authorisation to transfer from this account");
+            throw new  ApiException(401, "You do not have the authorisation to transfer from this account");
         transaction.setUserId(user.getId());
     }
 
@@ -75,8 +78,8 @@ public class TransactionService {
     }
 
     // Handle a new incoming transaction from the api
-    public void newTransaction(Transaction transaction){
-        // Check if currently logged in user can acces this account
+    public void newTransaction(Transaction transaction) throws ApiException {
+        // Check if currently logged in user can access this account
         checkTransactionAuthorized(transaction);
         // Set transaction type and check validity
         transaction.setTransactionType(getTransactionType(transaction.getAccountFrom(), transaction.getAccountTo()));
@@ -89,11 +92,11 @@ public class TransactionService {
     }
 
     // Check for transaction type and legality
-    public Transaction.TransactionTypeEnum getTransactionType(String accountFrom, String accountTo){
+    public Transaction.TransactionTypeEnum getTransactionType(String accountFrom, String accountTo) throws ApiException {
 
         // Check if transaction isn't to self
         if (accountTo.equals(accountFrom))
-            throw new IllegalArgumentException("Can't transfer to the same account");
+            throw new  ApiException(400, "Can't transfer to the same account");
 
         Account to = accountService.getAccountById(accountTo);
         Account from = accountService.getAccountById(accountFrom);
@@ -103,39 +106,39 @@ public class TransactionService {
             if (from.getAccountHolder().equals(to.getAccountHolder()))
                 return Transaction.TransactionTypeEnum.DEPOSIT;
             else
-                throw new IllegalArgumentException("Can't transfer from savings account to someone else");
+                throw new ApiException(400, "Can't transfer from savings account to someone else");
         }
         // Check if transaction is a deposit
         if (from.getAccountType() == Account.AccountTypeEnum.SAVING){
             if (from.getAccountHolder().equals(to.getAccountHolder()))
                 return Transaction.TransactionTypeEnum.WITHDRAW;
             else
-                throw new IllegalArgumentException("Can't transfer from current to someone else savings account");
+                throw new  ApiException(400, "Can't transfer from current to someone else savings account");
         }
         return Transaction.TransactionTypeEnum.TRANSFER;
     }
 
     // Check if transaction is within account limitations
-    public void checkAccountLimits(Transaction transaction){
+    public void checkAccountLimits(Transaction transaction) throws ApiException {
         Account account = accountService.getAccountById(transaction.getAccountFrom());
         Balance balance = balanceService.getBalanceById(transaction.getAccountFrom());
         // Check if account doesn't surpass its absolute limit
         if ( -1 == balance.getAmount().subtract(transaction.getAmount()).compareTo(BigDecimal.valueOf(account.getAbsoluteLimit()))) {
-            throw new IllegalArgumentException("Insufficient funds");
+            throw new  ApiException(400, "Insufficient funds");
         }
         // Check if transaction doesn't surpass day limit
         if ( 1 == getTransactionTotalToday(transaction).add(transaction.getAmount()).compareTo(Account.dayLimit)){
-            throw new IllegalArgumentException("Day limit reached");
+            throw new  ApiException(400, "Day limit reached");
         }
     }
 
     // Check if transaction is within the transaction limitations
-    public void checkTransactionLimits(Transaction transaction){
+    public void checkTransactionLimits(Transaction transaction) throws ApiException {
         // Check if the given amount is within transaction limit
         if (1 == transaction.getAmount().compareTo(Transaction.transactionLimit))
-            throw new IllegalArgumentException("Given amount is to high");
+            throw new  ApiException(400, "Given amount is to high");
         if (-1 == transaction.getAmount().compareTo(BigDecimal.valueOf(0)))
-            throw new IllegalArgumentException("The given amount should be higher than 0");
+            throw new  ApiException(400, "The given amount should be higher than 0");
     }
 
     // Returns the amount of money that a account has transferred today

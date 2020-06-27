@@ -38,26 +38,37 @@ public class TransactionsApiController implements TransactionsApi {
     public ResponseEntity<Void> createTransaction(@ApiParam(value = "Transaction object that needs to be added" ,required=true )  @Valid @RequestBody Transaction body
 ) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
+
             try {
                 transactionService.newTransaction(body);
                 return new ResponseEntity<Void>(HttpStatus.CREATED);
-            } catch (IllegalArgumentException e) {
+            } catch (ApiException e) {
                 throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Foo Not Found");
+                        HttpStatus.valueOf(e.getCode()), e.getMessage());
             }
-        }
 
-        return null;
+
     }
 
+    // Get a single transaction by transaction id
     public ResponseEntity<Transaction> getTransactionById(@ApiParam(value = "Id of transaction to return",required=true) @PathVariable("transactionId") Long transactionId
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<Transaction>(transactionService.getTransactionById(transactionId), HttpStatus.OK);
-            } catch (Exception e) {
+            } catch (ApiException e) {
+                // If user isn't authaurized return not found
+                if (e.getCode() == 401)
+                    return new ResponseEntity<Transaction>(HttpStatus.NOT_FOUND);
+                // If user is authorized but something went wrong getting the transaction return the error
+                else {
+                    throw new ResponseStatusException(
+                            HttpStatus.valueOf(e.getCode()), e.getMessage());
+                }
+
+            }
+            catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Transaction>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
