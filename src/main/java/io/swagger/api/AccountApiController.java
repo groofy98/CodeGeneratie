@@ -136,18 +136,18 @@ public class AccountApiController implements AccountApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                // If
+                // If rquest is authorized return list of transactions else return 404
                 if (transactionService.checkAuthorized(accountId))
                     return new ResponseEntity<List<Transaction>>(this.transactionService.getAllTransactionsById(accountId), HttpStatus.OK);
                 else
-                    return new ResponseEntity<List<Transaction>>(HttpStatus.OK);
+                    return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_FOUND);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Transaction>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<List<Transaction>>(HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<Void> registerAccount(@ApiParam(value = "") @Valid @RequestBody Account body) {
