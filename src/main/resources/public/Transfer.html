@@ -92,6 +92,9 @@
     $.ajax({
       url: "transactions",
       method: "POST",
+      headers:{
+                "Accept": "application/json",
+            },
       contentType: "application/json; charset=utf-8",
       data: transaction,
       success: function (result) {
