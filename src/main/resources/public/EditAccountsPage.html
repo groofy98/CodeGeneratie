@@ -185,7 +185,6 @@
         account["absoluteLimit"] = absoluteLimit;
         account["accountType"] = accountType;
         account = JSON.stringify(account);
-        alert(account);
 
         $.ajax({
             url: 'account/' + id + '/details',
