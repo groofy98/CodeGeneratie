@@ -24,11 +24,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-28T09:02:52.594Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-28T11:28:32.663Z[GMT]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
-    @ApiOperation(value = "Deactivate existing user", nickname = "deactivateUser", notes = "Deacivate a user", authorizations = {
+    @ApiOperation(value = "Deactivate existing user", nickname = "deactivateUser", notes = "Sets the active proprety to false in the database for the user with corresponding ID.", authorizations = {
         @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "executed"),
@@ -41,7 +41,7 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "get logged in user", nickname = "getLoggedInUser", notes = "get the logged in user", response = User.class, authorizations = {
+    @ApiOperation(value = "Get logged in user", nickname = "getLoggedInUser", notes = "Returns a JSON user object of the currently logged in user", response = User.class, authorizations = {
         @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "user", response = User.class),
@@ -52,7 +52,7 @@ public interface UsersApi {
     ResponseEntity<User> getLoggedInUser();
 
 
-    @ApiOperation(value = "Logs in user", nickname = "loginUser", notes = "", response = AuthToken.class, tags={ "users", })
+    @ApiOperation(value = "Logs in user", nickname = "loginUser", notes = "By passing a username and password in JSON, an authentication token is returned which can be used to log in.", response = AuthToken.class, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "authentication token", response = AuthToken.class),
         @ApiResponse(code = 400, message = "bad input parameter") })
@@ -64,7 +64,7 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Logs out current logged in user session", nickname = "logoutUser", notes = "", tags={ "users", })
+    @ApiOperation(value = "Logs out current logged in user session", nickname = "logoutUser", notes = "Deletes authentication token for currently logged in user, effectively denying access.", tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @RequestMapping(value = "/users/logout",
@@ -72,7 +72,7 @@ public interface UsersApi {
     ResponseEntity<Void> logoutUser();
 
 
-    @ApiOperation(value = "Adds a new User", nickname = "registerUser", notes = "", tags={ "users", })
+    @ApiOperation(value = "Adds a new User", nickname = "registerUser", notes = "By passing a JSON object with the necessary user information a new user is added to the database. ID is generated automatically.", tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "executed"),
         @ApiResponse(code = 400, message = "bad input parameter") })
@@ -83,7 +83,7 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Get user by ID", nickname = "searchUser", notes = "", response = User.class, authorizations = {
+    @ApiOperation(value = "Get user by ID", nickname = "searchUser", notes = "Returns a user object which corresponds with the given ID.", response = User.class, authorizations = {
         @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "user", response = User.class),
@@ -96,19 +96,7 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Get list of users", nickname = "searchusers", notes = "Calling this allows you to fetch the list of users in the system", response = User.class, responseContainer = "List", authorizations = {
-        @Authorization(value = "basicAuth")    }, tags={ "users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "user data", response = User.class, responseContainer = "List") })
-    @RequestMapping(value = "/users",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<User>> searchusers(@NotNull @Min(1) @Max(100) @ApiParam(value = "The max number of results to return", required = true, allowableValues = "") @Valid @RequestParam(value = "count", required = true) Integer count
-,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-);
-
-
-    @ApiOperation(value = "Update existing User", nickname = "updateUser", notes = "By filling in this form, you update a user", authorizations = {
+    @ApiOperation(value = "Update existing User", nickname = "updateUser", notes = "By passing a JSON object with user info, you will update a user with the filled in information.", authorizations = {
         @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "executed"),
