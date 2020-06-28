@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * AuthToken
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T10:02:40.697Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-28T09:02:52.594Z[GMT]")
 public class AuthToken   {
   @JsonProperty("authToken")
   private String authToken = null;

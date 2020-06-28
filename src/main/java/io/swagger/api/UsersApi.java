@@ -24,12 +24,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T10:02:40.697Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-28T09:02:52.594Z[GMT]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
     @ApiOperation(value = "Deactivate existing user", nickname = "deactivateUser", notes = "Deacivate a user", authorizations = {
-        @Authorization(value = "ApiKeyAuth")    }, tags={ "users", })
+        @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "executed"),
         @ApiResponse(code = 400, message = "Invalid user id supplied"),
@@ -41,7 +41,8 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "get logged in user", nickname = "getLoggedInUser", notes = "get the logged in user", response = User.class, tags={ "users", })
+    @ApiOperation(value = "get logged in user", nickname = "getLoggedInUser", notes = "get the logged in user", response = User.class, authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "user", response = User.class),
         @ApiResponse(code = 404, message = "User not found") })
@@ -82,7 +83,8 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Get user by ID", nickname = "searchUser", notes = "", response = User.class, tags={ "users", })
+    @ApiOperation(value = "Get user by ID", nickname = "searchUser", notes = "", response = User.class, authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "user", response = User.class),
         @ApiResponse(code = 400, message = "bad input parameter"),
@@ -94,7 +96,8 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Get list of users", nickname = "searchusers", notes = "Calling this allows you to fetch the list of users in the system", response = User.class, responseContainer = "List", tags={ "users", })
+    @ApiOperation(value = "Get list of users", nickname = "searchusers", notes = "Calling this allows you to fetch the list of users in the system", response = User.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "user data", response = User.class, responseContainer = "List") })
     @RequestMapping(value = "/users",
@@ -106,7 +109,7 @@ public interface UsersApi {
 
 
     @ApiOperation(value = "Update existing User", nickname = "updateUser", notes = "By filling in this form, you update a user", authorizations = {
-        @Authorization(value = "ApiKeyAuth")    }, tags={ "users", })
+        @Authorization(value = "basicAuth")    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "executed"),
         @ApiResponse(code = 400, message = "Invalid user supplied"),

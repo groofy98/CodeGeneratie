@@ -23,14 +23,16 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T10:02:40.697Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-28T09:02:52.594Z[GMT]")
 @Api(value = "transactions", description = "the transactions API")
 public interface TransactionsApi {
 
-    @ApiOperation(value = "Handle a new transaction", nickname = "createTransaction", notes = "", tags={ "transactions", })
+    @ApiOperation(value = "Handle a new transaction", nickname = "createTransaction", notes = "", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "transactions", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "transaction creation successful"),
-        @ApiResponse(code = 405, message = "Invalid input") })
+        @ApiResponse(code = 201, message = ""),
+        @ApiResponse(code = 400, message = "Transaction could not be created"),
+        @ApiResponse(code = 401, message = "Not authorized to create a new transaction") })
     @RequestMapping(value = "/transactions",
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -38,7 +40,8 @@ public interface TransactionsApi {
 );
 
 
-    @ApiOperation(value = "Find transaction by ID", nickname = "getTransactionById", notes = "Returns a single transaction with corresponding ID", response = Transaction.class, tags={ "transactions", })
+    @ApiOperation(value = "Find transaction by ID", nickname = "getTransactionById", notes = "Returns a single transaction with corresponding ID", response = Transaction.class, authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "transactions", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Transaction.class),
         @ApiResponse(code = 400, message = "Invalid transactionId supplied"),

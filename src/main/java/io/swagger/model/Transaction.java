@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * Transaction
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T10:02:40.697Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-28T09:02:52.594Z[GMT]")
 public class Transaction   {
   @JsonProperty("id")
   private Long id = null;
@@ -180,9 +180,8 @@ public class Transaction   {
    * Get userId
    * @return userId
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(value = "")
+  
     public Long getUserId() {
     return userId;
   }
@@ -200,9 +199,8 @@ public class Transaction   {
    * Specifies the type of transaction
    * @return transactionType
   **/
-  @ApiModelProperty(required = true, value = "Specifies the type of transaction")
-      @NotNull
-
+  @ApiModelProperty(value = "Specifies the type of transaction")
+  
     public TransactionTypeEnum getTransactionType() {
     return transactionType;
   }
