@@ -34,20 +34,28 @@ public class TransactionsApiController implements TransactionsApi {
         this.transactionService = transactionService;
     }
 
-    //TODO change return type ApiResponseMessage instead of void
     public ResponseEntity<Void> createTransaction(@ApiParam(value = "Transaction object that needs to be added" ,required=true )  @Valid @RequestBody Transaction body
 ) {
+        // Check if request is sent with the correct headers
         String accept = request.getHeader("Accept");
-
-            try {
-                transactionService.newTransaction(body);
-                return new ResponseEntity<Void>(HttpStatus.CREATED);
-            } catch (ApiException e) {
-                throw new ResponseStatusException(
-                        HttpStatus.valueOf(e.getCode()), e.getMessage());
+        if (accept != null && accept.contains("application/json")) {
+            // Check if request is authorized
+            if (transactionService.checkAuthorized(body.getAccountFrom())){
+                // Try to add transaction to the db
+                try {
+                    transactionService.newTransaction(body);
+                    return new ResponseEntity<Void>(HttpStatus.CREATED);
+                }
+                // Return error when something goes wrong
+                catch (ApiException e) {
+                    throw new ResponseStatusException(
+                            HttpStatus.valueOf(e.getCode()), e.getMessage());
+                }
             }
+            else return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 
-
+        }
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
     // Get a single transaction by transaction id
@@ -56,25 +64,24 @@ public class TransactionsApiController implements TransactionsApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Transaction>(transactionService.getTransactionById(transactionId), HttpStatus.OK);
-            } catch (ApiException e) {
-                // If user isn't authaurized return not found
-                if (e.getCode() == 401)
+                Transaction transaction = transactionService.getTransactionById(transactionId);
+                if (transactionService.checkAuthorized(transaction.getAccountFrom()) || transactionService.checkAuthorized(transaction.getAccountTo()))
+                    return new ResponseEntity<Transaction>(transaction, HttpStatus.OK);
+                else
                     return new ResponseEntity<Transaction>(HttpStatus.NOT_FOUND);
-                // If user is authorized but something went wrong getting the transaction return the error
-                else {
-                    throw new ResponseStatusException(
-                            HttpStatus.valueOf(e.getCode()), e.getMessage());
+            } catch (ApiException e) {
+                // If user is authorized but something else went wrong getting the transaction return the error
+                throw new ResponseStatusException(
+                    HttpStatus.valueOf(e.getCode()), e.getMessage());
                 }
 
-            }
             catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Transaction>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Transaction>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Transaction>(HttpStatus.BAD_REQUEST);
     }
 
 }

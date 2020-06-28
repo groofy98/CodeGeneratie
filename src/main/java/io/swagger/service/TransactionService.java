@@ -42,28 +42,12 @@ public class TransactionService {
     // Get a single transaction by transactionId
     public Transaction getTransactionById(long id) throws ApiException {
         Transaction transaction = transactionRepository.findById(id);
-        checkTransactionAuthorized(transaction);
         return transaction;
     }
 
     // Check if user has access to account
     public boolean checkAuthorized(String accountId){
-        Account account = accountService.getAccountById(accountId);
-        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = ((UserDetail) bla).getUser();
-        if (! account.getAccountHolder().equals(user.getId()) && !((UserDetail) bla).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
-            return false;
-        return true;
-    }
-
-    // Check if transaction is authorized
-    public void checkTransactionAuthorized(Transaction transaction) throws ApiException {
-        Account account = accountService.getAccountById(transaction.getAccountFrom());
-        Object bla = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = ((UserDetail) bla).getUser();
-        if (! account.getAccountHolder().equals(user.getId()) && !((UserDetail) bla).getAuthorities().contains(new SimpleGrantedAuthority("ADMIN")))
-            throw new  ApiException(401, "You do not have the authorisation to transfer from this account");
-        transaction.setUserId(user.getId());
+        return accountService.checkAuthorization(accountId);
     }
 
     // Add a transaction to the database
@@ -77,10 +61,17 @@ public class TransactionService {
         System.out.println(transaction);
     }
 
+    // Set a userID from securityDetails
+    public void setUser(Transaction transaction){
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((UserDetail) userDetails).getUser();
+        transaction.setUserId(user.getId());
+    }
+
     // Handle a new incoming transaction from the api
     public void newTransaction(Transaction transaction) throws ApiException {
-        // Check if currently logged in user can access this account
-        checkTransactionAuthorized(transaction);
+        // Set the user from Security context as the authorization check is already done
+        setUser(transaction);
         // Set transaction type and check validity
         transaction.setTransactionType(getTransactionType(transaction.getAccountFrom(), transaction.getAccountTo()));
         // Check account limitations
