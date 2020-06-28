@@ -165,11 +165,15 @@ public class TransactionService {
         return transactionRepository.findByAccountFromOrderByDateDesc(accountId);
     }
 
-
     // Get all transactions with corresponding accountID
+    public List<Transaction> getAllTransactionsByAccountId(String accountId){
+        return transactionRepository.findByAccountOrderByDateDesc(accountId);
+    }
+
+
+    @Deprecated
     public List<Transaction> getAllTransactionsById(String accountId){
         // Get all transactions from and to an account and merge the results
-        //TODO Replace by transactionRepository.findByAccountOrderByDateDesc
         List<Transaction> result = Stream.concat(getTransactionsFromAccountById(accountId).stream(), getTransactionsToAccountById(accountId).stream())
                 .collect(Collectors.toList());
         // Sort the list by date

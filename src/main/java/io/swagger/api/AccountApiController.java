@@ -134,7 +134,7 @@ public class AccountApiController implements AccountApi {
             try {
                 // If rquest is authorized return list of transactions else return 404
                 if (accountService.checkAuthorization(accountId))
-                    return new ResponseEntity<List<Transaction>>(this.transactionService.getAllTransactionsById(accountId), HttpStatus.OK);
+                    return new ResponseEntity<List<Transaction>>(this.transactionService.getAllTransactionsByAccountId(accountId), HttpStatus.OK);
                 else
                     return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_FOUND);
             } catch (Exception e) {
