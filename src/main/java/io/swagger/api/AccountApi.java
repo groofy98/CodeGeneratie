@@ -20,28 +20,28 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T10:02:40.697Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-28T09:02:52.594Z[GMT]")
 @Api(value = "account", description = "the account API")
 public interface AccountApi {
 
-    @ApiOperation(value = "Deactivate existing account", nickname = "deactivateAccount", notes = "Deacivate an account", authorizations = {
-            @Authorization(value = "ApiKeyAuth")}, tags = {"accounts",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "executed"),
-            @ApiResponse(code = 400, message = "Invalid account id supplied"),
-            @ApiResponse(code = 401, message = "failed to authenticate"),
-            @ApiResponse(code = 404, message = "Account not found")})
+    @ApiOperation(value = "by giving in the accountId of the account that needs to be deactivated, you deactivate the account", nickname = "deactivateAccount", notes = "Deacivate an account", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "accounts", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "executed"),
+        @ApiResponse(code = 400, message = "Invalid account id supplied"),
+        @ApiResponse(code = 401, message = "failed to authenticate"),
+        @ApiResponse(code = 404, message = "Account not found") })
     @RequestMapping(value = "/account/{accountId}/deactivate",
             method = RequestMethod.PUT)
     ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String accountId
     );
 
 
-    @ApiOperation(value = "Get the account details", nickname = "getAccount", notes = "By passing in the appropriate AccountID, you get the account details", response = Account.class, responseContainer = "List", tags = {"accounts",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "account details gotten", response = Account.class, responseContainer = "List"),
-            @ApiResponse(code = 400, message = "bad input parameter")})
+    @ApiOperation(value = "Get the account details", nickname = "getAccount", notes = "By passing in the appropriate AccountID, you get the account details", response = Account.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "accounts", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "account details gotten", response = Account.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "bad input parameter") })
     @RequestMapping(value = "/account/{accountId}/details",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -49,10 +49,11 @@ public interface AccountApi {
     );
 
 
-    @ApiOperation(value = "Get all the accounts belonging to one user", nickname = "getAccountsWithUserId", notes = "By passing in the appropriate userId, you get all accounts belonging to that user", response = Account.class, responseContainer = "List", tags = {"accounts",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "accounts gotten", response = Account.class, responseContainer = "List"),
-            @ApiResponse(code = 400, message = "bad input parameter")})
+    @ApiOperation(value = "Get all the accounts belonging to one user", nickname = "getAccountsWithUserId", notes = "By passing in the appropriate userId, you get all accounts belonging to that user", response = Account.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "accounts", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "accounts gotten", response = Account.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "bad input parameter") })
     @RequestMapping(value = "/account/{userId}",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -60,10 +61,11 @@ public interface AccountApi {
     );
 
 
-    @ApiOperation(value = "Get the ammount of balance on your account", nickname = "getBalance", notes = "By passing in the appropriate balance, you can check how much balance you have", response = Balance.class, responseContainer = "List", tags = {"accounts",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Balance gotten from account", response = Balance.class, responseContainer = "List"),
-            @ApiResponse(code = 400, message = "bad input parameter")})
+    @ApiOperation(value = "Get the ammount of balance on your account", nickname = "getBalance", notes = "By passing in the appropriate balance, you can check how much balance you have", response = Balance.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "accounts", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Balance gotten from account", response = Balance.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "bad input parameter") })
     @RequestMapping(value = "/account/balance/{accountId}",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -71,11 +73,12 @@ public interface AccountApi {
     );
 
 
-    @ApiOperation(value = "Get a list of transactions", nickname = "getTransaction", notes = "", response = Transaction.class, responseContainer = "List", tags = {"transactions",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "successful operation", response = Transaction.class, responseContainer = "List"),
-            @ApiResponse(code = 400, message = "Invalid status value"),
-            @ApiResponse(code = 404, message = "Account not found")})
+    @ApiOperation(value = "Get a list of transactions", nickname = "getTransaction", notes = "", response = Transaction.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "transactions", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Transaction.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid status value"),
+        @ApiResponse(code = 404, message = "Account not found") })
     @RequestMapping(value = "/account/{accountId}/transactions",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -85,10 +88,11 @@ public interface AccountApi {
     );
 
 
-    @ApiOperation(value = "Adds a new Account", nickname = "registerAccount", notes = "", tags = {"accounts",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "executed"),
-            @ApiResponse(code = 400, message = "bad input parameter")})
+    @ApiOperation(value = "Adds a new Account", nickname = "registerAccount", notes = "By filling in the details in JSON format, you create a new bank account", authorizations = {
+        @Authorization(value = "basicAuth")    }, tags={ "accounts", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "executed"),
+        @ApiResponse(code = 400, message = "bad input parameter") })
     @RequestMapping(value = "/account/register",
             consumes = {"application/json"},
             method = RequestMethod.POST)
@@ -97,10 +101,10 @@ public interface AccountApi {
 
 
     @ApiOperation(value = "Updated existing account", nickname = "updateAcount", notes = "By filling in this form, you update an account", authorizations = {
-            @Authorization(value = "ApiKeyAuth")}, tags = {"accounts",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 400, message = "Invalid account supplied"),
-            @ApiResponse(code = 404, message = "account not found")})
+        @Authorization(value = "basicAuth")    }, tags={ "accounts", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 400, message = "Invalid account supplied"),
+        @ApiResponse(code = 404, message = "account not found") })
     @RequestMapping(value = "/account/{accountId}/details",
             consumes = {"application/json"},
             method = RequestMethod.PUT)
