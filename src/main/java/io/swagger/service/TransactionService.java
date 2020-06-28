@@ -91,6 +91,9 @@ public class TransactionService {
 
         Account to = accountService.getAccountById(accountTo);
         Account from = accountService.getAccountById(accountFrom);
+        // Throw a not found exception when the account to is null
+        if(to == null)
+            throw new ApiException(404, "Account" + accountTo + " could not be found");
 
         // Check if transaction is a withdraw
         if (to.getAccountType() == Account.AccountTypeEnum.SAVING){
