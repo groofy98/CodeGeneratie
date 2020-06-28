@@ -54,58 +54,77 @@ public class UserService {
 
     //Get a single user by userId
     public User getUserById(Long id){
-        return userRepository.findUserById(id);
+        try{
+            User user = userRepository.findUserById(id);
+            return user;
+        } catch(Exception e){
+            log.error("Error thrown when getting user:" + e);
+            return null;
+        }
     }
 
     //Register user in database
-    public void registerUser(User user){
-        userRepository.save(user);
-        System.out.println(user);
+    public HttpStatus registerUser(User user){
+        try {
+            userRepository.save(user);
+            System.out.println(user);
+            return HttpStatus.OK;
+        } catch(Exception e) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
 
     //Deactivate a user by userID
     public HttpStatus deactivateUser(Long userID){
-        User user = userRepository.findUserById(userID);
-        user.setIsActive(false);
-        userRepository.save(user);
-        return HttpStatus.OK;
+        try {
+            User user = userRepository.findUserById(userID);
+            user.setIsActive(false);
+            userRepository.save(user);
+            return HttpStatus.OK;
+        } catch (Exception e){
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
 
     //Updates the user
     public HttpStatus updateUser(Long userID, User userEdit){
-        //find current data of user
-        User user = getUserById(userID);
+        try {
+            //find current data of user
+            User user = getUserById(userID);
 
-        //check which fields are filled in in userEdit
-        if (userEdit.getFirstname() != null) {
-            user.setFirstname(userEdit.getFirstname());
-        }
-        if (userEdit.getUsername() != null) {
-            user.setUsername(userEdit.getUsername());
-        }
-        if (userEdit.getLastname() != null) {
-            user.setLastname(userEdit.getLastname());
-        }
-        if (userEdit.getDateOfBirth() != null) {
-            user.setDateOfBirth(userEdit.getDateOfBirth());
-        }
-        if (userEdit.getPassword() != null) {
-            user.setDateOfBirth(userEdit.getDateOfBirth());
-        }
-        if (userEdit.getEmail() != null) {
-            user.setEmail(userEdit.getEmail());
-        }
-        if (userEdit.getPassword() != null) {
-            user.setPassword(userEdit.getPassword());
-        }
-        if (userEdit.isIsEmployee() != null) {
-            user.setIsEmployee(userEdit.isIsEmployee());
-        }
-        if (userEdit.isIsCustomer() != null) {
-            user.setIsCustomer(userEdit.isIsCustomer());
-        }
+            //check which fields are filled in in userEdit
+            if (userEdit.getFirstname() != null) {
+                user.setFirstname(userEdit.getFirstname());
+            }
+            if (userEdit.getUsername() != null) {
+                user.setUsername(userEdit.getUsername());
+            }
+            if (userEdit.getLastname() != null) {
+                user.setLastname(userEdit.getLastname());
+            }
+            if (userEdit.getDateOfBirth() != null) {
+                user.setDateOfBirth(userEdit.getDateOfBirth());
+            }
+            if (userEdit.getPassword() != null) {
+                user.setDateOfBirth(userEdit.getDateOfBirth());
+            }
+            if (userEdit.getEmail() != null) {
+                user.setEmail(userEdit.getEmail());
+            }
+            if (userEdit.getPassword() != null) {
+                user.setPassword(userEdit.getPassword());
+            }
+            if (userEdit.isIsEmployee() != null) {
+                user.setIsEmployee(userEdit.isIsEmployee());
+            }
+            if (userEdit.isIsCustomer() != null) {
+                user.setIsCustomer(userEdit.isIsCustomer());
+            }
 
-        userRepository.save(user);
-        return HttpStatus.OK;
+            userRepository.save(user);
+            return HttpStatus.OK;
+        } catch (Exception e){
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
     }
 }

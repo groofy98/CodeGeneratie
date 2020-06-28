@@ -30,8 +30,8 @@
           <th>Email</th>
           <th>Username</th>
           <th>Birth Date</th>
-          <th>Employee</th>
           <th>Customer</th>
+          <th>Employee</th>
           <th>Active</th>
         </tr>
         <tr>
@@ -85,7 +85,7 @@
                 </select>
             </br><label>Employee</label>
                 <select id="employeeSelect" name="employeeSelect">
-                    <option id="selectOption" value="nonSelected">Select option</option>
+                    <option id="employeeUnselected" value="nonSelected">Select option</option>
                     <option id="employeeTrue" value="Yes">Yes</option>
                     <option id="employeeFalse" value="No">No</option>
                 </select>
@@ -205,14 +205,13 @@
             if(customerStatus == "Yes" ){
                user["isCustomer"] = true;
             } else if (customerStatus == "No"){
-                user["isCustomer"] == false;
+                user["isCustomer"] = false;
             }
         } else {
             alert("Please fill in the ID of the user that should be updated");
         }
 
         user = JSON.stringify(user);
-        alert(user);
 
         $.ajax({
             url: 'users/' + id,
