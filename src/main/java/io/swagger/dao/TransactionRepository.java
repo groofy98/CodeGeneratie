@@ -15,7 +15,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 
     // Get all transactions with account id
     //TODO Use this method instead of the other 2 combined
-    @Query("from Transaction t where (t.accountFrom = ?1 OR  t.accountTo = ?1) ORDER BY t.date")
+    @Query("from Transaction t where (t.accountFrom = ?1 OR  t.accountTo = ?1) ORDER BY t.date Desc")
     List<Transaction> findByAccountOrderByDateDesc(String accountId);
 
     // Get all Transactions from an account
