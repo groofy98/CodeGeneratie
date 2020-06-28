@@ -54,11 +54,6 @@ public class AccountService {
     }
 
     public List<Account> getAccountsByUserId(long userId) {
-        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = ((UserDetail) userDetails).getUser();
-        user.getId();
-
-
         try {
             return accountRepository.findByaccountHolder(userId);
         } catch (Exception e) {
