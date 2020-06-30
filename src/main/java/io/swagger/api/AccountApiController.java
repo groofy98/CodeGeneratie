@@ -55,7 +55,6 @@ public class AccountApiController implements AccountApi {
     }
 
     public ResponseEntity<Void> deactivateAccount(@ApiParam(value = "id of account that needs to be updated", required = true) @PathVariable("accountId") String accountId) {
-        System.out.println("tot hier komt ie: " + accountId);
         HttpStatus httpStatus = accountService.deactivateAccount(accountId);
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(httpStatus);

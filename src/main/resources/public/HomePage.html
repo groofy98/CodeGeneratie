@@ -39,8 +39,8 @@
 </html>
 <script type="text/javascript">
     var user;
+    //Check if the user is admin or employee and edit the links in the header
     $(document).ready(function () {
-    //hier komt een gedeelte om de tabjes alleen zichtbaar te maken als je admin bent
        user = GetLoggedInUser();
        if(user.isEmployee === true){
             $('.editLinks').css("display", "inline-block");
@@ -48,6 +48,7 @@
        $('#accountDetails').text(user.firstname + " " + user.lastname);
     });
 
+    //Get all account using the given user id
     $(document).ready(function () {
         $.ajax({
             url: 'account/' + user.id,
@@ -68,6 +69,7 @@
         });
     });
 
+    //Check if the account is a saving or a deposit account and display them on the homepage
     function SortAccounts(account) {
         if(account.isActive === true) {
             var balance = GetBalance(account.AccountID);
@@ -91,6 +93,7 @@
         }
     }
 
+    //Get the balance of a specific user
     function GetBalance(id) {
         var balance = "";
         $.ajax({
@@ -112,6 +115,7 @@
         return balance;
     }
 
+    //Get the logged in user
     function GetLoggedInUser() {
         var user = "";
         $.ajax({
@@ -130,6 +134,7 @@
         return user;
     }
 
+    //Return a user by his user id
     function GetUser(id) {
         var name = "";
         $.ajax({
@@ -167,6 +172,7 @@
         LogOff();
         return false;
     });
+
 
     function linkToTransaction(id){
             sessionStorage.setItem('activeAccount', id);
